@@ -1,0 +1,20 @@
+---
+import { card, cardContent, cardTitle, cardDescription } from '../../styles/components/card.css';
+
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+}
+
+const { title, description, href } = Astro.props;
+---
+
+<a href={href} style="text-decoration: none; color: inherit; display: block;">
+  <div class={card}>
+    <div class={cardContent}>
+      <h3 class={cardTitle}>{title}</h3>
+      <p class={cardDescription}>{description}</p>
+    </div>
+  </div>
+</a>

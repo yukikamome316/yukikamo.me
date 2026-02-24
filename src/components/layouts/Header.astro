@@ -1,0 +1,20 @@
+---
+import { header, logo, nav, navLink } from '../../styles/components/header.css';
+
+const links = [
+  { href: '/about', label: 'About' },
+  { href: '/work', label: 'Work' },
+  { href: '/blog', label: 'Blog' },
+];
+---
+
+<header class={header}>
+  <a href="/" class={logo}>Yuki</a>
+  <nav class={nav}>
+    {links.map((link) => (
+      <a href={link.href} class={navLink}>
+        {link.label}
+      </a>
+    ))}
+  </nav>
+</header>

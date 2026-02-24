@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../components/layouts/Layout.astro';
+import { vars } from '../../styles/theme.css.ts';
+
+export async function getStaticPaths() {
+  const workEntries = await getCollection('work');
+  return workEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<Layout title={`${entry.data.title} | Work`}>
+  <article style={{ marginTop: '4rem', marginBottom: '6rem', maxWidth: '800px', margin: '4rem auto 6rem' }}>
+    <header style={{ marginBottom: '3rem' }}>
+      <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>{entry.data.title}</h1>
+      <p style={{ fontSize: '1.125rem', color: vars.color.muted, marginBottom: '2rem' }}>
+        {entry.data.description}
+      </p>
+      
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', padding: '1.5rem', backgroundColor: vars.color.surfaceHover, border: `1px solid ${vars.color.border}`, borderRadius: '8px' }}>
+        {entry.data.role && (
+          <div>
+            <div style={{ fontSize: '0.875rem', color: vars.color.muted, marginBottom: '0.25rem' }}>Role</div>
+            <div>{entry.data.role}</div>
+          </div>
+        )}
+        {entry.data.link && (
+          <div>
+            <div style={{ fontSize: '0.875rem', color: vars.color.muted, marginBottom: '0.25rem' }}>Link</div>
+            <a href={entry.data.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
+              Visit Project ↗
+            </a>
+          </div>
+        )}
+      </div>
+
+      <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+        {entry.data.tags?.map((tag: string) => (
+          <span style={{ fontSize: '0.875rem', padding: '0.25rem 0.75rem', backgroundColor: vars.color.surfaceHover, border: `1px solid ${vars.color.border}`, borderRadius: '999px' }}>
+            {tag}
+          </span>
+        ))}
+      </div>
+    </header>
+    
+    <div class="prose" style={{ lineHeight: 1.8, fontSize: '1.125rem' }}>
+      <Content />
+    </div>
+  </article>
+</Layout>
+
+<style is:global>
+  .prose h2, .prose h3 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .prose p {
+    margin-bottom: 1.5rem;
+  }
+</style>
