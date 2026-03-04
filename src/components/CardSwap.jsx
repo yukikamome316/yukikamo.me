@@ -1,9 +1,9 @@
 import React, { Children, cloneElement, forwardRef, isValidElement, useEffect, useMemo, useRef } from 'react';
 import gsap from 'gsap';
-import './CardSwap.css';
+import * as styles from './CardSwap.css';
 
 export const Card = forwardRef(({ customClass, ...rest }, ref) => (
-  <div ref={ref} {...rest} className={`card ${customClass ?? ''} ${rest.className ?? ''}`.trim()} />
+  <div ref={ref} {...rest} className={`${styles.card} ${customClass ?? ''} ${rest.className ?? ''}`.trim()} />
 ));
 Card.displayName = 'Card';
 
@@ -172,7 +172,7 @@ const CardSwap = ({
   );
 
   return (
-    <div ref={container} className="card-swap-container" style={{ width, height }}>
+    <div ref={container} className={styles.container} style={{ width, height }}>
       {rendered}
     </div>
   );

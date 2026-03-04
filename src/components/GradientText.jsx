@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useAnimationFrame, useTransform } from 'motion/react';
-import './GradientText.css';
+import * as styles from './GradientText.css';
 
 export default function GradientText({
   children,
@@ -86,12 +86,12 @@ export default function GradientText({
 
   return (
     <motion.div
-      className={`animated-gradient-text ${showBorder ? 'with-border' : ''} ${className}`}
+      className={`${styles.container} ${showBorder ? styles.withBorder : ''} ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {showBorder && <motion.div className="gradient-overlay" style={{ ...gradientStyle, backgroundPosition }} />}
-      <motion.div className="text-content" style={{ ...gradientStyle, backgroundPosition }}>
+      {showBorder && <motion.div className={styles.gradientOverlay} style={{ ...gradientStyle, backgroundPosition }} />}
+      <motion.div className={styles.textContent} style={{ ...gradientStyle, backgroundPosition }}>
         {children}
       </motion.div>
     </motion.div>
