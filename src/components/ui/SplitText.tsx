@@ -1,14 +1,19 @@
-import { motion, type HTMLMotionProps } from 'framer-motion';
-import React from 'react';
-import { cn } from '../../utils/cn';
+import { motion, type HTMLMotionProps } from "framer-motion";
+import React from "react";
+import { cn } from "../../utils/cn";
 
 interface SplitTextProps extends HTMLMotionProps<"div"> {
   text: string;
   delay?: number;
 }
 
-export const SplitText: React.FC<SplitTextProps> = ({ text, delay = 0, className, ...props }) => {
-  const characters = text.split('');
+export const SplitText: React.FC<SplitTextProps> = ({
+  text,
+  delay = 0,
+  className,
+  ...props
+}) => {
+  const characters = text.split("");
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -17,8 +22,8 @@ export const SplitText: React.FC<SplitTextProps> = ({ text, delay = 0, className
       transition: {
         staggerChildren: 0.05,
         delayChildren: delay,
-      }
-    }
+      },
+    },
   };
 
   const childVariants = {
@@ -27,11 +32,11 @@ export const SplitText: React.FC<SplitTextProps> = ({ text, delay = 0, className
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring' as const,
+        type: "spring" as const,
         damping: 12,
-        stiffness: 100
-      }
-    }
+        stiffness: 100,
+      },
+    },
   };
 
   return (
@@ -46,7 +51,10 @@ export const SplitText: React.FC<SplitTextProps> = ({ text, delay = 0, className
         <motion.span
           key={index}
           variants={childVariants}
-          style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}
+          style={{
+            display: "inline-block",
+            whiteSpace: char === " " ? "pre" : "normal",
+          }}
         >
           {char}
         </motion.span>

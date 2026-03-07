@@ -2,7 +2,7 @@ import React from "react";
 import CardSwap, { Card } from "../CardSwap.jsx";
 import * as styles from "./HeroCardSwap.css";
 
-const TypedCard = Card as any;
+const TypedCard = Card as React.FC<React.ComponentProps<"div">>;
 
 export default function HeroCardSwap() {
   return (
