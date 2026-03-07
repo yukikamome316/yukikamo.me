@@ -31,9 +31,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      framer-motion:
-        specifier: ^12.34.3
-        version: 12.34.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       gsap:
         specifier: ^3.14.2
         version: 3.14.2
@@ -46,9 +43,6 @@ importers:
       react-dom:
         specifier: ^19.2.4
         version: 19.2.4(react@19.2.4)
-      tailwind-merge:
-        specifier: ^3.5.0
-        version: 3.5.0
     devDependencies:
       "@astrojs/check":
         specifier: ^0.9.6
@@ -5496,12 +5490,6 @@ packages:
       }
     engines: { node: ^14.18.0 || >=16.0.0 }
 
-  tailwind-merge@3.5.0:
-    resolution:
-      {
-        integrity: sha512-I8K9wewnVDkL1NTGoqWmVEIlUcB9gFriAEkXkfCjX5ib8ezGxtR3xD7iZIxrfArjEsH7F1CHD4RFUtxefdqV/A==,
-      }
-
   tiny-inflate@1.0.3:
     resolution:
       {
@@ -10007,8 +9995,6 @@ snapshots:
   synckit@0.11.12:
     dependencies:
       "@pkgr/core": 0.2.9
-
-  tailwind-merge@3.5.0: {}
 
   tiny-inflate@1.0.3: {}
 
