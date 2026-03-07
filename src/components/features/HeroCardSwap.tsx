@@ -7,11 +7,11 @@ export default function HeroCardSwap() {
       <CardSwap
         width={480}
         height={340}
-        cardDistance={70}
-        verticalDistance={90}
+        cardDistance={40}
+        verticalDistance={40}
         delay={4000}
         pauseOnHover={true}
-        skewAmount={8}
+        skewAmount={0}
         onCardClick={() => {}}
       >
         <Card className={styles.cardContent}>

@@ -20,7 +20,7 @@ export const cardContent = style({
   height: "100%",
   width: "100%",
   boxSizing: "border-box",
-  boxShadow: "0 12px 32px rgba(38, 202, 253, 0.2)",
+  boxShadow: "0 12px 32px rgba(0, 0, 0, 0.3)",
   overflow: "hidden",
 });
 
@@ -46,9 +46,9 @@ export const dot = style({
   borderRadius: "50%",
 });
 
-export const dotRed = style([dot, { backgroundColor: "#FF5F56" }]);
-export const dotYellow = style([dot, { backgroundColor: "#FFBD2E" }]);
-export const dotGreen = style([dot, { backgroundColor: "#27C93F" }]);
+export const dotRed = style([dot, { backgroundColor: vars.color.border }]);
+export const dotYellow = style([dot, { backgroundColor: vars.color.border }]);
+export const dotGreen = style([dot, { backgroundColor: vars.color.border }]);
 
 export const windowTitle = style({
   flex: 1,
