@@ -6,6 +6,7 @@ tags: ["React", "TypeScript", "Vite"]
 link: "https://example.com"
 role: "Frontend Lead"
 ---
+
 # Project Alpha
 
 A comprehensive internal dashboard built with React and Vite. Focused on performance optimization and complex data visualizations.

@@ -1,12 +1,12 @@
-import React from 'react';
-import { 
-  timelineContainer, 
-  timelineItem, 
-  timelineDot, 
-  timelineDate, 
-  timelineTitle, 
-  timelineDescription 
-} from '../../styles/components/timeline.css.ts';
+import React from "react";
+import {
+  timelineContainer,
+  timelineItem,
+  timelineDot,
+  timelineDate,
+  timelineTitle,
+  timelineDescription,
+} from "../../styles/components/timeline.css.ts";
 
 export interface TimelineEntry {
   date: string;
