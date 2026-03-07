@@ -2,7 +2,7 @@
 import Layout from '../components/layouts/Layout.astro';
 import { sectionTitle } from '../styles/pages/index.css.ts';
 import { Timeline } from '../components/features/Timeline.tsx';
-import { vars } from '../styles/theme.css.ts';
+import { pageSection, pageTitle, pageDescription, experienceSection, skillsContainer, skillTag } from '../styles/pages/about.css.ts';
 
 const experience = [
   {
@@ -17,32 +17,26 @@ const experience = [
   }
 ];
 
-const skills = ['React', 'TypeScript', 'Astro', 'Next.js', 'Vanilla Extract', 'Tailwind CSS', 'Figma'];
+const skills = ['React', 'TypeScript', 'Astro', 'Next.js', 'Vanilla Extract', 'Figma'];
 ---
 
 <Layout title="About | Yuki Kamo">
-  <section style={{ marginTop: '4rem' }}>
-    <h1 style={{ fontSize: '3rem', marginBottom: '2rem' }}>About Me</h1>
-    <p style={{ fontSize: '1.2rem', lineHeight: 1.8, marginBottom: '4rem', color: vars.color.muted }}>
+  <section class={pageSection}>
+    <h1 class={pageTitle}>About Me</h1>
+    <p class={pageDescription}>
       Hello! I'm Yuki, a passionate web developer and designer. I love building fast, accessible, and beautiful web products.
       With a strong background in both design and development, I bring the best of both worlds to create seamless digital experiences.
     </p>
 
     <h2 class={sectionTitle}>Experience</h2>
-    <div style={{ marginBottom: '4rem' }}>
+    <div class={experienceSection}>
       <Timeline entries={experience} />
     </div>
 
     <h2 class={sectionTitle}>Skills</h2>
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '4rem' }}>
+    <div class={skillsContainer}>
       {skills.map(skill => (
-        <span style={{ 
-          padding: '0.5rem 1rem', 
-          backgroundColor: vars.color.surfaceHover, 
-          borderRadius: '9999px',
-          border: `1px solid ${vars.color.border}`,
-          fontSize: '0.875rem'
-        }}>
+        <span class={skillTag}>
           {skill}
         </span>
       ))}

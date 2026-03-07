@@ -1,8 +1,5 @@
-import React from "react";
-import CardSwap, { Card } from "../CardSwap.jsx";
+import CardSwap, { Card } from "../CardSwap";
 import * as styles from "./HeroCardSwap.css";
-
-const TypedCard = Card as React.FC<React.ComponentProps<"div">>;
 
 export default function HeroCardSwap() {
   return (
@@ -17,28 +14,29 @@ export default function HeroCardSwap() {
         skewAmount={8}
         onCardClick={() => {}}
       >
-        <TypedCard className={styles.cardContent}>
+        <Card className={styles.cardContent}>
           <img
             src="/hobby_camera.png"
             alt="Film Camera"
             className={styles.image}
           />
-        </TypedCard>
-        <TypedCard className={styles.cardContent}>
+        </Card>
+        <Card className={styles.cardContent}>
           <img
             src="/hobby_travel.png"
             alt="European Street"
             className={styles.image}
           />
-        </TypedCard>
-        <TypedCard className={styles.cardContent}>
+        </Card>
+        <Card className={styles.cardContent}>
           <img
             src="/hobby_coffee.png"
             alt="Flat White Coffee"
             className={styles.image}
           />
-        </TypedCard>
+        </Card>
       </CardSwap>
     </div>
   );
 }
+
