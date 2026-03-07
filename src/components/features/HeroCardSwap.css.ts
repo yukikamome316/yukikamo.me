@@ -4,11 +4,11 @@ import { vars } from "../../styles/theme.css";
 export const container = style({
   position: "relative",
   width: "100%",
-  height: "600px",
+  height: "500px",
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
-  marginRight: "-4rem",
+  marginRight: "2rem",
 });
 
 export const cardContent = style({
@@ -20,16 +20,16 @@ export const cardContent = style({
   height: "100%",
   width: "100%",
   boxSizing: "border-box",
-  boxShadow: "0 12px 32px rgba(0, 0, 0, 0.3)",
+  boxShadow: "0 24px 64px rgba(0, 0, 0, 0.16), 0 8px 24px rgba(0, 0, 0, 0.08)",
   overflow: "hidden",
 });
 
 export const windowHeader = style({
   display: "flex",
   alignItems: "center",
-  padding: "10px 16px",
+  padding: "12px 16px",
   backgroundColor: vars.color.surfaceHover,
-  borderBottom: `1px solid ${vars.color.border}`,
+  borderBottom: `1px solid rgba(0, 0, 0, 0.05)`,
   position: "relative",
 });
 
@@ -41,22 +41,29 @@ export const windowControls = style({
 });
 
 export const dot = style({
-  width: "12px",
-  height: "12px",
+  width: "10px",
+  height: "10px",
   borderRadius: "50%",
+  boxShadow: "inset 0 1px 2px rgba(0,0,0,0.1)",
 });
 
-export const dotRed = style([dot, { backgroundColor: vars.color.border }]);
-export const dotYellow = style([dot, { backgroundColor: vars.color.border }]);
-export const dotGreen = style([dot, { backgroundColor: vars.color.border }]);
+export const dotRed = style([dot, { backgroundColor: "rgba(0, 0, 0, 0.15)" }]);
+export const dotYellow = style([
+  dot,
+  { backgroundColor: "rgba(0, 0, 0, 0.15)" },
+]);
+export const dotGreen = style([
+  dot,
+  { backgroundColor: "rgba(0, 0, 0, 0.15)" },
+]);
 
 export const windowTitle = style({
   flex: 1,
   textAlign: "center",
-  fontSize: "0.875rem",
-  fontWeight: 600,
+  fontSize: "0.8125rem",
+  fontWeight: 500,
   color: vars.color.text,
-  letterSpacing: "-0.01em",
+  letterSpacing: "0.02em",
 });
 
 export const windowBody = style({
