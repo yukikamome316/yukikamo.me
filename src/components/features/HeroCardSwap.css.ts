@@ -4,11 +4,11 @@ import { vars } from "../../styles/theme.css";
 export const container = style({
   position: "relative",
   width: "100%",
-  height: "500px",
+  height: "600px",
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
-  marginRight: "2rem",
+  marginRight: "-4rem",
 });
 
 export const cardContent = style({

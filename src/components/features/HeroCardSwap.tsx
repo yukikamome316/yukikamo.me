@@ -5,13 +5,13 @@ export default function HeroCardSwap() {
   return (
     <div className={styles.container}>
       <CardSwap
-        width={480}
-        height={340}
-        cardDistance={40}
-        verticalDistance={40}
+        width={640}
+        height={420}
+        cardDistance={60}
+        verticalDistance={80}
         delay={4000}
         pauseOnHover={true}
-        skewAmount={0}
+        skewAmount={12}
         onCardClick={() => {}}
       >
         <Card className={styles.cardContent}>
