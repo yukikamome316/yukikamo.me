@@ -219,7 +219,11 @@ const CardSwap: React.FC<CardSwapProps> = ({
       ? cloneElement(child as React.ReactElement<CardProps>, {
           key: i,
           ref: refs[i],
-          style: { width, height, ...((child as React.ReactElement<CardProps>).props.style ?? {}) },
+          style: {
+            width,
+            height,
+            ...((child as React.ReactElement<CardProps>).props.style ?? {}),
+          },
           onClick: (e: React.MouseEvent) => {
             (child as React.ReactElement<CardProps>).props.onClick?.(
               e as React.MouseEvent<HTMLDivElement>
