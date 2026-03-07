@@ -4,30 +4,69 @@ import { vars } from "../../styles/theme.css";
 export const container = style({
   position: "relative",
   width: "100%",
-  height: "400px",
+  height: "500px",
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
+  marginRight: "2rem",
 });
 
 export const cardContent = style({
   display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
+  flexDirection: "column",
   background: vars.color.surface,
   border: `1px solid ${vars.color.border}`,
   borderRadius: "16px",
   height: "100%",
   width: "100%",
   boxSizing: "border-box",
-  boxShadow: "0 8px 24px rgba(38, 202, 253, 0.15)",
+  boxShadow: "0 12px 32px rgba(38, 202, 253, 0.2)",
   overflow: "hidden",
-  padding: "8px",
+});
+
+export const windowHeader = style({
+  display: "flex",
+  alignItems: "center",
+  padding: "10px 16px",
+  backgroundColor: vars.color.surfaceHover,
+  borderBottom: `1px solid ${vars.color.border}`,
+  position: "relative",
+});
+
+export const windowControls = style({
+  display: "flex",
+  gap: "6px",
+  position: "absolute",
+  left: "16px",
+});
+
+export const dot = style({
+  width: "12px",
+  height: "12px",
+  borderRadius: "50%",
+});
+
+export const dotRed = style([dot, { backgroundColor: "#FF5F56" }]);
+export const dotYellow = style([dot, { backgroundColor: "#FFBD2E" }]);
+export const dotGreen = style([dot, { backgroundColor: "#27C93F" }]);
+
+export const windowTitle = style({
+  flex: 1,
+  textAlign: "center",
+  fontSize: "0.875rem",
+  fontWeight: 600,
+  color: vars.color.text,
+  letterSpacing: "-0.01em",
+});
+
+export const windowBody = style({
+  flex: 1,
+  overflow: "hidden",
+  position: "relative",
+  backgroundColor: vars.color.background,
 });
 
 export const image = style({
-  width: "100%",
-  height: "100%",
   objectFit: "cover",
-  borderRadius: "8px",
+  display: "block",
 });
