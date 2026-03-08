@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import CardSwap, { Card } from "../CardSwap";
 import * as styles from "./HeroCardSwap.css";
 
@@ -11,6 +12,15 @@ interface HeroCardSwapProps {
 }
 
 export default function HeroCardSwap({ cards }: HeroCardSwapProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className={styles.container}>
       <CardSwap
@@ -19,7 +29,7 @@ export default function HeroCardSwap({ cards }: HeroCardSwapProps) {
         cardDistance={80}
         verticalDistance={56}
         delay={4000}
-        skewAmount={4}
+        skewAmount={isMobile ? 0 : 4}
       >
         {cards.map((card) => (
           <Card key={card.src} className={styles.cardContent}>
