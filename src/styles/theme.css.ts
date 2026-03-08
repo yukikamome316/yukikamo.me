@@ -12,8 +12,8 @@ export const vars = createGlobalTheme(":root", {
     border: "#e4e7ec", // 薄い境界線
   },
   font: {
-    body: "Inter, system-ui, sans-serif",
-    heading: "Outfit, system-ui, sans-serif",
+    body: '"Noto Sans JP", system-ui, sans-serif',
+    heading: '"Noto Sans JP", system-ui, sans-serif',
   },
   space: {
     xs: "4px",
