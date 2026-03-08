@@ -5,14 +5,6 @@ export const container = style({
   position: "relative",
   perspective: "900px",
   overflow: "visible",
-  "@media": {
-    "(max-width: 768px)": {
-      transform: "scale(0.75) translate(25%, 25%)",
-    },
-    "(max-width: 480px)": {
-      transform: "scale(0.55) translate(25%, 25%)",
-    },
-  },
 });
 
 export const card = style({
