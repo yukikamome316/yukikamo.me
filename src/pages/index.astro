@@ -5,6 +5,20 @@ import { heroContainer, heroTextContainer, profileImage, heroTitleWrapper, heroT
 import { grid } from '../styles/components/card.css.ts';
 import Card from '../components/ui/Card.astro';
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+import imgSusukino from '../assets/hero/susukino.webp';
+import imgMarunouchi from '../assets/hero/marunouchi.webp';
+import imgMatsuda from '../assets/hero/matsuda.webp';
+import imgAlps from '../assets/hero/the-northern-japan-alps.webp';
+import profileImg from '../assets/profile.webp';
+
+const heroCards = [
+  { title: "Susukino", src: imgSusukino.src },
+  { title: "Marunouchi", src: imgMarunouchi.src },
+  { title: "Matsuda", src: imgMatsuda.src },
+  { title: "The Northern Japan Alps", src: imgAlps.src },
+];
 
 const allWork = await getCollection('work');
 const recentWork = allWork.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
@@ -18,7 +32,7 @@ const recentBlog = allBlog.sort((a, b) => b.data.date.valueOf() - a.data.date.va
   <section class={heroContainer}>
     <div class={heroTextContainer}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1rem' }}>
-        <img src="/profile.webp" alt="Yukikamome316" class={profileImage} width="140" height="140" style={{ borderRadius: '50%', objectFit: 'cover', margin: 0 }} />
+        <Image src={profileImg} alt="Yukikamome316" class={profileImage} width={140} height={140} style={{ borderRadius: '50%', objectFit: 'cover', margin: 0 }} />
         <div class={heroTitleWrapper} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <h1 class={heroTitle}>Yuki</h1>
           <p class={heroSubtitle}>@yukikamome316</p>
@@ -29,7 +43,7 @@ const recentBlog = allBlog.sort((a, b) => b.data.date.valueOf() - a.data.date.va
       </p>
     </div>
     <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', position: 'relative', minWidth: '300px' }}>
-      <HeroCardSwap client:load />
+      <HeroCardSwap client:load cards={heroCards} />
     </div>
   </section>
 
