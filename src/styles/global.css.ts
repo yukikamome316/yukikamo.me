@@ -1,5 +1,5 @@
 import { globalStyle } from "@vanilla-extract/css";
-import { vars } from "./theme.css.ts";
+import { vars } from "./theme.css";
 
 globalStyle("body", {
   margin: 0,
