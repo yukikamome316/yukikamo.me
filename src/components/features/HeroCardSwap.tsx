@@ -1,73 +1,46 @@
 import CardSwap, { Card } from "../CardSwap";
 import * as styles from "./HeroCardSwap.css";
 
-export default function HeroCardSwap() {
+interface HeroCard {
+  title: string;
+  src: string;
+}
+
+interface HeroCardSwapProps {
+  cards: HeroCard[];
+}
+
+export default function HeroCardSwap({ cards }: HeroCardSwapProps) {
   return (
     <div className={styles.container}>
       <CardSwap
-        width={460}
-        height={320}
+        width={600}
+        height={381}
         cardDistance={80}
-        verticalDistance={40}
+        verticalDistance={56}
         delay={4000}
-        pauseOnHover={true}
-        skewAmount={3}
-        onCardClick={() => {}}
+        skewAmount={4}
       >
-        <Card className={styles.cardContent}>
-          <div className={styles.windowHeader}>
-            <div className={styles.windowControls}>
-              <span className={styles.dotRed} />
-              <span className={styles.dotYellow} />
-              <span className={styles.dotGreen} />
+        {cards.map((card) => (
+          <Card key={card.src} className={styles.cardContent}>
+            <div className={styles.windowHeader}>
+              <div className={styles.windowControls}>
+                <span className={styles.dotRed} />
+                <span className={styles.dotYellow} />
+                <span className={styles.dotGreen} />
+              </div>
+              <div className={styles.windowTitle}>{card.title}</div>
             </div>
-            <div className={styles.windowTitle}>Film Camera</div>
-          </div>
-          <div className={styles.windowBody}>
-            <img
-              src="/hobby_camera.png"
-              alt="Film Camera"
-              className={styles.image}
-              style={{ width: "100%", height: "100%" }}
-            />
-          </div>
-        </Card>
-        <Card className={styles.cardContent}>
-          <div className={styles.windowHeader}>
-            <div className={styles.windowControls}>
-              <span className={styles.dotRed} />
-              <span className={styles.dotYellow} />
-              <span className={styles.dotGreen} />
+            <div className={styles.windowBody}>
+              <img
+                src={card.src}
+                alt={card.title}
+                className={styles.image}
+                style={{ width: "100%", height: "100%" }}
+              />
             </div>
-            <div className={styles.windowTitle}>European Street</div>
-          </div>
-          <div className={styles.windowBody}>
-            <img
-              src="/hobby_travel.png"
-              alt="European Street"
-              className={styles.image}
-              style={{ width: "100%", height: "100%" }}
-            />
-          </div>
-        </Card>
-        <Card className={styles.cardContent}>
-          <div className={styles.windowHeader}>
-            <div className={styles.windowControls}>
-              <span className={styles.dotRed} />
-              <span className={styles.dotYellow} />
-              <span className={styles.dotGreen} />
-            </div>
-            <div className={styles.windowTitle}>Flat White Coffee</div>
-          </div>
-          <div className={styles.windowBody}>
-            <img
-              src="/hobby_coffee.png"
-              alt="Flat White Coffee"
-              className={styles.image}
-              style={{ width: "100%", height: "100%" }}
-            />
-          </div>
-        </Card>
+          </Card>
+        ))}
       </CardSwap>
     </div>
   );
