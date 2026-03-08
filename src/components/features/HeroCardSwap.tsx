@@ -31,7 +31,7 @@ export default function HeroCardSwap({ cards }: HeroCardSwapProps) {
         delay={4000}
         skewAmount={isMobile ? 0 : 4}
       >
-        {cards.map((card) => (
+        {cards.map((card, index) => (
           <Card key={card.src} className={styles.cardContent}>
             <div className={styles.windowHeader}>
               <div className={styles.windowControls}>
@@ -46,6 +46,8 @@ export default function HeroCardSwap({ cards }: HeroCardSwapProps) {
                 src={card.src}
                 alt={card.title}
                 className={styles.image}
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchPriority={index === 0 ? "high" : "auto"}
                 style={{ width: "100%", height: "100%" }}
               />
             </div>
