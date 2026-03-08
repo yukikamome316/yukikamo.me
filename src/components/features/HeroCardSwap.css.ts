@@ -18,7 +18,20 @@ export const container = style({
     "screen and (max-width: 1024px)": {
       justifyContent: "center",
       transform: "scale(0.9)",
-      transformOrigin: "center center",
+      transformOrigin: "top center",
+      height: "450px",
+    },
+    "screen and (max-width: 768px)": {
+      justifyContent: "center",
+      transform: "scale(0.7)",
+      transformOrigin: "top center",
+      height: "350px",
+    },
+    "screen and (max-width: 480px)": {
+      justifyContent: "center",
+      transform: "scale(0.55)",
+      transformOrigin: "top center",
+      height: "275px",
     },
   },
 });
