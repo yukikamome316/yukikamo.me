@@ -39,15 +39,12 @@ const makeSlot = (
   distX: number,
   distY: number,
   total: number
-): Slot => {
-  const mid = (total - 1) / 2;
-  return {
-    x: (i - mid) * distX,
-    y: -(i - mid) * distY,
-    z: -i * distX * 1.5,
-    zIndex: total - i,
-  };
-};
+): Slot => ({
+  x: i * distX,
+  y: -i * distY,
+  z: -i * distX * 1.5,
+  zIndex: total - i,
+});
 
 const placeNow = (el: HTMLElement, slot: Slot, skew: number) =>
   gsap.set(el, {
