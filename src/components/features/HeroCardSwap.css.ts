@@ -9,6 +9,18 @@ export const container = style({
   alignItems: "center",
   justifyContent: "flex-end",
   marginRight: "2rem",
+  "@media": {
+    "screen and (max-width: 1200px)": {
+      marginRight: 0,
+      transform: "scale(0.85)",
+      transformOrigin: "right center",
+    },
+    "screen and (max-width: 1024px)": {
+      justifyContent: "center",
+      transform: "scale(0.9)",
+      transformOrigin: "center center",
+    },
+  },
 });
 
 export const cardContent = style({

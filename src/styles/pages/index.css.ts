@@ -9,7 +9,7 @@ export const heroContainer = style({
   minHeight: "60vh",
   padding: "6rem 0 8rem",
   "@media": {
-    "screen and (max-width: 900px)": {
+    "screen and (max-width: 1024px)": {
       flexDirection: "column",
       padding: "4rem 0 6rem",
       gap: "4rem",
@@ -21,7 +21,7 @@ export const heroTextContainer = style({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
-  maxWidth: "550px",
+  maxWidth: "500px",
   gap: "1rem", // アイコンとテキストの間隔
 });
 
