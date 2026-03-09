@@ -1,7 +1,7 @@
 ---
 import Layout from '../components/layouts/Layout.astro';
 import HeroCardSwap from '../components/features/HeroCardSwap.tsx';
-import { heroContainer, heroTextContainer, profileImage, heroTitleWrapper, heroTitle, heroSubtitle, heroDescription, sectionTitle } from '../styles/pages/index.css.ts';
+import { heroContainer, heroTextContainer, heroVisualContainer, profileImage, heroTitleWrapper, heroTitle, heroSubtitle, heroDescription, sectionTitle } from '../styles/pages/index.css.ts';
 import { grid } from '../styles/components/card.css.ts';
 import Card from '../components/ui/Card.astro';
 import { getCollection } from 'astro:content';
@@ -48,7 +48,7 @@ const recentBlog = allBlog.sort((a, b) => b.data.date.valueOf() - a.data.date.va
         ゆきです👋 IT と旅行が好きなセキュリティエンジニアです。Web 開発やアルゴリズム最適化など幅広く学んでいますが、アウトドア派なので車や飛行機などで遠出することも多いです。気になる場所があればどこへでも行きます。
       </p>
     </div>
-    <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', position: 'relative', minWidth: '300px' }}>
+    <div class={heroVisualContainer}>
       <HeroCardSwap client:idle cards={heroCards} />
     </div>
   </section>

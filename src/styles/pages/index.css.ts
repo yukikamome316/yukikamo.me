@@ -25,6 +25,21 @@ export const heroTextContainer = style({
   gap: "1rem", // アイコンとテキストの間隔
 });
 
+export const heroVisualContainer = style({
+  flex: 1,
+  display: "flex",
+  justifyContent: "flex-end",
+  position: "relative",
+  minWidth: "300px",
+  width: "100%",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  },
+});
+
 export const profileImage = style({
   width: "140px",
   height: "140px",
