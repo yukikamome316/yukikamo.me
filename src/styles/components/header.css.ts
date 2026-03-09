@@ -32,6 +32,6 @@ export const navLink = style({
   textDecoration: "none",
   transition: "color 0.2s",
   ":hover": {
-    color: vars.color.primary,
+    color: vars.color.primaryDark,
   },
 });

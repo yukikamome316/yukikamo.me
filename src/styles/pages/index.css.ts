@@ -50,7 +50,7 @@ export const heroTitle = style({
 
 export const heroSubtitle = style({
   fontSize: "1.5rem",
-  color: vars.color.primary,
+  color: vars.color.primaryDark,
   fontWeight: 600,
   letterSpacing: "0.02em",
   margin: "0.25rem 0 0 0",
