@@ -22,7 +22,12 @@ export const heroTextContainer = style({
   flexDirection: "column",
   alignItems: "flex-start",
   maxWidth: "500px",
-  gap: "1rem", // アイコンとテキストの間隔
+  gap: "1rem",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      width: "100%",
+    },
+  },
 });
 
 export const heroVisualContainer = style({
