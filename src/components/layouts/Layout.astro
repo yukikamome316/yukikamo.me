@@ -1,5 +1,6 @@
 ---
 import '../../styles/global.css.ts';
+import '@fontsource-variable/noto-sans-jp';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 
@@ -20,10 +21,6 @@ const { title, description = 'Personal website of Yuki Kamo' } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet" />
     <slot name="head" />
     <title>{title}</title>
   </head>
