@@ -78,6 +78,12 @@ export const heroDescription = style({
   lineHeight: 1.7,
   maxWidth: "600px",
   fontWeight: 400,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "1rem",   // 文字を少しだけ小さくし、1行あたりの文字数を増やして窮屈さを減らす
+      lineHeight: 1.8,    // 行間を広げて読みやすくする
+    },
+  },
 });
 
 export const sectionTitle = style({

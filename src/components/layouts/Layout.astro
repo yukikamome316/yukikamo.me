@@ -4,6 +4,8 @@ import '@fontsource-variable/noto-sans-jp';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 
+import { mainContent } from '../../styles/components/layout.css.ts';
+
 interface Props {
   title: string;
   description?: string;
@@ -27,21 +29,10 @@ const { title, description = 'Personal website of Yuki' } = Astro.props;
   <body>
     <div style={{ overflowX: 'hidden', width: '100%', position: 'relative' }}>
       <Header />
-      <main class="main-content" style={{ minHeight: 'calc(100vh - 160px)', maxWidth: '1200px', margin: '0 auto' }}>
+      <main class={mainContent}>
         <slot />
       </main>
       <Footer />
     </div>
   </body>
 </html>
-
-<style>
-  .main-content {
-    padding: 0 16px;
-  }
-  @media screen and (max-width: 768px) {
-    .main-content {
-      padding: 0 32px;
-    }
-  }
-</style>
