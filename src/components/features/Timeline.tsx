@@ -6,7 +6,7 @@ import {
   timelineDate,
   timelineTitle,
   timelineDescription,
-} from "../../styles/components/timeline.css.ts";
+} from "../../styles/components/timeline.css";
 
 export interface TimelineEntry {
   date: string;

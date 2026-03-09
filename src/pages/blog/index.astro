@@ -2,8 +2,8 @@
 import Layout from '../../components/layouts/Layout.astro';
 import Card from '../../components/ui/Card.astro';
 import { getCollection } from 'astro:content';
-import { grid } from '../../styles/components/card.css.ts';
-import { vars } from '../../styles/theme.css.ts';
+import { grid } from '../../styles/components/card.css';
+import { vars } from '../../styles/theme.css';
 
 const blogEntries = await getCollection('blog');
 const sortedEntries = blogEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
