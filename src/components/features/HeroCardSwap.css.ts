@@ -18,12 +18,12 @@ export const container = style({
       height: "450px",
     },
     "screen and (max-width: 768px)": {
-      transform: "scale(0.75)",
+      transform: "scale(0.7)",
       transformOrigin: "center center",
       height: "350px",
     },
     "screen and (max-width: 480px)": {
-      transform: "scale(0.45)",
+      transform: "scale(0.55)",
       transformOrigin: "center center",
       height: "275px",
     },
@@ -41,12 +41,7 @@ export const cardSwapWrapper = style({
     "screen and (max-width: 1024px)": {
       left: "50%",
       right: "auto",
-      /* 
-       * GSAPの Perspective(900px) による奥カード(Z=-360)の視覚的縮尺(約0.714)を考慮し、
-       * CardSwap全体の Visual Span (X: [-300, 454], Y: [-304, 190.5]) の
-       * 厳密な中心点 (X: 77px, Y: -57px) を逆算してオフセットすることで完璧な左右・上下対称パディングを実現します。
-       */
-      transform: "translate(calc(-50% - 77px), calc(-50% + 57px))",
+      transform: "translate(-50%, -50%)",
     },
   },
 });
