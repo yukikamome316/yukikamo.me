@@ -30,7 +30,7 @@ export default function HeroCardSwap({ cards }: HeroCardSwapProps) {
           cardDistance={80}
           verticalDistance={56}
           delay={4000}
-          skewAmount={isMobile ? 0 : 4}
+          skewAmount={isMobile ? 1 : 4}
         >
           {cards.map((card, index) => (
             <Card key={card.src} className={styles.cardContent}>
