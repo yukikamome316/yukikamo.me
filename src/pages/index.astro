@@ -48,7 +48,7 @@ const recentBlog = allBlog.sort((a, b) => b.data.date.valueOf() - a.data.date.va
         ゆきです👋 IT と旅行が好きなセキュリティエンジニアです。Web 開発やアルゴリズム最適化など幅広く学んでいますが、アウトドア派なので車や飛行機などで遠出することも多いです。気になる場所があればどこへでも行きます。
       </p>
     </div>
-    <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', position: 'relative', minWidth: '300px', width: '100%', maxWidth: '100vw', overflowX: 'hidden' }}>
+    <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', position: 'relative', minWidth: '300px' }}>
       <HeroCardSwap client:idle cards={heroCards} />
     </div>
   </section>

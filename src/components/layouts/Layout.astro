@@ -25,10 +25,12 @@ const { title, description = 'Personal website of Yuki' } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <Header />
-    <main style={{ minHeight: 'calc(100vh - 160px)', maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
-      <slot />
-    </main>
-    <Footer />
+    <div style={{ overflowX: 'hidden', width: '100%', position: 'relative' }}>
+      <Header />
+      <main style={{ minHeight: 'calc(100vh - 160px)', maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>
