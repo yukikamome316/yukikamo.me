@@ -1,7 +1,7 @@
 import { globalStyle } from "@vanilla-extract/css";
 import { vars } from "./theme.css.ts";
 
-globalStyle("body", {
+globalStyle("html, body", {
   margin: 0,
   padding: 0,
   backgroundColor: vars.color.background,
@@ -11,6 +11,7 @@ globalStyle("body", {
   WebkitFontSmoothing: "antialiased",
   MozOsxFontSmoothing: "grayscale",
   overflowX: "hidden",
+  maxWidth: "100vw",
 });
 
 globalStyle("h1, h2, h3, h4, h5, h6", {
