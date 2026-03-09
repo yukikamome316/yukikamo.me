@@ -20,7 +20,7 @@ globalStyle("h1, h2, h3, h4, h5, h6", {
 });
 
 globalStyle("a", {
-  color: vars.color.primary,
+  color: vars.color.primaryDark,
   textDecoration: "none",
   transition: "color 0.2s ease",
 });
