@@ -5,9 +5,6 @@ export const container = style({
   position: "relative",
   width: "100%",
   height: "500px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
   marginRight: "2rem",
   "@media": {
     "screen and (max-width: 1200px)": {
@@ -16,22 +13,35 @@ export const container = style({
       transformOrigin: "right center",
     },
     "screen and (max-width: 1024px)": {
-      justifyContent: "center",
       transform: "scale(0.9)",
-      transformOrigin: "top center",
+      transformOrigin: "center center",
       height: "450px",
     },
     "screen and (max-width: 768px)": {
-      justifyContent: "center",
       transform: "scale(0.7)",
-      transformOrigin: "top center",
+      transformOrigin: "center center",
       height: "350px",
     },
     "screen and (max-width: 480px)": {
-      justifyContent: "center",
       transform: "scale(0.55)",
-      transformOrigin: "top center",
+      transformOrigin: "center center",
       height: "275px",
+    },
+  },
+});
+
+export const cardSwapWrapper = style({
+  position: "absolute",
+  top: "50%",
+  right: 0,
+  transform: "translateY(-50%)",
+  width: "600px",
+  height: "381px",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      left: "50%",
+      right: "auto",
+      transform: "translate(-50%, -50%)",
     },
   },
 });
