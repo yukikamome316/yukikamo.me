@@ -41,7 +41,7 @@ export const cardSwapWrapper = style({
     "screen and (max-width: 1024px)": {
       left: "50%",
       right: "auto",
-      transform: "translate(-50%, -50%)",
+      transform: "translate(calc(-50% - 30px), -50%)",
     },
   },
 });
