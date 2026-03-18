@@ -80,16 +80,41 @@ export const dot = style({
   height: "10px",
   borderRadius: "50%",
   boxShadow: "inset 0 1px 2px rgba(0,0,0,0.1)",
+  backgroundColor: "rgba(0, 0, 0, 0.15)",
+  transition: "background-color 0.2s ease",
 });
 
-export const dotRed = style([dot, { backgroundColor: "rgba(0, 0, 0, 0.15)" }]);
+export const dotRed = style([
+  dot,
+  {
+    selectors: {
+      "&:hover": {
+        backgroundColor: "#ff5f56",
+      },
+    },
+  },
+]);
+
 export const dotYellow = style([
   dot,
-  { backgroundColor: "rgba(0, 0, 0, 0.15)" },
+  {
+    selectors: {
+      "&:hover": {
+        backgroundColor: "#ffbd2e",
+      },
+    },
+  },
 ]);
+
 export const dotGreen = style([
   dot,
-  { backgroundColor: "rgba(0, 0, 0, 0.15)" },
+  {
+    selectors: {
+      "&:hover": {
+        backgroundColor: "#27c93f",
+      },
+    },
+  },
 ]);
 
 export const windowTitle = style({
