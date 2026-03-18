@@ -69,6 +69,7 @@ interface CardSwapProps {
   onCardClick?: (index: number) => void;
   skewAmount?: number;
   easing?: "elastic" | "smooth";
+  direction?: "vertical" | "horizontal";
   children: React.ReactNode;
 }
 
@@ -82,6 +83,7 @@ const CardSwap: React.FC<CardSwapProps> = ({
   onCardClick,
   skewAmount = 6,
   easing = "elastic",
+  direction = "vertical",
   children,
 }) => {
   const config =
@@ -95,10 +97,10 @@ const CardSwap: React.FC<CardSwapProps> = ({
           returnDelay: 0.05,
         }
       : {
-          ease: "power1.inOut",
-          durDrop: 0.8,
-          durMove: 0.8,
-          durReturn: 0.8,
+          ease: "power3.inOut",
+          durDrop: 0.5,
+          durMove: 0.5,
+          durReturn: 0.5,
           promoteOverlap: 0.45,
           returnDelay: 0.2,
         };
@@ -134,8 +136,23 @@ const CardSwap: React.FC<CardSwapProps> = ({
       const tl = gsap.timeline();
       tlRef.current = tl;
 
+      const dropVars =
+        direction === "horizontal"
+          ? {
+              x: `+=${width + refs.length * cardDistance + 50}`,
+              y: `-=80`,
+              rotation: 8,
+              scale: 1.05,
+            }
+          : {
+              y: `+=${height + refs.length * verticalDistance + 50}`,
+              x: `+=80`,
+              rotation: -8,
+              scale: 1.05,
+            };
+
       tl.to(elFront, {
-        y: "+=500",
+        ...dropVars,
         duration: config.durDrop,
         ease: config.ease,
       });
@@ -178,6 +195,8 @@ const CardSwap: React.FC<CardSwapProps> = ({
           x: backSlot.x,
           y: backSlot.y,
           z: backSlot.z,
+          rotation: 0,
+          scale: 1,
           duration: config.durReturn,
           ease: config.ease,
         },
@@ -212,7 +231,17 @@ const CardSwap: React.FC<CardSwapProps> = ({
     }
     return () => clearInterval(intervalRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing]);
+  }, [
+    width,
+    height,
+    cardDistance,
+    verticalDistance,
+    delay,
+    pauseOnHover,
+    skewAmount,
+    easing,
+    direction,
+  ]);
 
   const rendered = childArr.map((child, i) =>
     isValidElement(child)
