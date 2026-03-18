@@ -127,4 +127,3 @@ export const blogSection = style({
   marginTop: "4rem",
   marginBottom: "4rem",
 });
-
