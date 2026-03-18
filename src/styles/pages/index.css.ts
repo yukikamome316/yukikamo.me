@@ -7,14 +7,22 @@ export const heroContainer = style({
   justifyContent: "space-between",
   alignItems: "center",
   minHeight: "60vh",
-  padding: "4rem 0 1rem",
+  padding: "4rem 0 0",
   "@media": {
     "screen and (max-width: 1024px)": {
       flexDirection: "column",
-      padding: "2rem 0 4rem",
+      padding: "2rem 0 0",
       gap: "1.5rem",
     },
   },
+});
+
+export const heroProfileContainer = style({
+  display: "flex",
+  alignItems: "center",
+  gap: "1.5rem",
+  marginBottom: "1rem",
+  width: "100%",
 });
 
 export const heroTextContainer = style({
@@ -50,6 +58,7 @@ export const profileImage = style({
   height: "140px",
   borderRadius: "50%",
   objectFit: "cover",
+  margin: 0,
   border: `4px solid ${vars.color.primary}`,
   boxShadow: `4px 4px 12px 0px rgba(38, 202, 253, 0.2)`,
   "@media": {
@@ -63,6 +72,7 @@ export const profileImage = style({
 export const heroTitleWrapper = style({
   display: "flex",
   flexDirection: "column",
+  justifyContent: "center",
   flex: 1,
   minWidth: 0,
   containerType: "inline-size",
@@ -108,3 +118,13 @@ export const sectionTitle = style({
   color: vars.color.text,
   letterSpacing: "-0.02em",
 });
+
+export const workSection = style({
+  marginTop: "2rem",
+});
+
+export const blogSection = style({
+  marginTop: "4rem",
+  marginBottom: "4rem",
+});
+
