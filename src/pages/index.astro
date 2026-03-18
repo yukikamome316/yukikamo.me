@@ -1,17 +1,30 @@
 ---
-import Layout from '../components/layouts/Layout.astro';
-import HeroCardSwap from '../components/features/HeroCardSwap.tsx';
-import { heroContainer, heroTextContainer, heroVisualContainer, profileImage, heroTitleWrapper, heroTitle, heroSubtitle, heroDescription, sectionTitle } from '../styles/pages/index.css.ts';
-import { grid } from '../styles/components/card.css.ts';
-import Card from '../components/ui/Card.astro';
-import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
+import Layout from "../components/layouts/Layout.astro";
+import HeroCardSwap from "../components/features/HeroCardSwap.tsx";
+import {
+  heroContainer,
+  heroProfileContainer,
+  heroTextContainer,
+  heroVisualContainer,
+  profileImage,
+  heroTitleWrapper,
+  heroTitle,
+  heroSubtitle,
+  heroDescription,
+  sectionTitle,
+  workSection,
+  blogSection,
+} from "../styles/pages/index.css.ts";
+import { grid } from "../styles/components/card.css.ts";
+import Card from "../components/ui/Card.astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
 
-import imgSusukino from '../assets/hero/susukino.webp';
-import imgMarunouchi from '../assets/hero/marunouchi.webp';
-import imgMatsuda from '../assets/hero/matsuda.webp';
-import imgAlps from '../assets/hero/the-northern-japan-alps.webp';
-import profileImg from '../assets/profile.webp';
+import imgSusukino from "../assets/hero/susukino.webp";
+import imgMarunouchi from "../assets/hero/marunouchi.webp";
+import imgMatsuda from "../assets/hero/matsuda.webp";
+import imgAlps from "../assets/hero/the-northern-japan-alps.webp";
+import profileImg from "../assets/profile.webp";
 
 const heroCards = [
   { title: "Susukino", src: imgSusukino.src },
@@ -20,25 +33,49 @@ const heroCards = [
   { title: "The Northern Japan Alps", src: imgAlps.src },
 ];
 
-const allWork = await getCollection('work');
-const recentWork = allWork.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+const allWork = await getCollection("work");
+const recentWork = allWork
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 
-const allBlog = await getCollection('blog');
-const recentBlog = allBlog.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+const allBlog = await getCollection("blog");
+const recentBlog = allBlog
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 ---
 
 <Layout title="Yuki - Portfolio & Blog">
   <Fragment slot="head">
-    <link rel="preload" href={profileImg.src} as="image" type="image/webp" fetchpriority="high" />
-    <link rel="preload" href={imgSusukino.src} as="image" type="image/webp" fetchpriority="high" />
+    <link
+      rel="preload"
+      href={profileImg.src}
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      href={imgSusukino.src}
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+    />
   </Fragment>
 
   <!-- Hero Section -->
   <section class={heroContainer}>
     <div class={heroTextContainer}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '1rem', width: '100%' }}>
-        <Image src={profileImg} alt="Yukikamome316" class={profileImage} width={140} height={140} loading="eager" fetchpriority="high" style={{ borderRadius: '50%', objectFit: 'cover', margin: 0 }} />
-        <div class={heroTitleWrapper} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <div class={heroProfileContainer}>
+        <Image
+          src={profileImg}
+          alt="yukikamome316"
+          class={profileImage}
+          width={140}
+          height={140}
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class={heroTitleWrapper}>
           <h1 class={heroTitle}>Yuki</h1>
           <p class={heroSubtitle}>@yukikamome316</p>
         </div>
@@ -54,22 +91,34 @@ const recentBlog = allBlog.sort((a, b) => b.data.date.valueOf() - a.data.date.va
   </section>
 
   <!-- Work Section -->
-  <section style={{ marginTop: '4rem' }}>
+  <section class={workSection}>
     <h2 class={sectionTitle}>Selected Work</h2>
     <div class={grid}>
-      {recentWork.map(work => (
-        <Card title={work.data.title} description={work.data.description} href={`/work/${work.slug}`} />
-      ))}
+      {
+        recentWork.map((work) => (
+          <Card
+            title={work.data.title}
+            description={work.data.description}
+            href={`/work/${work.slug}`}
+          />
+        ))
+      }
     </div>
   </section>
 
   <!-- Blog Section -->
-  <section style={{ marginTop: '4rem', marginBottom: '4rem' }}>
+  <section class={blogSection}>
     <h2 class={sectionTitle}>Latest Posts</h2>
     <div class={grid}>
-      {recentBlog.map(post => (
-        <Card title={post.data.title} description={post.data.description || ''} href={`/blog/${post.slug}`} />
-      ))}
+      {
+        recentBlog.map((post) => (
+          <Card
+            title={post.data.title}
+            description={post.data.description || ""}
+            href={`/blog/${post.slug}`}
+          />
+        ))
+      }
     </div>
   </section>
 </Layout>
