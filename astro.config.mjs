@@ -9,7 +9,9 @@ import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 // https://astro.build/config
 export default defineConfig({
   integrations: [react()],
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: "compile",
+  }),
   vite: {
     plugins: [vanillaExtractPlugin()],
   },

@@ -69,6 +69,7 @@ interface CardSwapProps {
   onCardClick?: (index: number) => void;
   skewAmount?: number;
   easing?: "elastic" | "smooth";
+  direction?: "vertical" | "horizontal";
   children: React.ReactNode;
 }
 
@@ -82,6 +83,7 @@ const CardSwap: React.FC<CardSwapProps> = ({
   onCardClick,
   skewAmount = 6,
   easing = "elastic",
+  direction = "vertical",
   children,
 }) => {
   const config =
@@ -95,10 +97,10 @@ const CardSwap: React.FC<CardSwapProps> = ({
           returnDelay: 0.05,
         }
       : {
-          ease: "power1.inOut",
-          durDrop: 0.8,
-          durMove: 0.8,
-          durReturn: 0.8,
+          ease: "power3.inOut",
+          durDrop: 0.5,
+          durMove: 0.5,
+          durReturn: 0.5,
           promoteOverlap: 0.45,
           returnDelay: 0.2,
         };
@@ -112,94 +114,187 @@ const CardSwap: React.FC<CardSwapProps> = ({
 
   const order = useRef(Array.from({ length: childArr.length }, (_, i) => i));
 
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
   const intervalRef = useRef<number>(0);
   const container = useRef<HTMLDivElement>(null);
+  const flyingOut = useRef(new Set<number>());
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     const total = refs.length;
-    refs.forEach((r, i) =>
-      placeNow(
-        r.current!,
-        makeSlot(i, cardDistance, verticalDistance, total),
-        skewAmount
-      )
-    );
+
+    // 初回マウント時のみ、DOMの状態として初期配置する
+    if (isInitialMount.current) {
+      // 親コンポーネント(React)が画面幅判定を終えて props を更新するまでのラグの間に、
+      // GSAPがPC幅(4deg)で誤って初期化してしまい「1deg -> 4deg -> 1deg」とカクつくのを防ぐため、
+      // CSS上で確定している表示中の生の値(--ssr-skew)を読み出してGSAPの初期値として引き継ぐ
+      const computedSkewStr = getComputedStyle(container.current!)
+        .getPropertyValue("--ssr-skew")
+        .trim();
+      const actualInitialSkew = computedSkewStr
+        ? parseFloat(computedSkewStr)
+        : skewAmount;
+
+      refs.forEach((r, i) => {
+        if (r.current) {
+          // SSRで書いたインラインtransformを消してGSAPに誤読（パースミスによる角度異常）を防ぐ
+          r.current.style.transform = "";
+        }
+        placeNow(
+          r.current!,
+          makeSlot(i, cardDistance, verticalDistance, total),
+          actualInitialSkew
+        );
+      });
+    } else {
+      // プロパティ変更時は、現在表示されているSkewYだけ安全に更新する
+      // React側でDOMが強制上書きされないようにしたため、スムーズにアニメーション補間できます
+      refs.forEach((r) => {
+        if (r.current) {
+          gsap.to(r.current, {
+            skewY: skewAmount,
+            duration: 0.4,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        }
+      });
+    }
+
+    const updateCursors = () => {
+      refs.forEach((r, i) => {
+        if (r.current) {
+          r.current.style.cursor =
+            order.current[0] === i ? "pointer" : "default";
+        }
+      });
+    };
 
     const swap = () => {
       if (order.current.length < 2) return;
 
+      // 状態を即座に更新しておく
       const [front, ...rest] = order.current;
-      const elFront = refs[front].current!;
-      const tl = gsap.timeline();
-      tlRef.current = tl;
+      order.current = [...rest, front];
+      updateCursors();
 
-      tl.to(elFront, {
-        y: "+=500",
+      const elFront = refs[front].current!;
+      flyingOut.current.add(front);
+
+      const dropVars =
+        direction === "horizontal"
+          ? {
+              x: `+=${width + refs.length * cardDistance + 50}`,
+              y: `-=80`,
+              rotation: 8,
+              scale: 1.05,
+            }
+          : {
+              y: `+=${height + refs.length * verticalDistance + 50}`,
+              x: `+=80`,
+              rotation: -8,
+              scale: 1.05,
+            };
+
+      // 「いま最前面にいるカード」は一番手前のまま飛び出させる
+      gsap.set(elFront, { zIndex: refs.length + 10 });
+
+      // 飛び出しアニメーション
+      gsap.to(elFront, {
+        ...dropVars,
         duration: config.durDrop,
         ease: config.ease,
+        overwrite: "auto",
+        onComplete: () => {
+          gsap.killTweensOf(elFront);
+          flyingOut.current.delete(front);
+
+          // 後ろに回り込む位置を、現在のアニメーション完了時点の配列から計算
+          const currentIdx = order.current.indexOf(front);
+          const backSlot = makeSlot(
+            currentIdx,
+            cardDistance,
+            verticalDistance,
+            refs.length
+          );
+
+          gsap.set(elFront, { zIndex: backSlot.zIndex });
+          gsap.to(elFront, {
+            x: backSlot.x,
+            y: backSlot.y,
+            z: backSlot.z,
+            rotation: 0,
+            scale: 1,
+            duration: config.durReturn,
+            ease: config.ease,
+            overwrite: "auto",
+          });
+        },
       });
 
-      tl.addLabel("promote", `-=${config.durDrop * config.promoteOverlap}`);
+      // 後続のカードを前に詰めるアニメーション
       rest.forEach((idx, i) => {
+        // もし直前にクリックされて別の飛び出しアニメーション中なら、その軌道を邪魔しない
+        if (flyingOut.current.has(idx)) return;
+
         const el = refs[idx].current!;
         const slot = makeSlot(i, cardDistance, verticalDistance, refs.length);
-        tl.set(el, { zIndex: slot.zIndex }, "promote");
-        tl.to(
-          el,
-          {
-            x: slot.x,
-            y: slot.y,
-            z: slot.z,
-            duration: config.durMove,
-            ease: config.ease,
-          },
-          `promote+=${i * 0.15}`
-        );
-      });
 
-      const backSlot = makeSlot(
-        refs.length - 1,
-        cardDistance,
-        verticalDistance,
-        refs.length
-      );
-      tl.addLabel("return", `promote+=${config.durMove * config.returnDelay}`);
-      tl.call(
-        () => {
-          gsap.set(elFront, { zIndex: backSlot.zIndex });
-        },
-        [],
-        "return"
-      );
-      tl.to(
-        elFront,
-        {
-          x: backSlot.x,
-          y: backSlot.y,
-          z: backSlot.z,
-          duration: config.durReturn,
+        // アニメーションを開始する前に zIndex だけ即座に更新しておく
+        gsap.set(el, { zIndex: slot.zIndex });
+
+        gsap.to(el, {
+          x: slot.x,
+          y: slot.y,
+          z: slot.z,
+          duration: config.durMove,
           ease: config.ease,
-        },
-        "return"
-      );
-
-      tl.call(() => {
-        order.current = [...rest, front];
+          delay: i * 0.05,
+          overwrite: "auto",
+        });
       });
     };
 
-    swap();
+    const handleCardClick = (i: number) => {
+      // 常に現在のトップカードがクリックされたらスワップを発動
+      if (order.current[0] === i) {
+        clearInterval(intervalRef.current);
+        swap();
+        intervalRef.current = window.setInterval(swap, delay);
+      }
+    };
+
+    // 初期ポインター設定とクリックイベント登録
+    refs.forEach((r, i) => {
+      if (r.current) {
+        r.current.onclick = () => handleCardClick(i);
+      }
+    });
+    updateCursors();
+
+    // 初回マウント時だけすぐに swap させる、あるいはプロパティ変更で不自然にswapしないようにする
+    if (isInitialMount.current) {
+      setTimeout(() => {
+        if (order.current.length > 1) swap();
+      }, 300); // 初期レイアウトが確実に適用されるのを待ってから開始
+      isInitialMount.current = false;
+    }
+
+    // 必ず既存のインターバルをクリアしてから新しくセット
+    clearInterval(intervalRef.current);
     intervalRef.current = window.setInterval(swap, delay);
 
     if (pauseOnHover) {
       const node = container.current!;
       const pause = () => {
-        tlRef.current?.pause();
+        refs.forEach((r) => {
+          if (r.current) gsap.getTweensOf(r.current).forEach((t) => t.pause());
+        });
         clearInterval(intervalRef.current);
       };
       const resume = () => {
-        tlRef.current?.play();
+        refs.forEach((r) => {
+          if (r.current) gsap.getTweensOf(r.current).forEach((t) => t.play());
+        });
         intervalRef.current = window.setInterval(swap, delay);
       };
       node.addEventListener("mouseenter", pause);
@@ -212,16 +307,46 @@ const CardSwap: React.FC<CardSwapProps> = ({
     }
     return () => clearInterval(intervalRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing]);
+  }, [
+    width,
+    height,
+    cardDistance,
+    verticalDistance,
+    delay,
+    pauseOnHover,
+    skewAmount,
+    easing,
+    direction,
+  ]);
 
-  const rendered = childArr.map((child, i) =>
-    isValidElement(child)
+  // レンダリング用の初期スタイル（SSR・Hydration用）。
+  // 途中でskewAmount等のPropsが変更されても、ReactがGSAPの操作中インラインスタイルを
+  // 勝手に上書き（＝カクつきや変な回転の原因）しないように、初回のみの値を保持する
+  const initialSkewRef = useRef(skewAmount);
+  const initialStyles = useMemo(() => {
+    return childArr.map((_, i) => {
+      const slot = makeSlot(i, cardDistance, verticalDistance, childArr.length);
+      return {
+        zIndex: slot.zIndex,
+        // calcで混ぜずに GSAP が出力する形式と同じ translate(-50%, -50%) を分離して並べる
+        // SSR時からスマホとPCで角度を変えるため、CSS変数(--ssr-skew)を優先しつつフォールバックで props を使う
+        transform: `translate(-50%, -50%) translate3d(${slot.x}px, ${slot.y}px, ${slot.z}px) skewY(var(--ssr-skew, ${initialSkewRef.current}deg))`,
+      };
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [childArr.length, cardDistance, verticalDistance]);
+
+  const rendered = childArr.map((child, i) => {
+    return isValidElement(child)
       ? cloneElement(child as React.ReactElement<CardProps>, {
           key: i,
           ref: refs[i],
           style: {
             width,
             height,
+            zIndex: initialStyles[i].zIndex,
+            transform: initialStyles[i].transform,
+            transformOrigin: "center center",
             ...((child as React.ReactElement<CardProps>).props.style ?? {}),
           },
           onClick: (e: React.MouseEvent) => {
@@ -231,8 +356,8 @@ const CardSwap: React.FC<CardSwapProps> = ({
             onCardClick?.(i);
           },
         })
-      : child
-  );
+      : child;
+  });
 
   return (
     <div ref={container} className={styles.container} style={{ width, height }}>

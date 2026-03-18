@@ -1,41 +1,63 @@
+import { useState, useEffect } from "react";
 import CardSwap, { Card } from "../CardSwap";
 import * as styles from "./HeroCardSwap.css";
 
-export default function HeroCardSwap() {
+interface HeroCard {
+  title: string;
+  src: string;
+}
+
+interface HeroCardSwapProps {
+  cards: HeroCard[];
+}
+
+export default function HeroCardSwap({ cards }: HeroCardSwapProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className={styles.container}>
-      <CardSwap
-        width={380}
-        height={260}
-        cardDistance={60}
-        verticalDistance={80}
-        delay={4000}
-        pauseOnHover={true}
-        skewAmount={8}
-        onCardClick={() => {}}
-      >
-        <Card className={styles.cardContent}>
-          <img
-            src="/hobby_camera.png"
-            alt="Film Camera"
-            className={styles.image}
-          />
-        </Card>
-        <Card className={styles.cardContent}>
-          <img
-            src="/hobby_travel.png"
-            alt="European Street"
-            className={styles.image}
-          />
-        </Card>
-        <Card className={styles.cardContent}>
-          <img
-            src="/hobby_coffee.png"
-            alt="Flat White Coffee"
-            className={styles.image}
-          />
-        </Card>
-      </CardSwap>
+      <div className={styles.cardSwapWrapper}>
+        <CardSwap
+          width={600}
+          height={381}
+          cardDistance={80}
+          verticalDistance={56}
+          delay={4000}
+          skewAmount={isMobile ? 1 : 4}
+          direction="horizontal"
+          easing="smooth"
+        >
+          {cards.map((card, index) => (
+            <Card key={card.src} className={styles.cardContent}>
+              <div className={styles.windowHeader}>
+                <div className={styles.windowControls}>
+                  <span className={styles.windowControlClose} />
+                  <span className={styles.windowControlMinimize} />
+                  <span className={styles.windowControlMaximize} />
+                </div>
+                <div className={styles.windowTitle}>{card.title}</div>
+              </div>
+              <div className={styles.windowBody}>
+                <img
+                  src={card.src}
+                  alt={card.title}
+                  className={styles.image}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchPriority={index === 0 ? "high" : "auto"}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+            </Card>
+          ))}
+        </CardSwap>
+      </div>
     </div>
   );
 }

@@ -35,7 +35,7 @@ export const articleTagList = style({
 
 export const articleTag = style({
   fontSize: "0.875rem",
-  color: vars.color.primary,
+  color: vars.color.primaryDark,
 });
 
 export const articleTagBadge = style({
