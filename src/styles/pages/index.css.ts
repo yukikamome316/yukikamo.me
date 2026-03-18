@@ -51,7 +51,13 @@ export const profileImage = style({
   borderRadius: "50%",
   objectFit: "cover",
   border: `4px solid ${vars.color.primary}`,
-  boxShadow: `0 12px 24px rgba(38, 202, 253, 0.4)`,
+  boxShadow: `0 24px 24px rgba(38, 202, 253, 0.2)`,
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      width: "120px",
+      height: "120px",
+    },
+  },
 });
 
 export const heroTitleWrapper = style({
