@@ -37,11 +37,19 @@ export const cardSwapWrapper = style({
   transform: "translateY(-50%)",
   width: "600px",
   height: "381px",
+  vars: {
+    "--ssr-skew": "4deg",
+  },
   "@media": {
     "screen and (max-width: 1024px)": {
       left: "50%",
       right: "auto",
       transform: "translate(calc(-50% - 30px), -50%)",
+    },
+    "screen and (max-width: 768px)": {
+      vars: {
+        "--ssr-skew": "1deg",
+      },
     },
   },
 });

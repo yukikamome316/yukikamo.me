@@ -117,16 +117,48 @@ const CardSwap: React.FC<CardSwapProps> = ({
   const intervalRef = useRef<number>(0);
   const container = useRef<HTMLDivElement>(null);
   const flyingOut = useRef(new Set<number>());
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     const total = refs.length;
-    refs.forEach((r, i) =>
-      placeNow(
-        r.current!,
-        makeSlot(i, cardDistance, verticalDistance, total),
-        skewAmount
-      )
-    );
+
+    // 初回マウント時のみ、DOMの状態として初期配置する
+    if (isInitialMount.current) {
+      // 親コンポーネント(React)が画面幅判定を終えて props を更新するまでのラグの間に、
+      // GSAPがPC幅(4deg)で誤って初期化してしまい「1deg -> 4deg -> 1deg」とカクつくのを防ぐため、
+      // CSS上で確定している表示中の生の値(--ssr-skew)を読み出してGSAPの初期値として引き継ぐ
+      const computedSkewStr = getComputedStyle(container.current!)
+        .getPropertyValue("--ssr-skew")
+        .trim();
+      const actualInitialSkew = computedSkewStr
+        ? parseFloat(computedSkewStr)
+        : skewAmount;
+
+      refs.forEach((r, i) => {
+        if (r.current) {
+          // SSRで書いたインラインtransformを消してGSAPに誤読（パースミスによる角度異常）を防ぐ
+          r.current.style.transform = "";
+        }
+        placeNow(
+          r.current!,
+          makeSlot(i, cardDistance, verticalDistance, total),
+          actualInitialSkew
+        );
+      });
+    } else {
+      // プロパティ変更時は、現在表示されているSkewYだけ安全に更新する
+      // React側でDOMが強制上書きされないようにしたため、スムーズにアニメーション補間できます
+      refs.forEach((r) => {
+        if (r.current) {
+          gsap.to(r.current, {
+            skewY: skewAmount,
+            duration: 0.4,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        }
+      });
+    }
 
     const updateCursors = () => {
       refs.forEach((r, i) => {
@@ -239,7 +271,16 @@ const CardSwap: React.FC<CardSwapProps> = ({
     });
     updateCursors();
 
-    swap();
+    // 初回マウント時だけすぐに swap させる、あるいはプロパティ変更で不自然にswapしないようにする
+    if (isInitialMount.current) {
+      setTimeout(() => {
+        if (order.current.length > 1) swap();
+      }, 300); // 初期レイアウトが確実に適用されるのを待ってから開始
+      isInitialMount.current = false;
+    }
+
+    // 必ず既存のインターバルをクリアしてから新しくセット
+    clearInterval(intervalRef.current);
     intervalRef.current = window.setInterval(swap, delay);
 
     if (pauseOnHover) {
@@ -278,14 +319,34 @@ const CardSwap: React.FC<CardSwapProps> = ({
     direction,
   ]);
 
-  const rendered = childArr.map((child, i) =>
-    isValidElement(child)
+  // レンダリング用の初期スタイル（SSR・Hydration用）。
+  // 途中でskewAmount等のPropsが変更されても、ReactがGSAPの操作中インラインスタイルを
+  // 勝手に上書き（＝カクつきや変な回転の原因）しないように、初回のみの値を保持する
+  const initialSkewRef = useRef(skewAmount);
+  const initialStyles = useMemo(() => {
+    return childArr.map((_, i) => {
+      const slot = makeSlot(i, cardDistance, verticalDistance, childArr.length);
+      return {
+        zIndex: slot.zIndex,
+        // calcで混ぜずに GSAP が出力する形式と同じ translate(-50%, -50%) を分離して並べる
+        // SSR時からスマホとPCで角度を変えるため、CSS変数(--ssr-skew)を優先しつつフォールバックで props を使う
+        transform: `translate(-50%, -50%) translate3d(${slot.x}px, ${slot.y}px, ${slot.z}px) skewY(var(--ssr-skew, ${initialSkewRef.current}deg))`,
+      };
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [childArr.length, cardDistance, verticalDistance]);
+
+  const rendered = childArr.map((child, i) => {
+    return isValidElement(child)
       ? cloneElement(child as React.ReactElement<CardProps>, {
           key: i,
           ref: refs[i],
           style: {
             width,
             height,
+            zIndex: initialStyles[i].zIndex,
+            transform: initialStyles[i].transform,
+            transformOrigin: "center center",
             ...((child as React.ReactElement<CardProps>).props.style ?? {}),
           },
           onClick: (e: React.MouseEvent) => {
@@ -295,8 +356,8 @@ const CardSwap: React.FC<CardSwapProps> = ({
             onCardClick?.(i);
           },
         })
-      : child
-  );
+      : child;
+  });
 
   return (
     <div ref={container} className={styles.container} style={{ width, height }}>
