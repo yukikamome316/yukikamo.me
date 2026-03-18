@@ -7,11 +7,11 @@ export const heroContainer = style({
   justifyContent: "space-between",
   alignItems: "center",
   minHeight: "60vh",
-  padding: "6rem 0 8rem",
+  padding: "4rem 0 1rem",
   "@media": {
     "screen and (max-width: 1024px)": {
       flexDirection: "column",
-      padding: "1rem 0 6rem",
+      padding: "2rem 0 4rem",
       gap: "1.5rem",
     },
   },
@@ -22,7 +22,6 @@ export const heroTextContainer = style({
   flexDirection: "column",
   alignItems: "flex-start",
   maxWidth: "500px",
-  gap: "1rem",
   overflow: "hidden",
   "@media": {
     "screen and (max-width: 1024px)": {
