@@ -92,7 +92,7 @@ export const dot = style({
   transition: "background-color 0.2s ease",
 });
 
-export const dotRed = style([
+export const windowControlClose = style([
   dot,
   {
     selectors: {
@@ -103,7 +103,7 @@ export const dotRed = style([
   },
 ]);
 
-export const dotYellow = style([
+export const windowControlMinimize = style([
   dot,
   {
     selectors: {
@@ -114,7 +114,7 @@ export const dotYellow = style([
   },
 ]);
 
-export const dotGreen = style([
+export const windowControlMaximize = style([
   dot,
   {
     selectors: {
