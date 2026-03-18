@@ -114,9 +114,9 @@ const CardSwap: React.FC<CardSwapProps> = ({
 
   const order = useRef(Array.from({ length: childArr.length }, (_, i) => i));
 
-  const tlRef = useRef<gsap.core.Timeline | null>(null);
   const intervalRef = useRef<number>(0);
   const container = useRef<HTMLDivElement>(null);
+  const flyingOut = useRef(new Set<number>());
 
   useEffect(() => {
     const total = refs.length;
@@ -128,13 +128,25 @@ const CardSwap: React.FC<CardSwapProps> = ({
       )
     );
 
+    const updateCursors = () => {
+      refs.forEach((r, i) => {
+        if (r.current) {
+          r.current.style.cursor =
+            order.current[0] === i ? "pointer" : "default";
+        }
+      });
+    };
+
     const swap = () => {
       if (order.current.length < 2) return;
 
+      // 状態を即座に更新しておく
       const [front, ...rest] = order.current;
+      order.current = [...rest, front];
+      updateCursors();
+
       const elFront = refs[front].current!;
-      const tl = gsap.timeline();
-      tlRef.current = tl;
+      flyingOut.current.add(front);
 
       const dropVars =
         direction === "horizontal"
@@ -151,62 +163,81 @@ const CardSwap: React.FC<CardSwapProps> = ({
               scale: 1.05,
             };
 
-      tl.to(elFront, {
+      // 「いま最前面にいるカード」は一番手前のまま飛び出させる
+      gsap.set(elFront, { zIndex: refs.length + 10 });
+
+      // 飛び出しアニメーション
+      gsap.to(elFront, {
         ...dropVars,
         duration: config.durDrop,
         ease: config.ease,
+        overwrite: "auto",
+        onComplete: () => {
+          gsap.killTweensOf(elFront);
+          flyingOut.current.delete(front);
+
+          // 後ろに回り込む位置を、現在のアニメーション完了時点の配列から計算
+          const currentIdx = order.current.indexOf(front);
+          const backSlot = makeSlot(
+            currentIdx,
+            cardDistance,
+            verticalDistance,
+            refs.length
+          );
+
+          gsap.set(elFront, { zIndex: backSlot.zIndex });
+          gsap.to(elFront, {
+            x: backSlot.x,
+            y: backSlot.y,
+            z: backSlot.z,
+            rotation: 0,
+            scale: 1,
+            duration: config.durReturn,
+            ease: config.ease,
+            overwrite: "auto",
+          });
+        },
       });
 
-      tl.addLabel("promote", `-=${config.durDrop * config.promoteOverlap}`);
+      // 後続のカードを前に詰めるアニメーション
       rest.forEach((idx, i) => {
+        // もし直前にクリックされて別の飛び出しアニメーション中なら、その軌道を邪魔しない
+        if (flyingOut.current.has(idx)) return;
+
         const el = refs[idx].current!;
         const slot = makeSlot(i, cardDistance, verticalDistance, refs.length);
-        tl.set(el, { zIndex: slot.zIndex }, "promote");
-        tl.to(
-          el,
-          {
-            x: slot.x,
-            y: slot.y,
-            z: slot.z,
-            duration: config.durMove,
-            ease: config.ease,
-          },
-          `promote+=${i * 0.15}`
-        );
-      });
 
-      const backSlot = makeSlot(
-        refs.length - 1,
-        cardDistance,
-        verticalDistance,
-        refs.length
-      );
-      tl.addLabel("return", `promote+=${config.durMove * config.returnDelay}`);
-      tl.call(
-        () => {
-          gsap.set(elFront, { zIndex: backSlot.zIndex });
-        },
-        [],
-        "return"
-      );
-      tl.to(
-        elFront,
-        {
-          x: backSlot.x,
-          y: backSlot.y,
-          z: backSlot.z,
-          rotation: 0,
-          scale: 1,
-          duration: config.durReturn,
+        // アニメーションを開始する前に zIndex だけ即座に更新しておく
+        gsap.set(el, { zIndex: slot.zIndex });
+
+        gsap.to(el, {
+          x: slot.x,
+          y: slot.y,
+          z: slot.z,
+          duration: config.durMove,
           ease: config.ease,
-        },
-        "return"
-      );
-
-      tl.call(() => {
-        order.current = [...rest, front];
+          delay: i * 0.05,
+          overwrite: "auto",
+        });
       });
     };
+
+    const handleCardClick = (i: number) => {
+      // 常に現在のトップカードがクリックされたらスワップを発動
+      if (order.current[0] === i) {
+        clearInterval(intervalRef.current);
+        swap();
+        intervalRef.current = window.setInterval(swap, delay);
+      }
+    };
+
+    // 初期ポインター設定とクリックイベント登録
+    refs.forEach((r, i) => {
+      if (r.current) {
+        r.current.onclick = () => handleCardClick(i);
+      }
+    });
+    updateCursors();
 
     swap();
     intervalRef.current = window.setInterval(swap, delay);
@@ -214,11 +245,15 @@ const CardSwap: React.FC<CardSwapProps> = ({
     if (pauseOnHover) {
       const node = container.current!;
       const pause = () => {
-        tlRef.current?.pause();
+        refs.forEach((r) => {
+          if (r.current) gsap.getTweensOf(r.current).forEach((t) => t.pause());
+        });
         clearInterval(intervalRef.current);
       };
       const resume = () => {
-        tlRef.current?.play();
+        refs.forEach((r) => {
+          if (r.current) gsap.getTweensOf(r.current).forEach((t) => t.play());
+        });
         intervalRef.current = window.setInterval(swap, delay);
       };
       node.addEventListener("mouseenter", pause);

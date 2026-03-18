@@ -1,17 +1,17 @@
 ---
-import '../../styles/global.css.ts';
-import '@fontsource-variable/noto-sans-jp';
-import Header from './Header.astro';
-import Footer from './Footer.astro';
+import "../../styles/global.css.ts";
+import "@fontsource-variable/noto-sans-jp";
+import Header from "./Header.astro";
+import Footer from "./Footer.astro";
 
-import { mainContent } from '../../styles/components/layout.css.ts';
+import { mainContent } from "../../styles/components/layout.css.ts";
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'Personal website of Yuki' } = Astro.props;
+const { title, description = "Personal website of Yuki" } = Astro.props;
 ---
 
 <!doctype html>
@@ -22,12 +22,12 @@ const { title, description = 'Personal website of Yuki' } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    
+
     <slot name="head" />
     <title>{title}</title>
   </head>
   <body>
-    <div style={{ overflowX: 'hidden', width: '100%', position: 'relative' }}>
+    <div style={{ width: "100%", position: "relative" }}>
       <Header />
       <main class={mainContent}>
         <slot />
