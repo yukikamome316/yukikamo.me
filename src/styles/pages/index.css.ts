@@ -11,8 +11,8 @@ export const heroContainer = style({
   "@media": {
     "screen and (max-width: 1024px)": {
       flexDirection: "column",
-      padding: "4rem 0 6rem",
-      gap: "4rem",
+      padding: "2rem 0 6rem",
+      gap: "2rem",
     },
   },
 });
@@ -23,6 +23,7 @@ export const heroTextContainer = style({
   alignItems: "flex-start",
   maxWidth: "500px",
   gap: "1rem",
+  overflow: "hidden",
   "@media": {
     "screen and (max-width: 1024px)": {
       width: "100%",
@@ -57,6 +58,9 @@ export const profileImage = style({
 export const heroTitleWrapper = style({
   display: "flex",
   flexDirection: "column",
+  flex: 1,
+  minWidth: 0,
+  containerType: "inline-size",
 });
 
 export const heroTitle = style({
@@ -69,11 +73,12 @@ export const heroTitle = style({
 });
 
 export const heroSubtitle = style({
-  fontSize: "1.5rem",
+  fontSize: "clamp(1rem, 10cqi, 1.6rem)",
   color: vars.color.primaryDark,
   fontWeight: 600,
   letterSpacing: "0.02em",
   margin: "0.25rem 0 0 0",
+  overflowWrap: "anywhere",
 });
 
 export const heroDescription = style({
