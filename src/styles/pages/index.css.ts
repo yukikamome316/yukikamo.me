@@ -7,22 +7,50 @@ export const heroContainer = style({
   justifyContent: "space-between",
   alignItems: "center",
   minHeight: "60vh",
-  padding: "6rem 0 8rem",
+  padding: "4rem 0 0",
   "@media": {
-    "screen and (max-width: 900px)": {
+    "screen and (max-width: 1024px)": {
       flexDirection: "column",
-      padding: "4rem 0 6rem",
-      gap: "4rem",
+      padding: "2rem 0 0",
+      gap: "1.5rem",
     },
   },
+});
+
+export const heroProfileContainer = style({
+  display: "flex",
+  alignItems: "center",
+  gap: "1.5rem",
+  marginBottom: "1rem",
+  width: "100%",
 });
 
 export const heroTextContainer = style({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
-  maxWidth: "550px",
-  gap: "1rem", // アイコンとテキストの間隔
+  maxWidth: "500px",
+  overflow: "hidden",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      width: "100%",
+    },
+  },
+});
+
+export const heroVisualContainer = style({
+  flex: 1,
+  display: "flex",
+  justifyContent: "flex-end",
+  position: "relative",
+  minWidth: "300px",
+  width: "100%",
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  },
 });
 
 export const profileImage = style({
@@ -30,13 +58,24 @@ export const profileImage = style({
   height: "140px",
   borderRadius: "50%",
   objectFit: "cover",
+  margin: 0,
   border: `4px solid ${vars.color.primary}`,
-  boxShadow: `0 12px 24px rgba(38, 202, 253, 0.4)`,
+  boxShadow: `4px 4px 12px 0px rgba(38, 202, 253, 0.2)`,
+  "@media": {
+    "screen and (max-width: 1024px)": {
+      width: "120px",
+      height: "120px",
+    },
+  },
 });
 
 export const heroTitleWrapper = style({
   display: "flex",
   flexDirection: "column",
+  justifyContent: "center",
+  flex: 1,
+  minWidth: 0,
+  containerType: "inline-size",
 });
 
 export const heroTitle = style({
@@ -49,11 +88,12 @@ export const heroTitle = style({
 });
 
 export const heroSubtitle = style({
-  fontSize: "1.5rem",
-  color: vars.color.primary,
+  fontSize: "clamp(1rem, 10cqi, 1.6rem)",
+  color: vars.color.primaryDark,
   fontWeight: 600,
   letterSpacing: "0.02em",
   margin: "0.25rem 0 0 0",
+  overflowWrap: "anywhere",
 });
 
 export const heroDescription = style({
@@ -63,6 +103,12 @@ export const heroDescription = style({
   lineHeight: 1.7,
   maxWidth: "600px",
   fontWeight: 400,
+  "@media": {
+    "screen and (max-width: 768px)": {
+      fontSize: "1rem",
+      lineHeight: 1.8,
+    },
+  },
 });
 
 export const sectionTitle = style({
@@ -71,4 +117,13 @@ export const sectionTitle = style({
   marginBottom: vars.space.medium,
   color: vars.color.text,
   letterSpacing: "-0.02em",
+});
+
+export const workSection = style({
+  marginTop: "2rem",
+});
+
+export const blogSection = style({
+  marginTop: "4rem",
+  marginBottom: "4rem",
 });

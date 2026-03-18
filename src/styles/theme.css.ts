@@ -7,13 +7,14 @@ export const vars = createGlobalTheme(":root", {
     surfaceHover: "#f5f7fa",
     text: "#2b2c32", // ダークグレー（ユーザー指定）
     primary: "#26cafd", // メインの水色（ユーザー指定）
+    primaryDark: "#007699", // アクセシビリティ用（WCAG AAクリア可能な暗さ）
     secondary: "#fd5826", // アクセントのオレンジ（補色・ユーザー指定）
-    muted: "#8e93a3", // 少し明るめのグレー
+    muted: "#5c6475", // 少し明るめのグレー（コントラスト改善済み）
     border: "#e4e7ec", // 薄い境界線
   },
   font: {
-    body: "Inter, system-ui, sans-serif",
-    heading: "Outfit, system-ui, sans-serif",
+    body: '"Noto Sans JP Variable", system-ui, sans-serif',
+    heading: '"Noto Sans JP Variable", system-ui, sans-serif',
   },
   space: {
     xs: "4px",
