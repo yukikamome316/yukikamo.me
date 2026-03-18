@@ -38,9 +38,9 @@ export default function HeroCardSwap({ cards }: HeroCardSwapProps) {
             <Card key={card.src} className={styles.cardContent}>
               <div className={styles.windowHeader}>
                 <div className={styles.windowControls}>
-                  <span className={styles.dotRed} />
-                  <span className={styles.dotYellow} />
-                  <span className={styles.dotGreen} />
+                  <span className={styles.windowControlClose} />
+                  <span className={styles.windowControlMinimize} />
+                  <span className={styles.windowControlMaximize} />
                 </div>
                 <div className={styles.windowTitle}>{card.title}</div>
               </div>
