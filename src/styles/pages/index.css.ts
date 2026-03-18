@@ -11,8 +11,8 @@ export const heroContainer = style({
   "@media": {
     "screen and (max-width: 1024px)": {
       flexDirection: "column",
-      padding: "2rem 0 6rem",
-      gap: "2rem",
+      padding: "1rem 0 6rem",
+      gap: "1.5rem",
     },
   },
 });
