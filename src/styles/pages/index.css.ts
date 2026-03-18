@@ -90,8 +90,8 @@ export const heroDescription = style({
   fontWeight: 400,
   "@media": {
     "screen and (max-width: 768px)": {
-      fontSize: "1rem",   // 文字を少しだけ小さくし、1行あたりの文字数を増やして窮屈さを減らす
-      lineHeight: 1.8,    // 行間を広げて読みやすくする
+      fontSize: "1rem",
+      lineHeight: 1.8,
     },
   },
 });
