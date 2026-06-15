@@ -1,13 +1,32 @@
 ---
-import { card, cardContent, cardTitle, cardDescription } from '../../styles/components/card.css';
+import {
+  card,
+  cardContent,
+  cardTitle,
+  cardDescription,
+  cardMeta,
+  cardDate,
+  cardTagList,
+  cardTag,
+} from '../../styles/components/card.css';
 
 interface Props {
   title: string;
   description: string;
   href: string;
+  date?: Date;
+  tags?: string[];
 }
 
-const { title, description, href } = Astro.props;
+const { title, description, href, date, tags } = Astro.props;
+
+const dateString = date
+  ? date.toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  : null;
 ---
 
 <a href={href} style="text-decoration: none; color: inherit; display: block;">
@@ -15,6 +34,18 @@ const { title, description, href } = Astro.props;
     <div class={cardContent}>
       <h3 class={cardTitle}>{title}</h3>
       <p class={cardDescription}>{description}</p>
+      <div class={cardMeta}>
+        {dateString && <time class={cardDate}>{dateString}</time>}
+        {
+          tags && tags.length > 0 && (
+            <div class={cardTagList}>
+              {tags.map((tag) => (
+                <span class={cardTag}>{tag}</span>
+              ))}
+            </div>
+          )
+        }
+      </div>
     </div>
   </div>
 </a>
