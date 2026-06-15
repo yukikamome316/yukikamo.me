@@ -9,7 +9,7 @@ const workEntries = await getCollection('work');
 const sortedEntries = workEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title="Work | Yuki">
+<Layout title="Work | Yuki" description="A collection of projects I've built or contributed to.">
   <section class={listSection}>
     <h1 class={listTitle}>Selected Work</h1>
     <p class={listDescription}>A collection of projects I've built or contributed to.</p>
