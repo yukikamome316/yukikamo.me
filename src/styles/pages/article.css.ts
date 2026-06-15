@@ -92,3 +92,18 @@ globalStyle(`${articleBody} code`, {
   borderRadius: "4px",
   fontSize: "0.875em",
 });
+
+globalStyle(`${articleBody} pre`, {
+  background: vars.color.surfaceHover,
+  border: `1px solid ${vars.color.border}`,
+  borderRadius: "8px",
+  padding: "1.25rem",
+  overflowX: "auto",
+  marginBottom: "1.5rem",
+});
+
+globalStyle(`${articleBody} pre code`, {
+  background: "transparent",
+  padding: 0,
+  fontSize: "0.875em",
+});
