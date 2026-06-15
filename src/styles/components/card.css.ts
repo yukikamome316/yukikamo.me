@@ -25,6 +25,41 @@ export const cardTitle = style({
 export const cardDescription = style({
   color: vars.color.muted,
   fontSize: "0.875rem",
+  marginBottom: vars.space.small,
+});
+
+export const cardMeta = style({
+  display: "flex",
+  flexWrap: "wrap",
+  alignItems: "center",
+  gap: vars.space.small,
+  marginTop: "auto",
+});
+
+export const cardDate = style({
+  fontSize: "0.75rem",
+  color: vars.color.muted,
+});
+
+export const cardSource = style({
+  fontSize: "0.75rem",
+  fontWeight: 600,
+  color: vars.color.primaryDark,
+});
+
+export const cardTagList = style({
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "0.25rem",
+});
+
+export const cardTag = style({
+  fontSize: "0.75rem",
+  padding: "0.125rem 0.5rem",
+  backgroundColor: vars.color.surfaceHover,
+  border: `1px solid ${vars.color.border}`,
+  borderRadius: "999px",
+  color: vars.color.muted,
 });
 
 export const grid = style({
