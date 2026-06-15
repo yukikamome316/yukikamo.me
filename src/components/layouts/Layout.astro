@@ -22,7 +22,7 @@ const {
 
 const siteUrl = "https://yukikamo.me";
 const pageUrl = siteUrl + Astro.url.pathname;
-const ogImage = image.startsWith("http") ? image : siteUrl + image;
+const ogImage = image.startsWith("http") ? image : "/" + image.replace(/^\//, "");
 ---
 
 <!doctype html>
