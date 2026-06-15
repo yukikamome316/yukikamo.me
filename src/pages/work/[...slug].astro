@@ -13,9 +13,10 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+const { slug } = entry;
 ---
 
-<Layout title={`${entry.data.title} | Work`} description={entry.data.description}>
+<Layout title={`${entry.data.title} | Work`} description={entry.data.description} image={`/ogp/work/${slug}.webp`}>
   <article class={articleContainer}>
     <header class={articleHeader}>
       <h1 class={articleTitle}>{entry.data.title}</h1>

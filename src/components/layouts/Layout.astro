@@ -16,13 +16,13 @@ interface Props {
 const {
   title,
   description = "Personal website of Yuki",
-  image = "/ogp-default.webp",
+  image = "/ogp/default.webp",
   type = "website",
 } = Astro.props;
 
 const siteUrl = "https://yukikamo.me";
 const pageUrl = siteUrl + Astro.url.pathname;
-const ogImage = image.startsWith("http") ? image : "/" + image.replace(/^\//, "");
+const ogImage = image.startsWith("http") ? image : siteUrl + image;
 ---
 
 <!doctype html>
