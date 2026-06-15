@@ -43,7 +43,10 @@ function wrapText(text: string, maxCharsPerLine: number): string[] {
   return lines.slice(0, 2);
 }
 
-function generateSvg(title: string, pageType: "default" | "blog" | "work"): string {
+function generateSvg(
+  title: string,
+  pageType: "default" | "blog" | "work"
+): string {
   const escaped = escapeXml(title);
   const lines = wrapText(escaped, 18);
 
@@ -59,7 +62,10 @@ function generateSvg(title: string, pageType: "default" | "blog" | "work"): stri
     })
     .join("\n");
 
-  const label = pageType === "default" ? SITE_TITLE : `${pageType === "blog" ? "Blog" : "Work"} | ${SITE_TITLE}`;
+  const label =
+    pageType === "default"
+      ? SITE_TITLE
+      : `${pageType === "blog" ? "Blog" : "Work"} | ${SITE_TITLE}`;
 
   return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -121,7 +127,8 @@ function parseFrontmatter(filePath: string): { title: string } {
   if (!match) return { title: "Untitled" };
 
   const yaml = match[1];
-  const titleMatch = yaml.match(/^title:\s*"(.+)"$/m) || yaml.match(/^title:\s*(.+)$/m);
+  const titleMatch =
+    yaml.match(/^title:\s*"(.+)"$/m) || yaml.match(/^title:\s*(.+)$/m);
   return { title: titleMatch?.[1] ?? "Untitled" };
 }
 
@@ -159,7 +166,9 @@ async function main(): Promise<void> {
   // Collect blog posts
   const blogDir = path.join(CONTENT_DIR, "blog");
   if (fs.existsSync(blogDir)) {
-    const files = fs.readdirSync(blogDir).filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
+    const files = fs
+      .readdirSync(blogDir)
+      .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
     for (const file of files) {
       const frontmatter = parseFrontmatter(path.join(blogDir, file));
       items.push({
@@ -172,7 +181,9 @@ async function main(): Promise<void> {
   // Collect work items
   const workDir = path.join(CONTENT_DIR, "work");
   if (fs.existsSync(workDir)) {
-    const files = fs.readdirSync(workDir).filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
+    const files = fs
+      .readdirSync(workDir)
+      .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
     for (const file of files) {
       const frontmatter = parseFrontmatter(path.join(workDir, file));
       items.push({
