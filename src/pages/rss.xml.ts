@@ -16,6 +16,11 @@ export async function GET(context: { site: string }) {
       pubDate: post.data.date,
       description: post.data.description ?? "",
       link: `/blog/${post.slug}/`,
+      enclosure: {
+        url: `${context.site}ogp/blog/${post.slug}.webp`,
+        type: "image/webp",
+        length: 1,
+      },
     })),
     customData: "<language>ja</language>",
   });
