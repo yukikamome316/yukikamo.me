@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 
-const SITE_TITLE = "yukikamo.me";
+const SITE_TITLE = "ゆきの置き手紙";
 const OUTPUT_DIR = path.join(ROOT, "public", "ogp");
 const CONTENT_DIR = path.join(ROOT, "src", "content");
 
@@ -135,7 +135,7 @@ function parseFrontmatter(filePath: string): { title: string } {
 async function generateOgp(items: PageItem[]): Promise<void> {
   // Generate default OGP
   console.log("Generating default OGP...");
-  const defaultSvg = generateSvg("Yuki", "default");
+  const defaultSvg = generateSvg("ゆきの置き手紙", "default");
   await sharp(Buffer.from(defaultSvg))
     .webp({ quality: 90 })
     .toFile(path.join(OUTPUT_DIR, "default.webp"));
