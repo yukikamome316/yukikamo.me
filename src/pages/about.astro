@@ -1,44 +1,60 @@
 ---
 import Layout from '../components/layouts/Layout.astro';
-import { sectionTitle } from '../styles/pages/index.css';
-import { Timeline } from '../components/features/Timeline.tsx';
-import { pageSection, pageTitle, pageDescription, experienceSection, skillsContainer, skillTag } from '../styles/pages/about.css';
+import { sectionTitle } from '../styles/pages/index.css.ts';
+import {
+  pageSection,
+  pageTitle,
+  pageDescription,
+  skillsContainer,
+  skillTag,
+  credentialsContainer,
+  credentialItem,
+  credentialTitle,
+  credentialOrg,
+  credentialDate,
+  languageGrid,
+  languageItem,
+  languageLevel,
+  languageName,
+} from '../styles/pages/about.css.ts';
+import { getProfile } from '../lib/profile';
 
-const experience = [
-  {
-    date: '2023 - Present',
-    title: 'Frontend Engineer',
-    description: 'Developed modern web applications using React, Next.js, and Astro. Focused on performance and accessible UI components.',
-  },
-  {
-    date: '2020 - 2023',
-    title: 'Web Designer',
-    description: 'Created beautiful and user-friendly interfaces for corporate websites. Handled both UI/UX design and frontend implementation.',
-  }
-];
-
-const skills = ['React', 'TypeScript', 'Astro', 'Next.js', 'Vanilla Extract', 'Figma'];
+const { bio, credentials, skills, languages } = getProfile();
 ---
 
 <Layout title="About | Yuki">
   <section class={pageSection}>
     <h1 class={pageTitle}>About Me</h1>
-    <p class={pageDescription}>
-      Hello! I'm Yuki, a passionate web developer and designer. I love building fast, accessible, and beautiful web products.
-      With a strong background in both design and development, I bring the best of both worlds to create seamless digital experiences.
-    </p>
+    <p class={pageDescription}>{bio}</p>
 
-    <h2 class={sectionTitle}>Experience</h2>
-    <div class={experienceSection}>
-      <Timeline entries={experience} />
+    <!-- 資格 -->
+    <h2 class={sectionTitle}>Credentials</h2>
+    <div class={credentialsContainer}>
+      {credentials.map((c) => (
+        <div class={credentialItem}>
+          <span class={credentialTitle}>{c.title}</span>
+          <span class={credentialOrg}>{c.issuer}</span>
+          {c.issuedLabel && <span class={credentialDate}>{c.issuedLabel}</span>}
+        </div>
+      ))}
     </div>
 
+    <!-- スキル -->
     <h2 class={sectionTitle}>Skills</h2>
     <div class={skillsContainer}>
-      {skills.map(skill => (
-        <span class={skillTag}>
-          {skill}
-        </span>
+      {skills.map((skill) => (
+        <span class={skillTag}>{skill}</span>
+      ))}
+    </div>
+
+    <!-- 言語 -->
+    <h2 class={sectionTitle}>Languages</h2>
+    <div class={languageGrid}>
+      {languages.map((lang) => (
+        <div class={languageItem}>
+          <span class={languageName}>{lang.name}</span>
+          <span class={languageLevel}>{lang.proficiencyLabel}</span>
+        </div>
       ))}
     </div>
   </section>
