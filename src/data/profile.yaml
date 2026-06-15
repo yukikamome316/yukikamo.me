@@ -1,0 +1,41 @@
+# プロフィールデータ
+# 日付フォーマット: "YYYY-MM" (月まで) / null (非公開)
+
+profile:
+  name: Yuki
+  handle: yukikamome316
+  bio: >-
+    ゆきです👋 IT と旅行が好きなセキュリティエンジニアです。Web
+    開発やアルゴリズム最適化など幅広く学んでいますが、アウトドア派なので車や飛行機などで遠出することも多いです。気になる場所があればどこへでも行きます。
+
+credentials:
+  - title: 情報処理安全確保支援士試験
+    issuer: IPA 独立行政法人 情報処理推進機構
+    issuedDate: null
+
+  - title: 応用情報技術者試験
+    issuer: IPA 独立行政法人 情報処理推進機構
+    issuedDate: null
+
+  - title: 普通自動車第一種運転免許 (AT 限定)
+    issuer: 警察庁
+    issuedDate: null
+
+skills:
+  - Cybersecurity
+  - CTF
+  - Web Development
+  - TypeScript
+  - React
+  - Python
+  - Competitive Programming
+  - Astro
+  - Next.js
+
+languages:
+  - name: 日本語
+    proficiency: native
+  - name: English
+    proficiency: business
+  - name: 한국어
+    proficiency: elementary

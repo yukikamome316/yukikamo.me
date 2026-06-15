@@ -3,16 +3,16 @@ import Layout from '../../components/layouts/Layout.astro';
 import Card from '../../components/ui/Card.astro';
 import { getCollection } from 'astro:content';
 import { grid } from '../../styles/components/card.css';
-import { vars } from '../../styles/theme.css';
+import { listSection, listTitle, listDescription } from '../../styles/pages/list.css';
 
 const blogEntries = await getCollection('blog');
 const sortedEntries = blogEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <Layout title="Blog | Yuki">
-  <section style={{ marginTop: '4rem', marginBottom: '4rem' }}>
-    <h1 style={{ fontSize: '3rem', marginBottom: '2rem' }}>Blog</h1>
-    <p style={{ color: vars.color.muted, marginBottom: '4rem' }}>Thoughts on software engineering, design, and life.</p>
+  <section class={listSection}>
+    <h1 class={listTitle}>Blog</h1>
+    <p class={listDescription}>Thoughts on software engineering, design, and life.</p>
     
     <div class={grid}>
       {sortedEntries.map(entry => (
