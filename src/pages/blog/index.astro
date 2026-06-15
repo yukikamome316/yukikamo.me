@@ -9,7 +9,7 @@ const blogEntries = await getCollection('blog');
 const sortedEntries = blogEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title="Blog | Yuki">
+<Layout title="Blog | Yuki" description="Thoughts on software engineering, security, and life.">
   <section class={listSection}>
     <h1 class={listTitle}>Blog</h1>
     <p class={listDescription}>Thoughts on software engineering, design, and life.</p>
