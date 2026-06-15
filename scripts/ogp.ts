@@ -127,12 +127,47 @@ async function loadBoldFont(): Promise<opentype.Font> {
   return opentype.parse(buffer);
 }
 
-function getProfileImageDataUri(): string {
-  const buf = fs.readFileSync(PROFILE_IMG);
-  return `data:image/webp;base64,${buf.toString("base64")}`;
+/**
+ * Create a circular-masked profile icon as a PNG buffer.
+ */
+async function createCircularProfileIcon(
+  size: number
+): Promise<Buffer> {
+  const circleSvg = `<svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" />
+</svg>`;
+
+  return sharp(PROFILE_IMG)
+    .resize(size, size, { fit: "cover" })
+    .composite([
+      {
+        input: Buffer.from(circleSvg),
+        blend: "dest-in",
+      },
+    ])
+    .png()
+    .toBuffer();
 }
 
-const PROFILE_DATA_URI = getProfileImageDataUri();
+/** Composite the circular profile icon onto an OGP base image */
+async function compositeProfileIcon(
+  baseBuffer: Buffer,
+  iconSize: number,
+  x: number,
+  y: number
+): Promise<Buffer> {
+  const icon = await createCircularProfileIcon(iconSize);
+  return sharp(baseBuffer)
+    .composite([
+      {
+        input: icon,
+        top: y,
+        left: x,
+      },
+    ])
+    .webp({ quality: 90 })
+    .toBuffer();
+}
 
 function generateSvg(
   title: string,
@@ -185,9 +220,6 @@ function generateSvg(
       <stop offset="0%" stop-color="${COLOR.primary}" />
       <stop offset="100%" stop-color="${COLOR.primaryLight}" />
     </linearGradient>
-    <mask id="avatarMask">
-      <circle cx="103" cy="533" r="25" fill="white" />
-    </mask>
   </defs>
 
   <!-- Background -->
@@ -217,9 +249,6 @@ function generateSvg(
 
   <!-- Title (rendered as SVG paths for font fidelity) -->
 ${titlePaths}
-
-  <!-- Profile icon (bottom-left) -->
-  <image href="${PROFILE_DATA_URI}" x="78" y="508" width="50" height="50" mask="url(#avatarMask)" />
 
   <!-- Site name (rendered as SVG path) -->
   <path d="${labelPath}" fill="${COLOR.primary}" opacity="0.9" />
@@ -326,11 +355,17 @@ async function generateOgp(
   items: PageItem[],
   font: opentype.Font
 ): Promise<void> {
+  const renderWithProfile = async (svgContent: string, outPath: string) => {
+    // Render base SVG (no <image> tag — sharp can't handle data URIs)
+    const pngBuf = await sharp(Buffer.from(svgContent)).png().toBuffer();
+    // Composite circular profile icon at bottom-left
+    const result = await compositeProfileIcon(pngBuf, 50, 78, 508);
+    await sharp(result).toFile(outPath);
+  };
+
   console.log("Generating default OGP...");
   const defaultSvg = generateSvg("ゆきの置き手紙", "default", font);
-  await sharp(Buffer.from(defaultSvg))
-    .webp({ quality: 90 })
-    .toFile(path.join(OUTPUT_DIR, "default.webp"));
+  await renderWithProfile(defaultSvg, path.join(OUTPUT_DIR, "default.webp"));
   console.log("  ✓ public/ogp/default.webp");
 
   for (const item of items) {
@@ -340,7 +375,7 @@ async function generateOgp(
 
     const pageType = item.slug.startsWith("blog") ? "blog" : "work";
     const svg = generateSvg(item.title, pageType, font);
-    await sharp(Buffer.from(svg)).webp({ quality: 90 }).toFile(outPath);
+    await renderWithProfile(svg, outPath);
     console.log(`  ✓ public/ogp/${item.slug}.webp`);
   }
 }
