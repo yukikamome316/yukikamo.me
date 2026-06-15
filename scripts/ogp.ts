@@ -129,7 +129,6 @@ function generateSvg(
   pageType: "default" | "blog" | "work",
   font: opentype.Font
 ): string {
-  const escaped = escapeXml(title);
   const maxWidth = 1040;
 
   const { lines: titleLines, fontSize: titleFontSize } = measureAndWrap(
