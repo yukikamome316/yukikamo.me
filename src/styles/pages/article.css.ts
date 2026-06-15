@@ -107,3 +107,36 @@ globalStyle(`${articleBody} pre code`, {
   padding: 0,
   fontSize: "0.875em",
 });
+
+// 注釈ブロック（テーマ対応）
+globalStyle(`${articleBody} .admonition`, {
+  padding: "1rem 1.25rem",
+  borderRadius: "8px",
+  borderLeftWidth: "4px",
+  borderLeftStyle: "solid",
+  marginBottom: "1.5rem",
+});
+
+globalStyle(`${articleBody} .admonition p`, {
+  margin: 0,
+});
+
+globalStyle(`${articleBody} .admonition.info`, {
+  backgroundColor:
+    "color-mix(in srgb, " +
+    vars.color.primary +
+    " 12%, " +
+    vars.color.surface +
+    ")",
+  borderLeftColor: vars.color.primary,
+});
+
+globalStyle(`${articleBody} .admonition.warning`, {
+  backgroundColor:
+    "color-mix(in srgb, " +
+    vars.color.secondary +
+    " 12%, " +
+    vars.color.surface +
+    ")",
+  borderLeftColor: vars.color.secondary,
+});
