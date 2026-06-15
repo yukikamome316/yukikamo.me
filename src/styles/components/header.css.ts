@@ -35,3 +35,22 @@ export const navLink = style({
     color: vars.color.primaryDark,
   },
 });
+
+export const navLinkActive = style({
+  color: vars.color.text,
+  fontWeight: 700,
+});
+
+export const navActions = style({
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.small,
+});
+
+export const desktopOnly = style({
+  "@media": {
+    "(max-width: 640px)": {
+      display: "none",
+    },
+  },
+});
