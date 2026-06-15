@@ -135,13 +135,13 @@ fn main() {
 
 HTML を使うことで、簡易的な注釈ブロックを表現できます。
 
-<p style="padding: 1rem; background: #e7f3ff; border-left: 4px solid #26cafd; border-radius: 4px;">
-  <strong>💡 Tip:</strong> これはヒント用の注釈ブロックです。
-</p>
+<div class="admonition info">
+  <p><strong>💡 Tip:</strong> これはヒント用の注釈ブロックです。テーマカラーに自動で追随します。</p>
+</div>
 
-<p style="padding: 1rem; background: #fff3e7; border-left: 4px solid #fd5826; border-radius: 4px;">
-  <strong>⚠️ Warning:</strong> これは警告用の注釈ブロックです。
-</p>
+<div class="admonition warning">
+  <p><strong>⚠️ Warning:</strong> これは警告用の注釈ブロックです。テーマカラーに自動で追随します。</p>
+</div>
 
 ---
 
