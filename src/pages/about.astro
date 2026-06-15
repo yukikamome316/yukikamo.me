@@ -34,7 +34,7 @@ const personJsonLd = {
 ---
 
 <Layout title="About | Yuki" description={bio}>
-  <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} slot="head" />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(personJsonLd)} slot="head" />
 
   <section class={pageSection}>
     <h1 class={pageTitle}>About Me</h1>
