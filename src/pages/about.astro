@@ -20,9 +20,22 @@ import {
 import { getProfile } from '../lib/profile';
 
 const { bio, credentials, skills, languages } = getProfile();
+
+const siteUrl = "https://yukikamo.me";
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Yuki",
+  url: siteUrl,
+  description: bio,
+  knowsAbout: skills,
+  sameAs: ["https://github.com/yukikamome316"],
+};
 ---
 
-<Layout title="About | ゆきの置き手紙" description={bio}>
+<Layout title="About | Yuki" description={bio}>
+  <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} slot="head" />
+
   <section class={pageSection}>
     <h1 class={pageTitle}>About Me</h1>
     <p class={pageDescription}>{bio}</p>
