@@ -9,9 +9,20 @@ import { mainContent } from "../../styles/components/layout.css.ts";
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  type?: "website" | "article";
 }
 
-const { title, description = "Personal website of Yuki" } = Astro.props;
+const {
+  title,
+  description = "Personal website of Yuki",
+  image = "/ogp/default.webp",
+  type = "website",
+} = Astro.props;
+
+const siteUrl = "https://yukikamo.me";
+const pageUrl = siteUrl + Astro.url.pathname;
+const ogImage = image.startsWith("http") ? image : siteUrl + image;
 ---
 
 <!doctype html>
@@ -22,6 +33,19 @@ const { title, description = "Personal website of Yuki" } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- OGP -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="Yuki" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <slot name="head" />
     <title>{title}</title>

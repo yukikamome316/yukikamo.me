@@ -22,7 +22,7 @@ import { getProfile } from '../lib/profile';
 const { bio, credentials, skills, languages } = getProfile();
 ---
 
-<Layout title="About | Yuki">
+<Layout title="About | Yuki" description={bio}>
   <section class={pageSection}>
     <h1 class={pageTitle}>About Me</h1>
     <p class={pageDescription}>{bio}</p>
