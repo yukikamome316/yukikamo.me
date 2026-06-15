@@ -9,7 +9,8 @@ export async function GET(context: { site: string }) {
 
   return rss({
     title: "ゆきの置き手紙",
-    description: "ゆきの個人サイト。IT と旅行が好きなセキュリティエンジニアのブログ。",
+    description:
+      "ゆきの個人サイト。IT と旅行が好きなセキュリティエンジニアのブログ。",
     site: context.site,
     items: sorted.map((post) => ({
       title: post.data.title,
