@@ -13,6 +13,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+const { slug } = entry;
 
 const dateString = entry.data.date.toLocaleDateString('ja-JP', { 
   year: 'numeric', 
@@ -21,7 +22,7 @@ const dateString = entry.data.date.toLocaleDateString('ja-JP', {
 });
 ---
 
-<Layout title={`${entry.data.title} | Blog`}>
+<Layout title={`${entry.data.title} | Blog`} description={entry.data.description} type="article" image={`/ogp/blog/${slug}.webp`}>
   <article class={articleContainer}>
     <header class={articleHeader}>
       <time class={articleDate}>{dateString}</time>
