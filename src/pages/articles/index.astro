@@ -3,25 +3,51 @@ import Layout from '../../components/layouts/Layout.astro';
 import Card from '../../components/ui/Card.astro';
 import { getCollection } from 'astro:content';
 import { grid } from '../../styles/components/card.css';
-import { listSection, listTitle, listDescription } from '../../styles/pages/list.css';
+import {
+  listSection,
+  listTitle,
+  listDescription,
+  yearGroup,
+  yearGroupTitle,
+} from '../../styles/pages/list.css';
 
 const blogEntries = (await getCollection('blog')).filter(e => !e.data.draft);
 const sortedEntries = blogEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const groupedByYear = sortedEntries.reduce<Record<number, typeof sortedEntries>>((acc, entry) => {
+  const year = entry.data.date.getFullYear();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(entry);
+  return acc;
+}, {});
+
+const years = Object.keys(groupedByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
 ---
 
 <Layout title="Articles | ゆきの置き手紙" description="ゆきの置き手紙 - ゆきのブログ。ソフトウェアエンジニアリング、セキュリティ、日常について。">
   <section class={listSection}>
     <h1 class={listTitle}>Articles</h1>
     <p class={listDescription}>ソフトウェアエンジニアリング、セキュリティ、日常について。</p>
-    
-    <div class={grid}>
-      {sortedEntries.map(entry => (
-        <Card 
-          title={entry.data.title} 
-          description={entry.data.description || ''} 
-          href={`/articles/${entry.slug}`} 
-        />
-      ))}
-    </div>
+
+    {
+      years.map((year) => (
+        <div class={yearGroup}>
+          <h2 class={yearGroupTitle}>{year}</h2>
+          <div class={grid}>
+            {groupedByYear[year].map((entry) => (
+              <Card
+                title={entry.data.title}
+                description={entry.data.description || ''}
+                href={`/articles/${entry.slug}`}
+                date={entry.data.date}
+                tags={entry.data.tags}
+              />
+            ))}
+          </div>
+        </div>
+      ))
+    }
   </section>
 </Layout>
