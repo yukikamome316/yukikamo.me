@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../components/layouts/Layout.astro';
 import ArticleLayout from '../../components/layouts/ArticleLayout.astro';
+import ShareButtons from '../../components/features/ShareButtons.tsx';
 import {
   articleHeader,
   articleMeta,
@@ -35,6 +36,24 @@ const formatDate = (date: Date) =>
   });
 
 const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
+
+const siteUrl = 'https://yukikamo.me';
+const pageUrl = `${siteUrl}/articles/${slug}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: entry.data.title,
+  description: entry.data.description,
+  url: pageUrl,
+  datePublished: entry.data.date.toISOString(),
+  ...(entry.data.updated && { dateModified: entry.data.updated.toISOString() }),
+  author: {
+    '@type': 'Person',
+    name: 'Yuki',
+    url: siteUrl,
+  },
+};
 ---
 
 <Layout
@@ -43,6 +62,8 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
   type="article"
   image={`/ogp/articles/${slug}.webp`}
 >
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+
   <ArticleLayout headings={headings}>
     <header slot="header" class={articleHeader}>
       <div class={articleMeta}>
@@ -83,5 +104,8 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
     </header>
 
     <Content />
+    <slot name="footer" />
   </ArticleLayout>
+
+  <ShareButtons url={pageUrl} title={entry.data.title} client:load />
 </Layout>
