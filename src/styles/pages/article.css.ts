@@ -52,6 +52,34 @@ export const articleTagBadge = style({
   borderRadius: "999px",
 });
 
+export const articleMeta = style({
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "1.5rem",
+  marginBottom: "1.5rem",
+  padding: "1rem 1.25rem",
+  backgroundColor: vars.color.surfaceHover,
+  border: `1px solid ${vars.color.border}`,
+  borderRadius: "8px",
+});
+
+export const articleMetaItem = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.25rem",
+});
+
+export const articleMetaLabel = style({
+  fontSize: "0.75rem",
+  color: vars.color.muted,
+});
+
+export const articleMetaValue = style({
+  fontSize: "0.875rem",
+  color: vars.color.text,
+  fontWeight: 500,
+});
+
 export const articleMetaGrid = style({
   display: "grid",
   gridTemplateColumns: "1fr 1fr",
@@ -66,6 +94,98 @@ export const metaLabel = style({
   fontSize: "0.875rem",
   color: vars.color.muted,
   marginBottom: "0.25rem",
+});
+
+export const toc = style({
+  marginBottom: "3rem",
+  padding: "1.5rem",
+  backgroundColor: vars.color.surfaceHover,
+  border: `1px solid ${vars.color.border}`,
+  borderRadius: "8px",
+});
+
+export const tocTitle = style({
+  fontSize: "1.125rem",
+  fontWeight: 700,
+  marginBottom: "1rem",
+  color: vars.color.text,
+});
+
+export const tocList = style({
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
+});
+
+export const tocItem = style({
+  color: vars.color.muted,
+  textDecoration: "none",
+  transition: "color 0.2s",
+  ":hover": {
+    color: vars.color.primaryDark,
+  },
+});
+
+export const tocItemLevel2 = style({
+  fontWeight: 500,
+});
+
+export const tocItemLevel3 = style({
+  paddingLeft: "1rem",
+  fontSize: "0.95rem",
+});
+
+export const articleNav = style({
+  marginTop: "4rem",
+  paddingTop: "2rem",
+  borderTop: `1px solid ${vars.color.border}`,
+});
+
+export const articleNavTitle = style({
+  fontSize: "1.25rem",
+  fontWeight: 700,
+  marginBottom: "1rem",
+  color: vars.color.text,
+});
+
+export const articleNavGrid = style({
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  gap: "1rem",
+});
+
+export const articleNavCard = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
+  padding: "1rem 1.25rem",
+  backgroundColor: vars.color.surfaceHover,
+  border: `1px solid ${vars.color.border}`,
+  borderRadius: "8px",
+  textDecoration: "none",
+  transition: "border-color 0.2s, background-color 0.2s",
+  ":hover": {
+    borderColor: vars.color.primaryDark,
+    backgroundColor: vars.color.surface,
+  },
+});
+
+export const articleNavCardLabel = style({
+  fontSize: "0.75rem",
+  color: vars.color.muted,
+});
+
+export const articleNavCardTitle = style({
+  fontSize: "1rem",
+  fontWeight: 600,
+  color: vars.color.text,
+});
+
+export const articleNavCardEmpty = style({
+  display: "block",
 });
 
 export const articleBody = style({

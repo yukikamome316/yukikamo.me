@@ -1,41 +1,142 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../components/layouts/Layout.astro';
-import { articleContainer, articleHeader, articleDate, articleTitle, articleTagList, articleTag, articleBody } from '../../styles/pages/article.css';
+import {
+  articleContainer,
+  articleHeader,
+  articleMeta,
+  articleMetaItem,
+  articleMetaLabel,
+  articleMetaValue,
+  articleTitle,
+  articleTagList,
+  articleTag,
+  articleBody,
+  toc,
+  tocTitle,
+  tocList,
+  tocItem,
+  tocItemLevel2,
+  tocItemLevel3,
+  articleNav,
+  articleNavTitle,
+  articleNavGrid,
+  articleNavCard,
+  articleNavCardLabel,
+  articleNavCardTitle,
+  articleNavCardEmpty,
+} from '../../styles/pages/article.css';
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
-  return blogEntries.map(entry => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+  const sortedEntries = blogEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return sortedEntries.map((entry, index) => {
+    const prevEntry = sortedEntries[index + 1] ?? null;
+    const nextEntry = sortedEntries[index - 1] ?? null;
+    return {
+      params: { slug: entry.slug },
+      props: { entry, prevEntry, nextEntry },
+    };
+  });
 }
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { entry, prevEntry, nextEntry } = Astro.props;
+const { Content, headings } = await entry.render();
 const { slug } = entry;
 
-const dateString = entry.data.date.toLocaleDateString('ja-JP', { 
-  year: 'numeric', 
-  month: 'long', 
-  day: 'numeric' 
-});
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
 ---
 
-<Layout title={`${entry.data.title} | Articles`} description={entry.data.description} type="article" image={`/ogp/blog/${slug}.webp`}>
+<Layout
+  title={`${entry.data.title} | Blog`}
+  description={entry.data.description}
+  type="article"
+  image={`/ogp/blog/${slug}.webp`}
+>
   <article class={articleContainer}>
     <header class={articleHeader}>
-      <time class={articleDate}>{dateString}</time>
+      <div class={articleMeta}>
+        <div class={articleMetaItem}>
+          <span class={articleMetaLabel}>公開日</span>
+          <time class={articleMetaValue} datetime={entry.data.date.toISOString()}>
+            {formatDate(entry.data.date)}
+          </time>
+        </div>
+        {
+          entry.data.updated && (
+            <div class={articleMetaItem}>
+              <span class={articleMetaLabel}>更新日</span>
+              <time class={articleMetaValue} datetime={entry.data.updated.toISOString()}>
+                {formatDate(entry.data.updated)}
+              </time>
+            </div>
+          )
+        }
+        <div class={articleMetaItem}>
+          <span class={articleMetaLabel}>読了時間</span>
+          <span class={articleMetaValue}>約{readingTime}分</span>
+        </div>
+      </div>
       <h1 class={articleTitle}>{entry.data.title}</h1>
       <div class={articleTagList}>
-        {entry.data.tags?.map((tag: string) => (
-          <span class={articleTag}>#{tag}</span>
-        ))}
+        {entry.data.tags?.map((tag: string) => <span class={articleTag}>#{tag}</span>)}
       </div>
     </header>
-    
+
+    {
+      tocHeadings.length > 0 && (
+        <nav class={toc} aria-label="目次">
+          <h2 class={tocTitle}>目次</h2>
+          <ol class={tocList}>
+            {tocHeadings.map((heading) => (
+              <li
+                class={
+                  heading.depth === 3 ? tocItemLevel3 : tocItemLevel2
+                }
+              >
+                <a class={tocItem} href={`#${heading.slug}`}>
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+
     <div class={articleBody}>
       <Content />
     </div>
+
+    <nav class={articleNav} aria-label="前後の記事">
+      <h2 class={articleNavTitle}>続きを読む</h2>
+      <div class={articleNavGrid}>
+        {prevEntry ? (
+          <a href={`/blog/${prevEntry.slug}`} class={articleNavCard}>
+            <span class={articleNavCardLabel}>前の記事</span>
+            <span class={articleNavCardTitle}>{prevEntry.data.title}</span>
+          </a>
+        ) : (
+          <span class={articleNavCardEmpty} />
+        )}
+        {nextEntry ? (
+          <a href={`/blog/${nextEntry.slug}`} class={articleNavCard}>
+            <span class={articleNavCardLabel}>次の記事</span>
+            <span class={articleNavCardTitle}>{nextEntry.data.title}</span>
+          </a>
+        ) : (
+          <span class={articleNavCardEmpty} />
+        )}
+      </div>
+    </nav>
   </article>
 </Layout>
