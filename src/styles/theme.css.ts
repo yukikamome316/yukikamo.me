@@ -69,7 +69,7 @@ const sharedTokens = {
   },
 };
 
-export const vars = createGlobalTheme(":root", colorContract, {
+createGlobalTheme(":root", colorContract, {
   color: lightColors,
   ...sharedTokens,
 });
@@ -78,3 +78,5 @@ createGlobalTheme(".dark", colorContract, {
   color: darkColors,
   ...sharedTokens,
 });
+
+export const vars = colorContract;
