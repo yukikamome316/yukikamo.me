@@ -9,6 +9,14 @@ const ROOT = path.resolve(__dirname, "..");
 const SITE_TITLE = "ゆきの置き手紙";
 const OUTPUT_DIR = path.join(ROOT, "public", "ogp");
 const CONTENT_DIR = path.join(ROOT, "src", "content");
+const FONTS_DIR = path.join(
+  ROOT,
+  "node_modules",
+  "@fontsource-variable",
+  "noto-sans-jp",
+  "files"
+);
+const PROFILE_IMG = path.join(ROOT, "src", "assets", "profile.webp");
 
 const COLOR = {
   primary: "#26cafd",
@@ -18,6 +26,38 @@ const COLOR = {
   bgStart: "#f0fcff",
   bgEnd: "#fff5f5",
 };
+
+const FONT_NAME = "Noto Sans JP";
+
+/** Read woff2 files and build embedded @font-face CSS */
+function getFontFaces(): string {
+  const needed = [
+    "noto-sans-jp-latin-wght-normal.woff2",
+    "noto-sans-jp-119-wght-normal.woff2",
+    "noto-sans-jp-100-wght-normal.woff2",
+    "noto-sans-jp-108-wght-normal.woff2",
+    "noto-sans-jp-110-wght-normal.woff2",
+  ];
+
+  return needed
+    .map((file) => {
+      const buf = fs.readFileSync(path.join(FONTS_DIR, file));
+      const b64 = buf.toString("base64");
+      return `@font-face {
+  font-family: '${FONT_NAME}';
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(data:font/woff2;base64,${b64}) format('woff2-variations');
+}`;
+    })
+    .join("\n");
+}
+
+/** Embed profile image as base64 data URI */
+function getProfileImageDataUri(): string {
+  const buf = fs.readFileSync(PROFILE_IMG);
+  return `data:image/webp;base64,${buf.toString("base64")}`;
+}
 
 function escapeXml(s: string): string {
   return s
@@ -43,6 +83,9 @@ function wrapText(text: string, maxCharsPerLine: number): string[] {
   return lines.slice(0, 2);
 }
 
+const FONT_FACES = getFontFaces();
+const PROFILE_DATA_URI = getProfileImageDataUri();
+
 function generateSvg(
   title: string,
   pageType: "default" | "blog" | "work"
@@ -65,10 +108,13 @@ function generateSvg(
   const label =
     pageType === "default"
       ? SITE_TITLE
-      : `${pageType === "blog" ? "Blog" : "Work"} | ${SITE_TITLE}`;
+      : `${pageType === "blog" ? "Articles" : "Work"} | ${SITE_TITLE}`;
 
   return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <style>
+${FONT_FACES}
+    </style>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="${COLOR.bgStart}" />
       <stop offset="100%" stop-color="${COLOR.bgEnd}" />
@@ -77,6 +123,9 @@ function generateSvg(
       <stop offset="0%" stop-color="${COLOR.primary}" />
       <stop offset="100%" stop-color="${COLOR.primaryLight}" />
     </linearGradient>
+    <clipPath id="avatarClip">
+      <circle cx="103" cy="533" r="25" />
+    </clipPath>
   </defs>
 
   <!-- Background -->
@@ -105,12 +154,15 @@ function generateSvg(
   <path d="M1120 280 Q1125 270 1130 280 Q1125 290 1120 280Z" fill="${COLOR.primary}" opacity="0.25" />
 
   <!-- Title -->
-  <text font-family="'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'MS PGothic', sans-serif" font-size="${fontSize}" font-weight="700" fill="${COLOR.text}">
+  <text font-family="'${FONT_NAME}', sans-serif" font-size="${fontSize}" font-weight="700" fill="${COLOR.text}">
 ${tspans}
   </text>
 
+  <!-- Profile icon (bottom-left) -->
+  <image href="${PROFILE_DATA_URI}" x="78" y="508" width="50" height="50" clip-path="url(#avatarClip)" />
+
   <!-- Site name -->
-  <text x="80" y="570" font-family="'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif" font-size="20" font-weight="600" fill="${COLOR.primary}" letter-spacing="2">
+  <text x="145" y="543" font-family="'${FONT_NAME}', sans-serif" font-size="20" font-weight="600" fill="${COLOR.primary}" letter-spacing="2">
     ${escapeXml(label)}
   </text>
 </svg>`;
