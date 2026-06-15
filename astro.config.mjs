@@ -14,6 +14,16 @@ export default defineConfig({
   adapter: cloudflare({
     imageService: "compile",
   }),
+  markdown: {
+    shikiConfig: {
+      themes: {
+        light: "github-light",
+        dark: "github-dark",
+      },
+      defaultColor: "light",
+      wrap: true,
+    },
+  },
   vite: {
     plugins: [vanillaExtractPlugin()],
   },
