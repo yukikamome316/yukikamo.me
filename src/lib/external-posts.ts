@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import YAML from "js-yaml";
-import { z } from "zod";
+import { load } from "js-yaml";
+import { z } from "astro:content";
 
 const externalPostSchema = z.object({
   title: z.string(),
@@ -27,7 +27,7 @@ export function getExternalPosts(): ExternalPost[] {
     "external-posts.yaml"
   );
   const raw = fs.readFileSync(filePath, "utf-8");
-  const parsed = YAML.parse(raw);
+  const parsed = load(raw);
   const posts = z.array(externalPostSchema).parse(parsed);
 
   cached = posts;
