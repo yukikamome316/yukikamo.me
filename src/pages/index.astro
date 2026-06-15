@@ -18,6 +18,7 @@ import {
 import { grid } from "../styles/components/card.css.ts";
 import Card from "../components/ui/Card.astro";
 import { getCollection } from "astro:content";
+import { getExternalPosts } from "../lib/external-posts";
 import { Image } from "astro:assets";
 
 import imgSusukino from "../assets/hero/susukino.webp";
@@ -39,8 +40,30 @@ const recentWork = allWork
   .slice(0, 3);
 
 const allBlog = await getCollection("blog");
-const recentBlog = allBlog
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+const externalPosts = getExternalPosts();
+
+const allPosts = [
+  ...allBlog.map((post) => ({
+    type: "internal" as const,
+    title: post.data.title,
+    description: post.data.description || "",
+    href: `/blog/${post.slug}`,
+    date: post.data.date,
+    tags: post.data.tags,
+  })),
+  ...externalPosts.map((post) => ({
+    type: "external" as const,
+    title: post.title,
+    description: post.description || "",
+    href: post.url,
+    date: post.date,
+    tags: post.tags,
+    source: post.source,
+  })),
+];
+
+const recentPosts = allPosts
+  .sort((a, b) => b.date.valueOf() - a.date.valueOf())
   .slice(0, 3);
 ---
 
@@ -111,11 +134,15 @@ const recentBlog = allBlog
     <h2 class={sectionTitle}>Latest Posts</h2>
     <div class={grid}>
       {
-        recentBlog.map((post) => (
+        recentPosts.map((post) => (
           <Card
-            title={post.data.title}
-            description={post.data.description || ""}
-            href={`/blog/${post.slug}`}
+            title={post.title}
+            description={post.description}
+            href={post.href}
+            date={post.date}
+            tags={post.tags}
+            source={post.type === "external" ? post.source : undefined}
+            external={post.type === "external"}
           />
         ))
       }
