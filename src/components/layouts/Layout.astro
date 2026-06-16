@@ -51,16 +51,6 @@ const ogImage = image.startsWith("http") ? image : siteUrl + image;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <script is:inline>
-      (function () {
-        const saved = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (saved === "dark" || (!saved && prefersDark)) {
-          document.documentElement.classList.add("dark");
-        }
-      })();
-    </script>
-
     <slot name="head" />
     <title>{title}</title>
   </head>

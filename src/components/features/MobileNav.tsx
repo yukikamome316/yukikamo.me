@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import {
   mobileNav,
   mobileNavButton,
+  mobileNavButtonInner,
   mobileNavButtonLine,
   mobileNavOverlay,
   mobileNavPanel,
@@ -99,9 +100,11 @@ export default function MobileNav({ links, currentPath }: Props) {
       aria-label={open ? "メニューを閉じる" : "メニューを開く"}
       aria-expanded={open}
     >
-      <span className={mobileNavButtonLine} data-open={open} />
-      <span className={mobileNavButtonLine} data-open={open} />
-      <span className={mobileNavButtonLine} data-open={open} />
+      <span className={mobileNavButtonInner}>
+        <span className={mobileNavButtonLine} data-open={open} />
+        <span className={mobileNavButtonLine} data-open={open} />
+        <span className={mobileNavButtonLine} data-open={open} />
+      </span>
     </button>
   );
 
