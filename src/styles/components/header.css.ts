@@ -10,7 +10,7 @@ export const header = style({
   top: 0,
   zIndex: 10,
   backdropFilter: "blur(8px)",
-  backgroundColor: "rgba(253, 253, 253, 0.85)",
+  backgroundColor: `color-mix(in srgb, ${vars.color.background} 85%, transparent)`,
   borderBottom: `1px solid ${vars.color.border}`,
 });
 
@@ -33,5 +33,24 @@ export const navLink = style({
   transition: "color 0.2s",
   ":hover": {
     color: vars.color.primaryDark,
+  },
+});
+
+export const navLinkActive = style({
+  color: vars.color.text,
+  fontWeight: 700,
+});
+
+export const navActions = style({
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.small,
+});
+
+export const desktopOnly = style({
+  "@media": {
+    "(max-width: 640px)": {
+      display: "none",
+    },
   },
 });

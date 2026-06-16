@@ -1,6 +1,9 @@
 ---
-import { header, logo, nav, navLink } from "../../styles/components/header.css";
+import { header, logo, nav, navLink, navLinkActive, navActions, desktopOnly } from '../../styles/components/header.css';
+import ThemeToggle from '../features/ThemeToggle.tsx';
+import MobileNav from '../features/MobileNav.tsx';
 
+const currentPath = Astro.url.pathname;
 const links = [
   { href: "/about", label: "About" },
   { href: "/work", label: "Work" },
@@ -10,13 +13,18 @@ const links = [
 
 <header class={header}>
   <a href="/" class={logo}>Yuki</a>
-  <nav class={nav}>
-    {
-      links.map((link) => (
-        <a href={link.href} class={navLink}>
+  <nav class={`${nav} ${desktopOnly}`}>
+    {links.map((link) => {
+      const isActive = currentPath === link.href || currentPath.startsWith(`${link.href}/`);
+      return (
+        <a href={link.href} class={`${navLink} ${isActive ? navLinkActive : ''}`}>
           {link.label}
         </a>
-      ))
-    }
+      );
+    })}
   </nav>
+  <div class={navActions}>
+    <ThemeToggle client:load />
+    <MobileNav links={links} currentPath={currentPath} client:load />
+  </div>
 </header>
