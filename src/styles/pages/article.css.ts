@@ -108,6 +108,35 @@ globalStyle(`${articleBody} pre code`, {
   fontSize: "0.9em",
 });
 
+// テーブル
+globalStyle(`${articleBody} table`, {
+  width: "100%",
+  borderCollapse: "collapse",
+  marginBottom: "1.5rem",
+  fontSize: "0.9rem",
+});
+
+globalStyle(`${articleBody} th, ${articleBody} td`, {
+  padding: "0.625rem 1rem",
+  textAlign: "left",
+  borderBottom: `1px solid ${vars.color.border}`,
+});
+
+globalStyle(`${articleBody} thead th`, {
+  fontWeight: 600,
+  backgroundColor: vars.color.surfaceHover,
+  borderBottom: `2px solid ${vars.color.primary}`,
+});
+
+globalStyle(`${articleBody} tbody tr:hover`, {
+  backgroundColor:
+    "color-mix(in srgb, " + vars.color.primary + " 5%, transparent)",
+});
+
+globalStyle(`${articleBody} tbody tr:last-child td`, {
+  borderBottom: "none",
+});
+
 // 注釈ブロック（テーマ対応）
 globalStyle(`${articleBody} .admonition`, {
   padding: "1rem 1.25rem",
