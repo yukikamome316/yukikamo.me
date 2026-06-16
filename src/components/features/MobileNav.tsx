@@ -47,48 +47,56 @@ export default function MobileNav({ links, currentPath }: Props) {
 
   const toggle = () => setOpen((v) => !v);
 
-  const menuContent = open ? (
-    <>
-      <div className={mobileNavOverlay} onClick={toggle} aria-hidden="true" />
-      <nav className={mobileNavPanel}>
-        <div className={mobileNavLinks}>
-          {links.map((link, i) => {
-            const isActive =
-              currentPath === link.href ||
-              currentPath.startsWith(`${link.href}/`);
-            return (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`${mobileNavLink} ${isActive ? mobileNavLinkActive : ""}`}
-                onClick={toggle}
-                style={{ animationDelay: `${i * 0.08}s` }}
-              >
-                {link.label}
-              </a>
-            );
-          })}
-        </div>
-        <div className={mobileNavFooter}>
-          {socialLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className={mobileNavSocialLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={link.label}
-            >
-              <span
-                aria-hidden="true"
-                dangerouslySetInnerHTML={{ __html: link.svg }}
-              />
-            </a>
-          ))}
-        </div>
-      </nav>
-    </>
-  ) : null;
+  const menuPortal =
+    open && mounted
+      ? createPortal(
+          <>
+            <div
+              className={mobileNavOverlay}
+              onClick={toggle}
+              aria-hidden="true"
+            />
+            <nav className={mobileNavPanel}>
+              <div className={mobileNavLinks}>
+                {links.map((link, i) => {
+                  const isActive =
+                    currentPath === link.href ||
+                    currentPath.startsWith(`${link.href}/`);
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      className={`${mobileNavLink} ${isActive ? mobileNavLinkActive : ""}`}
+                      onClick={toggle}
+                      style={{ animationDelay: `${i * 0.08}s` }}
+                    >
+                      {link.label}
+                    </a>
+                  );
+                })}
+              </div>
+              <div className={mobileNavFooter}>
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className={mobileNavSocialLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={link.label}
+                  >
+                    <span
+                      aria-hidden="true"
+                      dangerouslySetInnerHTML={{ __html: link.svg }}
+                    />
+                  </a>
+                ))}
+              </div>
+            </nav>
+          </>,
+          document.body
+        )
+      : null;
 
   return (
     <div className={mobileNav}>
@@ -105,7 +113,7 @@ export default function MobileNav({ links, currentPath }: Props) {
           <span className={mobileNavButtonLine} data-open={open} />
         </span>
       </button>
-      {mounted && createPortal(menuContent, document.body)}
+      {menuPortal}
     </div>
   );
 }

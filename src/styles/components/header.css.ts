@@ -8,7 +8,7 @@ export const header = style({
   padding: `${vars.space.medium} ${vars.space.large}`,
   position: "sticky",
   top: 0,
-  zIndex: 10,
+  zIndex: 10002,
   backdropFilter: "blur(8px)",
   backgroundColor: `color-mix(in srgb, ${vars.color.background} 85%, transparent)`,
   borderBottom: `1px solid ${vars.color.border}`,

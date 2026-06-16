@@ -41,6 +41,11 @@ export const mobileNavButton = style({
   ":hover": {
     backgroundColor: vars.color.surfaceHover,
   },
+  "@media": {
+    "(min-width: 641px)": {
+      display: "none",
+    },
+  },
 });
 
 export const mobileNavButtonInner = style({
