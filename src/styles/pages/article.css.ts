@@ -71,7 +71,45 @@ export const articleBody = style({
 globalStyle(`${articleBody} h1, ${articleBody} h2, ${articleBody} h3`, {
   marginTop: "2.5rem",
   marginBottom: "1rem",
+  position: "relative",
 });
+
+// パーマリンクコピー用アンカーアイコン
+globalStyle(`${articleBody} h2, ${articleBody} h3, ${articleBody} h4`, {
+  paddingLeft: "1.5rem",
+  marginLeft: "-1.5rem",
+});
+
+globalStyle(
+  `${articleBody} h2 .copy-anchor, ${articleBody} h3 .copy-anchor, ${articleBody} h4 .copy-anchor`,
+  {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    left: 0,
+    top: 0,
+    height: "100%",
+    width: "1.5rem",
+    color: vars.color.primary,
+    textDecoration: "none",
+    opacity: 0,
+    transition: "opacity 0.2s",
+    cursor: "pointer",
+    fontSize: "0.8em",
+    fontWeight: 400,
+    border: "none",
+    background: "none",
+    padding: 0,
+  }
+);
+
+globalStyle(
+  `${articleBody} h2:hover .copy-anchor, ${articleBody} h3:hover .copy-anchor, ${articleBody} h4:hover .copy-anchor`,
+  {
+    opacity: 1,
+  }
+);
 
 globalStyle(`${articleBody} p`, {
   marginBottom: "1.5rem",
