@@ -9,10 +9,10 @@ const workEntries = await getCollection('work');
 const sortedEntries = workEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title="Work | ゆきの置き手紙" description="A collection of projects I've built or contributed to.">
+<Layout title="Work | Yuki" description="これまでに制作したり、関わったプロジェクトの一覧です。">
   <section class={listSection}>
     <h1 class={listTitle}>Selected Work</h1>
-    <p class={listDescription}>A collection of projects I've built or contributed to.</p>
+    <p class={listDescription}>これまでに制作したり、関わったプロジェクトの一覧です。</p>
     
     <div class={grid}>
       {sortedEntries.map(entry => (
