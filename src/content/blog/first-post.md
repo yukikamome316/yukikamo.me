@@ -144,6 +144,8 @@ URL を単独行に書くと自動的にカードとして表示されます。
 
 https://github.com/yukikamome316
 
+https://github.com/yukikamome316/yukikamo.me
+
 ---
 
 ## 注釈ブロック
