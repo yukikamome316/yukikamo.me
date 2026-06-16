@@ -6,11 +6,6 @@ const fadeIn = keyframes({
   to: { opacity: 1 },
 });
 
-const slideIn = keyframes({
-  from: { transform: "translateX(100%)" },
-  to: { transform: "translateX(0)" },
-});
-
 export const mobileNav = style({
   display: "none",
   "@media": {
@@ -23,38 +18,50 @@ export const mobileNav = style({
 export const mobileNavButton = style({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: "5px",
-  width: "2.25rem",
-  height: "2.25rem",
-  padding: "0.5rem",
+  justifyContent: "space-between",
+  width: "28px",
+  height: "16px",
+  padding: 0,
   border: "none",
-  borderRadius: "8px",
   backgroundColor: "transparent",
   cursor: "pointer",
-  transition: "background-color 0.2s",
-  ":hover": {
-    backgroundColor: vars.color.surfaceHover,
-  },
+  position: "relative",
+  zIndex: 10002,
 });
 
 export const mobileNavButtonLine = style({
   display: "block",
-  width: "18px",
-  height: "2px",
+  height: "1.5px",
   backgroundColor: vars.color.text,
   borderRadius: "2px",
-  transition: "transform 0.25s ease, opacity 0.25s ease",
+  transition: "width 0.2s ease, transform 0.3s ease, opacity 0.3s ease",
   transformOrigin: "center",
   selectors: {
-    '&[data-open="true"]:first-child': {
+    '&:nth-child(1)': {
+      width: "100%",
+    },
+    '&:nth-child(2)': {
+      width: "calc(100% - 6px)",
+    },
+    '&:nth-child(3)': {
+      width: "calc(100% - 12px)",
+    },
+    [`${mobileNavButton}:hover &:nth-child(2)`]: {
+      width: "100%",
+    },
+    [`${mobileNavButton}:hover &:nth-child(3)`]: {
+      width: "100%",
+    },
+    '&[data-open="true"]:nth-child(1)': {
+      width: "100%",
       transform: "translateY(7px) rotate(45deg)",
     },
     '&[data-open="true"]:nth-child(2)': {
       opacity: 0,
+      transform: "scaleX(0)",
     },
-    '&[data-open="true"]:last-child': {
+    '&[data-open="true"]:nth-child(3)': {
+      width: "100%",
       transform: "translateY(-7px) rotate(-45deg)",
     },
   },
@@ -63,46 +70,85 @@ export const mobileNavButtonLine = style({
 export const mobileNavOverlay = style({
   position: "fixed",
   inset: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.4)",
-  zIndex: 9,
+  backgroundColor: "rgba(0, 0, 0, 0.5)",
+  zIndex: 10000,
   animationName: fadeIn,
-  animationDuration: "0.2s",
+  animationDuration: "0.3s",
   animationTimingFunction: "ease",
 });
 
 export const mobileNavPanel = style({
   position: "fixed",
-  top: 0,
-  right: 0,
-  width: "min(280px, 80vw)",
-  height: "100vh",
-  padding: "5rem 1.5rem 1.5rem",
-  backgroundColor: vars.color.surface,
-  borderLeft: `1px solid ${vars.color.border}`,
+  inset: 0,
   display: "flex",
   flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
   gap: "0.5rem",
-  zIndex: 10,
-  animationName: slideIn,
+  backgroundColor: vars.color.surface,
+  zIndex: 10001,
+  animationName: fadeIn,
   animationDuration: "0.25s",
   animationTimingFunction: "ease",
+  padding: "5rem 2rem",
+});
+
+const linkSlideIn = keyframes({
+  from: { opacity: 0, transform: "translateY(12px)" },
+  to: { opacity: 1, transform: "translateY(0)" },
 });
 
 export const mobileNavLink = style({
-  fontSize: "1.125rem",
-  fontWeight: 500,
+  fontSize: "1.75rem",
+  fontWeight: 600,
   color: vars.color.text,
   textDecoration: "none",
-  padding: "0.75rem 1rem",
-  borderRadius: "8px",
-  transition: "background-color 0.2s",
+  padding: "0.5rem 0",
+  transition: "color 0.2s",
+  animationName: linkSlideIn,
+  animationDuration: "0.4s",
+  animationTimingFunction: "ease-out",
+  animationFillMode: "both",
   ":hover": {
-    backgroundColor: vars.color.surfaceHover,
+    color: vars.color.primary,
   },
 });
 
 export const mobileNavLinkActive = style({
   color: vars.color.primary,
-  fontWeight: 600,
-  backgroundColor: `color-mix(in srgb, ${vars.color.primary} 8%, transparent)`,
+});
+
+export const mobileNavLinks = style({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "0.25rem",
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
+});
+
+export const mobileNavFooter = style({
+  position: "absolute",
+  bottom: "2.5rem",
+  display: "flex",
+  gap: "1.25rem",
+  animationName: linkSlideIn,
+  animationDuration: "0.4s",
+  animationTimingFunction: "ease-out",
+  animationFillMode: "both",
+  animationDelay: "0.3s",
+});
+
+export const mobileNavSocialLink = style({
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "2rem",
+  height: "2rem",
+  color: vars.color.muted,
+  transition: "color 0.2s",
+  ":hover": {
+    color: vars.color.primary,
+  },
 });
