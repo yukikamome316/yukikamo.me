@@ -8,9 +8,9 @@ export const header = style({
   padding: `${vars.space.medium} ${vars.space.large}`,
   position: "sticky",
   top: 0,
-  zIndex: 10,
+  zIndex: 10002,
   backdropFilter: "blur(8px)",
-  backgroundColor: "rgba(253, 253, 253, 0.85)",
+  backgroundColor: `color-mix(in srgb, ${vars.color.background} 85%, transparent)`,
   borderBottom: `1px solid ${vars.color.border}`,
 });
 
@@ -24,6 +24,7 @@ export const logo = style({
 export const nav = style({
   display: "flex",
   gap: vars.space.medium,
+  marginLeft: "auto",
 });
 
 export const navLink = style({
@@ -33,5 +34,25 @@ export const navLink = style({
   transition: "color 0.2s",
   ":hover": {
     color: vars.color.primaryDark,
+  },
+});
+
+export const navLinkActive = style({
+  color: vars.color.text,
+  fontWeight: 700,
+});
+
+export const navActions = style({
+  display: "flex",
+  alignItems: "center",
+  gap: vars.space.small,
+  marginLeft: vars.space.medium,
+});
+
+export const desktopOnly = style({
+  "@media": {
+    "(max-width: 640px)": {
+      display: "none",
+    },
   },
 });
