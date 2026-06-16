@@ -3,7 +3,7 @@ import Layout from '../../components/layouts/Layout.astro';
 import Card from '../../components/ui/Card.astro';
 import { getCollection } from 'astro:content';
 import { getExternalPosts } from '../../lib/external-posts';
-import { extractHeadings } from '../../lib/post-head';
+import { extractExcerpt, extractHeadings } from '../../lib/post-head';
 import { grid } from '../../styles/components/card.css';
 import {
   listSection,
@@ -22,8 +22,8 @@ const internalPosts = blogEntries.map((entry) => ({
   date: entry.data.date,
   updated: entry.data.updated,
   tags: entry.data.tags,
-  author: 'Yuki',
   image: `/ogp/blog/${entry.slug}.webp`,
+  excerpt: extractExcerpt(entry.body),
   head: extractHeadings(entry.body),
 }));
 
@@ -39,8 +39,8 @@ const allPosts = [
     updated: undefined as Date | undefined,
     tags: post.tags,
     source: post.source,
-    author: post.source,
     image: post.image,
+    excerpt: undefined as string | undefined,
     head: post.head,
   })),
 ];
@@ -73,8 +73,8 @@ const years = Object.keys(groupedByYear)
             href={post.href}
             date={post.date}
             tags={post.tags}
-            author={post.author}
             image={post.image}
+            excerpt={post.excerpt}
             head={post.head}
             source={post.type === 'external' ? post.source : undefined}
             external={post.type === 'external'}

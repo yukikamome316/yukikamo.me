@@ -4,16 +4,11 @@ import {
   cardImage,
   cardImageInner,
   cardDateOverlay,
-  cardDateLabel,
-  cardDateIcon,
   cardContent,
   cardTitle,
   cardDescription,
   cardHead,
   cardHeadItem,
-  cardMeta,
-  cardAuthor,
-  cardAuthorName,
   cardSource,
   cardTagList,
   cardTag,
@@ -24,13 +19,13 @@ interface Props {
   description?: string;
   href: string;
   date?: Date;
-  author?: string;
   tags?: string[];
   source?: string;
   external?: boolean;
   image?: string;
   imageAlt?: string;
   head?: string[];
+  excerpt?: string;
 }
 
 const {
@@ -38,13 +33,13 @@ const {
   description,
   href,
   date,
-  author,
   tags,
   source,
   external,
   image,
   imageAlt,
   head,
+  excerpt,
 } = Astro.props;
 
 const displayHead = head?.slice(0, 2) ?? [];
@@ -70,8 +65,6 @@ const formatDate = (d: Date) =>
         {
           date && (
             <div class={cardDateOverlay}>
-              <span class={cardDateIcon} aria-hidden="true">📅</span>
-              <span class={cardDateLabel}>公開</span>
               <time datetime={date.toISOString()}>{formatDate(date)}</time>
             </div>
           )
@@ -82,6 +75,11 @@ const formatDate = (d: Date) =>
   <div class={cardContent}>
     <h3 class={cardTitle}>{title}</h3>
     {
+      excerpt && !displayHead.length && (
+        <p class={cardDescription}>{excerpt}</p>
+      )
+    }
+    {
       displayHead.length > 0 && (
         <ul class={cardHead}>
           {displayHead.map((line) => (
@@ -90,26 +88,13 @@ const formatDate = (d: Date) =>
         </ul>
       )
     }
-    {description && !image && <p class={cardDescription}>{description}</p>}
+    {description && !image && !excerpt && <p class={cardDescription}>{description}</p>}
     {
-      (author || source) && (
-        <div class={cardMeta}>
-          {
-            author && (
-              <span class={cardAuthor}>
-                <span class={cardAuthorName}>@{author}</span>
-              </span>
-            )
-          }
-          {
-            source && (
-              <span class={cardSource}>
-                {source}
-                {external ? ' ↗' : ''}
-              </span>
-            )
-          }
-        </div>
+      source && (
+        <span class={cardSource}>
+          {source}
+          {external ? ' ↗' : ''}
+        </span>
       )
     }
     {
@@ -123,3 +108,4 @@ const formatDate = (d: Date) =>
     }
   </div>
 </a>
+
