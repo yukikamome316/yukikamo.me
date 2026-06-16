@@ -40,6 +40,21 @@ globalStyle("pre", {
   fontSize: "0.9rem",
   overflowX: "auto",
   WebkitOverflowScrolling: "touch",
+  scrollbarWidth: "auto",
+});
+
+globalStyle("pre::-webkit-scrollbar", {
+  height: "8px",
+});
+
+globalStyle("pre::-webkit-scrollbar-track", {
+  background: vars.color.surfaceHover,
+  borderRadius: "4px",
+});
+
+globalStyle("pre::-webkit-scrollbar-thumb", {
+  background: vars.color.border,
+  borderRadius: "4px",
 });
 
 globalStyle("pre code", {
