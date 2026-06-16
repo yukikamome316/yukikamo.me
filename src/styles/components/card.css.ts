@@ -2,6 +2,7 @@ import { style } from "@vanilla-extract/css";
 import { vars } from "../theme.css";
 
 export const card = style({
+  position: "relative",
   display: "flex",
   flexDirection: "column",
   height: "100%",
@@ -19,8 +20,9 @@ export const card = style({
 });
 
 export const cardImage = style({
+  position: "relative",
   width: "100%",
-  aspectRatio: "16 / 9",
+  aspectRatio: "16 / 7",
   backgroundColor: vars.color.surfaceHover,
   overflow: "hidden",
 });
@@ -32,6 +34,21 @@ export const cardImageInner = style({
   display: "block",
 });
 
+export const cardDateOverlay = style({
+  position: "absolute",
+  right: "0.75rem",
+  bottom: "0.5rem",
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "0.25rem",
+  padding: "0.25rem 0.625rem",
+  fontSize: "0.75rem",
+  color: "#ffffff",
+  backgroundColor: "rgba(0, 0, 0, 0.45)",
+  backdropFilter: "blur(4px)",
+  borderRadius: "999px",
+});
+
 export const cardContent = style({
   padding: vars.space.medium,
   display: "flex",
@@ -41,7 +58,7 @@ export const cardContent = style({
 });
 
 export const cardTitle = style({
-  fontSize: "1.125rem",
+  fontSize: "1.0625rem",
   fontWeight: 700,
   lineHeight: 1.4,
   color: vars.color.text,
