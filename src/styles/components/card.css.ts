@@ -2,24 +2,49 @@ import { style } from "@vanilla-extract/css";
 import { vars } from "../theme.css";
 
 export const card = style({
+  display: "flex",
+  flexDirection: "column",
+  height: "100%",
   backgroundColor: vars.color.surface,
   borderRadius: vars.space.medium,
   overflow: "hidden",
   transition: "transform 0.2s, box-shadow 0.2s",
   border: `1px solid ${vars.color.border}`,
+  textDecoration: "none",
+  color: "inherit",
   ":hover": {
     transform: "translateY(-4px)",
     boxShadow: `0 10px 30px rgba(38, 202, 253, 0.15)`,
   },
 });
 
+export const cardImage = style({
+  width: "100%",
+  aspectRatio: "16 / 9",
+  backgroundColor: vars.color.surfaceHover,
+  overflow: "hidden",
+});
+
+export const cardImageInner = style({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  display: "block",
+});
+
 export const cardContent = style({
   padding: vars.space.medium,
+  display: "flex",
+  flexDirection: "column",
+  flex: 1,
+  gap: vars.space.small,
 });
 
 export const cardTitle = style({
-  fontSize: "1.25rem",
-  marginBottom: vars.space.small,
+  fontSize: "1.125rem",
+  fontWeight: 700,
+  lineHeight: 1.4,
+  color: vars.color.text,
 });
 
 export const cardDescription = style({
@@ -45,6 +70,43 @@ export const cardSource = style({
   fontSize: "0.75rem",
   fontWeight: 600,
   color: vars.color.primaryDark,
+});
+
+export const cardDates = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.125rem",
+});
+
+export const cardDateRow = style({
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "0.25rem",
+  fontSize: "0.75rem",
+  color: vars.color.muted,
+});
+
+export const cardDateIcon = style({
+  fontSize: "0.875rem",
+  lineHeight: 1,
+});
+
+export const cardDateLabel = style({
+  fontWeight: 500,
+  marginRight: "0.25rem",
+});
+
+export const cardAuthor = style({
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "0.375rem",
+  fontSize: "0.75rem",
+  color: vars.color.muted,
+});
+
+export const cardAuthorName = style({
+  fontWeight: 600,
+  color: vars.color.text,
 });
 
 export const cardTagList = style({
