@@ -2,7 +2,7 @@
 title: "記事で使える装飾一覧"
 date: 2024-03-01
 description: "このブログで使える Markdown、Shiki コードハイライト、コンポーネントスタイルの装飾一覧です。タイトルは frontmatter の title フィールドで指定し、Markdown 本文では h1 を書かず h2 から始めること。"
-tags: ["Markdown", "Shiki", "Astro"]
+tags: ["Markdown", "Shiki", "Astro", "LaTeX"]
 ---
 
 ## イントロダクション
@@ -157,6 +157,20 @@ HTML を使うことで、簡易的な注釈ブロックを表現できます。
 ## 水平線
 
 トピックの区切りには `---` で水平線を引きます。
+
+---
+
+## LaTeX (数式)
+
+LaTeX 記法で数式が書けます。インライン数式は `$...$`、ブロック数式は `$$...$$` です。
+
+インライン: $E = mc^2$
+
+ブロック数式:
+
+$$
+\int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi}
+$$
 
 ---
 
