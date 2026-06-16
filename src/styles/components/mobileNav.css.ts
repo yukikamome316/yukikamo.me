@@ -6,9 +6,14 @@ const fadeIn = keyframes({
   to: { opacity: 1 },
 });
 
-const staggerIn = keyframes({
-  from: { opacity: 0, transform: "translateY(16px)" },
+const slideUp = keyframes({
+  from: { opacity: 0, transform: "translateY(20px)" },
   to: { opacity: 1, transform: "translateY(0)" },
+});
+
+const scaleIn = keyframes({
+  from: { opacity: 0, transform: "scale(0.95)" },
+  to: { opacity: 1, transform: "scale(1)" },
 });
 
 export const mobileNav = style({
@@ -21,7 +26,9 @@ export const mobileNav = style({
 });
 
 export const mobileNavButton = style({
-  position: "relative",
+  position: "fixed",
+  top: "1.5rem",
+  right: "1.5rem",
   width: "24px",
   height: "18px",
   padding: 0,
@@ -29,6 +36,11 @@ export const mobileNavButton = style({
   background: "none",
   cursor: "pointer",
   zIndex: 1002,
+  "@media": {
+    "(min-width: 641px)": {
+      display: "none",
+    },
+  },
 });
 
 export const mobileNavButtonLine = style({
@@ -70,10 +82,11 @@ export const mobileNavOverlay = style({
   right: 0,
   bottom: 0,
   left: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.4)",
+  backgroundColor: "rgba(0, 0, 0, 0.5)",
+  backdropFilter: "blur(4px)",
   zIndex: 1000,
   animationName: fadeIn,
-  animationDuration: "0.2s",
+  animationDuration: "0.25s",
   animationTimingFunction: "ease",
 });
 
@@ -91,26 +104,27 @@ export const mobileNavPanel = style({
   backgroundColor: vars.color.surface,
   gap: "0.5rem",
   padding: "6rem 2rem 5rem",
-  animationName: fadeIn,
-  animationDuration: "0.2s",
-  animationTimingFunction: "ease",
+  animationName: scaleIn,
+  animationDuration: "0.3s",
+  animationTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
 });
 
 export const mobileNavLink = style({
-  fontSize: "1.5rem",
+  fontSize: "1.75rem",
   fontWeight: 600,
   color: vars.color.text,
   textDecoration: "none",
-  padding: "0.5rem 1rem",
-  borderRadius: "8px",
-  transition: "color 0.2s, background-color 0.2s",
-  animationName: staggerIn,
-  animationDuration: "0.35s",
-  animationTimingFunction: "ease-out",
+  padding: "0.75rem 1.5rem",
+  borderRadius: "12px",
+  transition: "all 0.2s ease",
+  animationName: slideUp,
+  animationDuration: "0.4s",
+  animationTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
   animationFillMode: "both",
   ":hover": {
     color: vars.color.primary,
-    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 8%, transparent)`,
+    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 10%, transparent)`,
+    transform: "translateX(8px)",
   },
 });
 
@@ -122,18 +136,20 @@ export const mobileNavLinks = style({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  gap: "0.25rem",
+  gap: "0.5rem",
   padding: 0,
   margin: 0,
 });
 
 export const mobileNavFooter = style({
   display: "flex",
-  gap: "1.25rem",
+  gap: "1.5rem",
   marginTop: "3rem",
-  animationName: staggerIn,
-  animationDuration: "0.35s",
-  animationTimingFunction: "ease-out",
+  padding: "1.5rem",
+  borderTop: `1px solid ${vars.color.border}`,
+  animationName: slideUp,
+  animationDuration: "0.4s",
+  animationTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
   animationFillMode: "both",
   animationDelay: "0.3s",
 });
@@ -142,11 +158,14 @@ export const mobileNavSocialLink = style({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  width: "2rem",
-  height: "2rem",
+  width: "2.5rem",
+  height: "2.5rem",
   color: vars.color.muted,
-  transition: "color 0.2s",
+  borderRadius: "50%",
+  transition: "all 0.2s ease",
   ":hover": {
     color: vars.color.primary,
+    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 10%, transparent)`,
+    transform: "translateY(-2px)",
   },
 });

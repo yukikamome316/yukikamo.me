@@ -91,20 +91,23 @@ export default function MobileNav({ links, currentPath }: Props) {
     </>
   ) : null;
 
+  const buttonContent = (
+    <button
+      type="button"
+      className={mobileNavButton}
+      onClick={() => setOpen(!open)}
+      aria-label={open ? "メニューを閉じる" : "メニューを開く"}
+      aria-expanded={open}
+    >
+      <span className={mobileNavButtonLine} data-open={open} />
+      <span className={mobileNavButtonLine} data-open={open} />
+      <span className={mobileNavButtonLine} data-open={open} />
+    </button>
+  );
+
   return (
     <div className={mobileNav}>
-      <button
-        type="button"
-        className={mobileNavButton}
-        onClick={() => setOpen(!open)}
-        aria-label={open ? "メニューを閉じる" : "メニューを開く"}
-        aria-expanded={open}
-      >
-        <span className={mobileNavButtonLine} data-open={open} />
-        <span className={mobileNavButtonLine} data-open={open} />
-        <span className={mobileNavButtonLine} data-open={open} />
-      </button>
-
+      {mounted ? createPortal(buttonContent, document.body) : buttonContent}
       {mounted && createPortal(menuContent, document.body)}
     </div>
   );
