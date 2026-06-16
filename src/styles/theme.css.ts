@@ -6,8 +6,8 @@ export const vars = createGlobalTheme(":root", {
     surface: "#ffffff", // カード等の表面
     surfaceHover: "#f5f7fa",
     text: "#2b2c32", // ダークグレー（ユーザー指定）
-    primary: "#26cafd", // メインの水色（ユーザー指定）
-    primaryDark: "#007699", // アクセシビリティ用（WCAG AAクリア可能な暗さ）
+    primary: "#0080aa",
+    primaryDark: "#0080aa",
     secondary: "#fd5826", // アクセントのオレンジ（補色・ユーザー指定）
     muted: "#5c6475", // 少し明るめのグレー（コントラスト改善済み）
     border: "#e4e7ec", // 薄い境界線
@@ -15,6 +15,7 @@ export const vars = createGlobalTheme(":root", {
   font: {
     body: '"Noto Sans JP Variable", system-ui, sans-serif',
     heading: '"Noto Sans JP Variable", system-ui, sans-serif',
+    code: '"Fira Code", "Noto Sans JP Variable", monospace',
   },
   space: {
     xs: "4px",
