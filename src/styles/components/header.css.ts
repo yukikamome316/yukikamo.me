@@ -24,6 +24,7 @@ export const logo = style({
 export const nav = style({
   display: "flex",
   gap: vars.space.medium,
+  marginLeft: "auto",
 });
 
 export const navLink = style({
