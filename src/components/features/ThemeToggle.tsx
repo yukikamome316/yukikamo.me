@@ -9,11 +9,12 @@ const SunIcon = () => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="2"
+    stroke-width="1.5"
     stroke-linecap="round"
     stroke-linejoin="round"
   >
-    <polygon points="12,2 15,9 22,9 16.5,14 18.5,22 12,18 5.5,22 7.5,14 2,9 9,9" />
+    <circle cx="12" cy="12" r="5" />
+    <path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5" />
   </svg>
 );
 
@@ -22,19 +23,11 @@ const MoonIcon = () => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="2"
+    stroke-width="1.5"
     stroke-linecap="round"
     stroke-linejoin="round"
   >
-    <circle
-      cx="12"
-      cy="12"
-      r="9"
-      stroke-dasharray="2 10"
-      stroke-dashoffset="3"
-    />
-    <circle cx="10" cy="10" r="1.5" fill="currentColor" stroke="none" />
-    <circle cx="16" cy="14" r="1" fill="currentColor" stroke="none" />
+    <path d="M12 3a9 9 0 1 0 9 9c-4.97 0-9-4.03-9-9z" />
   </svg>
 );
 
