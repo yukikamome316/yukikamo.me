@@ -91,60 +91,10 @@ export const cardHeadItem = style({
   textOverflow: "ellipsis",
 });
 
-export const cardMeta = style({
-  display: "flex",
-  flexWrap: "wrap",
-  alignItems: "center",
-  gap: vars.space.small,
-  marginTop: "auto",
-});
-
-export const cardDate = style({
-  fontSize: "0.75rem",
-  color: vars.color.muted,
-});
-
 export const cardSource = style({
   fontSize: "0.75rem",
   fontWeight: 600,
   color: vars.color.primaryDark,
-});
-
-export const cardDates = style({
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.125rem",
-});
-
-export const cardDateRow = style({
-  display: "inline-flex",
-  alignItems: "center",
-  gap: "0.25rem",
-  fontSize: "0.75rem",
-  color: vars.color.muted,
-});
-
-export const cardDateIcon = style({
-  fontSize: "0.875rem",
-  lineHeight: 1,
-});
-
-export const cardDateLabel = style({
-  fontWeight: 500,
-  marginRight: "0.25rem",
-});
-
-export const cardAuthor = style({
-  display: "inline-flex",
-  alignItems: "center",
-  gap: "0.375rem",
-  fontSize: "0.75rem",
-  color: vars.color.muted,
-});
-
-export const cardAuthorName = style({
-  fontWeight: 600,
-  color: vars.color.text,
 });
 
 export const cardTagList = style({
