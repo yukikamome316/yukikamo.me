@@ -65,9 +65,13 @@ const ogImage = image.startsWith("http") ? image : siteUrl + image;
     <script is:inline>
       document.querySelectorAll("pre").forEach((el) => {
         const check = () => {
-          if (el.scrollWidth > el.clientWidth) {
+          const tolerance = 2;
+          const hasOverflow = el.scrollWidth - el.clientWidth > tolerance;
+          if (hasOverflow) {
             el.dataset.scrollable = "";
-            if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 1) {
+            const atEnd =
+              el.scrollLeft + el.clientWidth >= el.scrollWidth - tolerance;
+            if (atEnd) {
               el.dataset.scrolledEnd = "";
             } else {
               delete el.dataset.scrolledEnd;
@@ -77,8 +81,8 @@ const ogImage = image.startsWith("http") ? image : siteUrl + image;
             delete el.dataset.scrolledEnd;
           }
         };
-        el.addEventListener("scroll", check);
-        window.addEventListener("resize", check);
+        el.addEventListener("scroll", check, { passive: true });
+        window.addEventListener("resize", check, { passive: true });
         check();
       });
     </script>

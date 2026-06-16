@@ -33,13 +33,13 @@ globalStyle("a:hover", {
 globalStyle("code", {
   fontFamily: vars.font.code,
   fontSize: "0.9em",
-  fontWeight: 500,
+  fontWeight: 400,
 });
 
 globalStyle("pre", {
   fontFamily: vars.font.code,
   fontSize: "0.9rem",
-  fontWeight: 500,
+  fontWeight: 400,
   overflowX: "auto",
   WebkitOverflowScrolling: "touch",
   scrollbarWidth: "auto",
