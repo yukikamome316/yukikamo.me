@@ -90,7 +90,7 @@ globalStyle(`${articleBody} code`, {
   background: vars.color.surfaceHover,
   padding: "0.2rem 0.4rem",
   borderRadius: "4px",
-  fontSize: "0.9em",
+  fontSize: "0.9375em",
 });
 
 globalStyle(`${articleBody} pre`, {
@@ -106,7 +106,7 @@ globalStyle(`${articleBody} pre`, {
 globalStyle(`${articleBody} pre code`, {
   background: "transparent",
   padding: 0,
-  fontSize: "0.9em",
+  fontSize: "0.9375em",
 });
 
 // テーブル
