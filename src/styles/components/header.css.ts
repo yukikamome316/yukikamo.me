@@ -46,6 +46,7 @@ export const navActions = style({
   display: "flex",
   alignItems: "center",
   gap: vars.space.small,
+  marginLeft: vars.space.medium,
 });
 
 export const desktopOnly = style({
