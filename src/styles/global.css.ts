@@ -136,14 +136,15 @@ globalStyle(".rlc-url", {
 globalStyle(".rlc-image-container", {
   flexShrink: 0,
   width: "120px",
-  height: "auto",
+  aspectRatio: "16 / 9",
   borderRadius: "4px",
   overflow: "hidden",
+  backgroundColor: vars.color.surfaceHover,
 });
 
 globalStyle(".rlc-image", {
   display: "block",
   width: "100%",
   height: "100%",
-  objectFit: "cover",
+  objectFit: "contain",
 });
