@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   mobileNav,
   mobileNavButton,
@@ -37,6 +38,58 @@ const socialLinks = [
 
 export default function MobileNav({ links, currentPath }: Props) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const menuContent = open ? (
+    <>
+      <div
+        className={mobileNavOverlay}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <nav className={mobileNavPanel}>
+        <div className={mobileNavLinks}>
+          {links.map((link, i) => {
+            const isActive =
+              currentPath === link.href ||
+              currentPath.startsWith(`${link.href}/`);
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`${mobileNavLink} ${isActive ? mobileNavLinkActive : ""}`}
+                onClick={() => setOpen(false)}
+                style={{ animationDelay: `${i * 0.08}s` }}
+              >
+                {link.label}
+              </a>
+            );
+          })}
+        </div>
+        <div className={mobileNavFooter}>
+          {socialLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className={mobileNavSocialLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={link.label}
+            >
+              <span
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: link.svg }}
+              />
+            </a>
+          ))}
+        </div>
+      </nav>
+    </>
+  ) : null;
 
   return (
     <div className={mobileNav}>
@@ -52,52 +105,7 @@ export default function MobileNav({ links, currentPath }: Props) {
         <span className={mobileNavButtonLine} data-open={open} />
       </button>
 
-      {open && (
-        <>
-          <div
-            className={mobileNavOverlay}
-            onClick={() => setOpen(false)}
-            aria-hidden="true"
-          />
-          <nav className={mobileNavPanel}>
-            <div className={mobileNavLinks}>
-              {links.map((link, i) => {
-                const isActive =
-                  currentPath === link.href ||
-                  currentPath.startsWith(`${link.href}/`);
-                return (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className={`${mobileNavLink} ${isActive ? mobileNavLinkActive : ""}`}
-                    onClick={() => setOpen(false)}
-                    style={{ animationDelay: `${i * 0.08}s` }}
-                  >
-                    {link.label}
-                  </a>
-                );
-              })}
-            </div>
-            <div className={mobileNavFooter}>
-              {socialLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className={mobileNavSocialLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.label}
-                >
-                  <span
-                    aria-hidden="true"
-                    dangerouslySetInnerHTML={{ __html: link.svg }}
-                  />
-                </a>
-              ))}
-            </div>
-          </nav>
-        </>
-      )}
+      {mounted && createPortal(menuContent, document.body)}
     </div>
   );
 }
