@@ -15,6 +15,7 @@ export const vars = createGlobalTheme(":root", {
   font: {
     body: '"Noto Sans JP Variable", system-ui, sans-serif',
     heading: '"Noto Sans JP Variable", system-ui, sans-serif',
+    code: '"Fira Code", "Noto Sans JP Variable", monospace',
   },
   space: {
     xs: "4px",

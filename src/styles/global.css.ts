@@ -30,6 +30,22 @@ globalStyle("a:hover", {
   color: vars.color.secondary,
 });
 
+globalStyle("code", {
+  fontFamily: vars.font.code,
+  fontSize: "0.875em",
+});
+
+globalStyle("pre", {
+  fontFamily: vars.font.code,
+  fontSize: "0.875rem",
+  overflowX: "auto",
+  WebkitOverflowScrolling: "touch",
+});
+
+globalStyle("pre code", {
+  fontSize: "inherit",
+});
+
 globalStyle("*", {
   boxSizing: "border-box",
 });
