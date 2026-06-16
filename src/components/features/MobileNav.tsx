@@ -107,7 +107,7 @@ export default function MobileNav({ links, currentPath }: Props) {
 
   return (
     <div className={mobileNav}>
-      {mounted ? createPortal(buttonContent, document.body) : buttonContent}
+      {buttonContent}
       {mounted && createPortal(menuContent, document.body)}
     </div>
   );

@@ -26,9 +26,7 @@ export const mobileNav = style({
 });
 
 export const mobileNavButton = style({
-  position: "fixed",
-  top: "1.5rem",
-  right: "1.5rem",
+  position: "relative",
   width: "24px",
   height: "18px",
   padding: 0,
@@ -36,11 +34,6 @@ export const mobileNavButton = style({
   background: "none",
   cursor: "pointer",
   zIndex: 1002,
-  "@media": {
-    "(min-width: 641px)": {
-      display: "none",
-    },
-  },
 });
 
 export const mobileNavButtonLine = style({
