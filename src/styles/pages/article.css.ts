@@ -99,6 +99,7 @@ globalStyle(`${articleBody} pre`, {
   borderRadius: "8px",
   padding: "1.25rem",
   overflowX: "auto",
+  position: "relative",
   marginBottom: "1.5rem",
 });
 
