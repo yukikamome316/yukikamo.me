@@ -42,7 +42,10 @@ const years = Object.keys(groupedByYear)
                 description={entry.data.description || ''}
                 href={`/articles/${entry.slug}`}
                 date={entry.data.date}
+                updated={entry.data.updated}
                 tags={entry.data.tags}
+                author="Yuki"
+                image={`/ogp/articles/${entry.slug}.webp`}
               />
             ))}
           </div>
