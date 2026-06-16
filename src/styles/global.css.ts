@@ -32,13 +32,13 @@ globalStyle("a:hover", {
 
 globalStyle("code", {
   fontFamily: vars.font.code,
-  fontSize: "0.9em",
+  fontSize: "0.9375em",
   fontWeight: 400,
 });
 
 globalStyle("pre", {
   fontFamily: vars.font.code,
-  fontSize: "0.9rem",
+  fontSize: "0.9375rem",
   fontWeight: 400,
   overflowX: "auto",
   WebkitOverflowScrolling: "touch",
@@ -47,10 +47,11 @@ globalStyle("pre", {
   background: vars.color.surfaceHover,
 });
 
-// スクロールフェードオーバーレイ (右端がフェードアウトしていることを示す)
+// スクロールフェードオーバーレイ (表示領域の右端に追従)
 globalStyle("pre::after", {
   content: '""',
-  position: "absolute",
+  position: "sticky",
+  display: "block",
   top: 0,
   right: 0,
   width: "2rem",
@@ -59,7 +60,6 @@ globalStyle("pre::after", {
   pointerEvents: "none",
   opacity: 0,
   transition: "opacity 0.25s ease",
-  borderRadius: "0 8px 8px 0",
 });
 
 globalStyle("pre[data-scrollable]:not([data-scrolled-end])::after", {
