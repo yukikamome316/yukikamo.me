@@ -23,6 +23,7 @@ export const themeToggle = style({
 });
 
 export const themeToggleIcon = style({
-  fontSize: "1rem",
-  lineHeight: 1,
+  display: "inline-flex",
+  width: "1.125rem",
+  height: "1.125rem",
 });
