@@ -13,9 +13,9 @@ export const themeToggle = style({
   backgroundColor: "transparent",
   color: vars.color.muted,
   cursor: "pointer",
-  transition: "color 0.2s, background-color 0.2s",
   position: "relative",
   zIndex: 10002,
+  transition: "color 0.2s, background-color 0.2s",
   ":hover": {
     color: vars.color.text,
     backgroundColor: vars.color.surfaceHover,
@@ -23,7 +23,6 @@ export const themeToggle = style({
 });
 
 export const themeToggleIcon = style({
-  display: "inline-flex",
-  width: "1.125rem",
-  height: "1.125rem",
+  fontSize: "1rem",
+  lineHeight: 1,
 });
