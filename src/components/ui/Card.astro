@@ -6,6 +6,8 @@ import {
   cardContent,
   cardTitle,
   cardDescription,
+  cardHead,
+  cardHeadItem,
   cardMeta,
   cardDates,
   cardDateRow,
@@ -30,6 +32,7 @@ interface Props {
   external?: boolean;
   image?: string;
   imageAlt?: string;
+  head?: string[];
 }
 
 const {
@@ -44,7 +47,10 @@ const {
   external,
   image,
   imageAlt,
+  head,
 } = Astro.props;
+
+const displayHead = head?.slice(0, 2) ?? [];
 
 const formatDate = (d: Date) =>
   d.toLocaleDateString('ja-JP', {
@@ -69,6 +75,15 @@ const formatDate = (d: Date) =>
   }
   <div class={cardContent}>
     <h3 class={cardTitle}>{title}</h3>
+    {
+      displayHead.length > 0 && (
+        <ul class={cardHead}>
+          {displayHead.map((line) => (
+            <li class={cardHeadItem}>{line}</li>
+          ))}
+        </ul>
+      )
+    }
     {description && !image && <p class={cardDescription}>{description}</p>}
     <div class={cardMeta}>
       {
