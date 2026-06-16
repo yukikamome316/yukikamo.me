@@ -26,14 +26,27 @@ export const mobileNav = style({
 });
 
 export const mobileNavButton = style({
-  position: "relative",
-  width: "24px",
-  height: "18px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "2.25rem",
+  height: "2.25rem",
   padding: 0,
   border: "none",
+  borderRadius: "999px",
   background: "none",
   cursor: "pointer",
   zIndex: 1002,
+  transition: "background-color 0.2s",
+  ":hover": {
+    backgroundColor: vars.color.surfaceHover,
+  },
+});
+
+export const mobileNavButtonInner = style({
+  position: "relative",
+  width: "24px",
+  height: "18px",
 });
 
 export const mobileNavButtonLine = style({
@@ -46,23 +59,23 @@ export const mobileNavButtonLine = style({
   borderRadius: "1px",
   transition: "transform 0.3s ease, opacity 0.3s ease",
   selectors: {
-    "&:nth-child(1)": {
+    [`${mobileNavButtonInner} &:nth-child(1)`]: {
       top: 0,
     },
-    "&:nth-child(2)": {
+    [`${mobileNavButtonInner} &:nth-child(2)`]: {
       top: "8px",
     },
-    "&:nth-child(3)": {
+    [`${mobileNavButtonInner} &:nth-child(3)`]: {
       top: "16px",
     },
-    '&[data-open="true"]:nth-child(1)': {
+    [`${mobileNavButtonInner} &[data-open="true"]:nth-child(1)`]: {
       top: "8px",
       transform: "rotate(45deg)",
     },
-    '&[data-open="true"]:nth-child(2)': {
+    [`${mobileNavButtonInner} &[data-open="true"]:nth-child(2)`]: {
       opacity: 0,
     },
-    '&[data-open="true"]:nth-child(3)': {
+    [`${mobileNavButtonInner} &[data-open="true"]:nth-child(3)`]: {
       top: "8px",
       transform: "rotate(-45deg)",
     },
