@@ -5,13 +5,7 @@ import { getCollection } from 'astro:content';
 import { getExternalPosts } from '../../lib/external-posts';
 import { extractExcerpt, extractHeadings } from '../../lib/post-head';
 import { grid } from '../../styles/components/card.css';
-import {
-  listSection,
-  listTitle,
-  listDescription,
-  yearGroup,
-  yearGroupTitle,
-} from '../../styles/pages/list.css';
+import { listSection, listTitle, listDescription } from '../../styles/pages/list.css';
 
 const blogEntries = await getCollection('blog');
 
@@ -46,17 +40,6 @@ const allPosts = [
 ];
 
 const sortedPosts = allPosts.sort((a, b) => b.date.valueOf() - a.date.valueOf());
-
-const groupedByYear = sortedPosts.reduce<Record<number, typeof sortedPosts>>((acc, post) => {
-  const year = post.date.getFullYear();
-  if (!acc[year]) acc[year] = [];
-  acc[year].push(post);
-  return acc;
-}, {});
-
-const years = Object.keys(groupedByYear)
-  .map(Number)
-  .sort((a, b) => b - a);
 ---
 
 <Layout title="Blog | Yuki" description="ソフトウェアエンジニアリング、セキュリティ、日々のことについて書いています。">
