@@ -41,20 +41,22 @@ const recentWork = allWork
   .slice(0, 3);
 
 const allBlog = await getCollection("blog");
+const internalBlogPosts = allBlog.map((post) => ({
+  type: "internal" as const,
+  title: post.data.title,
+  href: `/blog/${post.slug}`,
+  date: post.data.date,
+  updated: post.data.updated,
+  tags: post.data.tags,
+  author: "Yuki",
+  image: `/ogp/blog/${post.slug}.webp`,
+  head: extractHeadings(post.body),
+}));
+
 const externalPosts = getExternalPosts();
 
 const allPosts = [
-  ...allBlog.map((post) => ({
-    type: "internal" as const,
-    title: post.data.title,
-    href: `/blog/${post.slug}`,
-    date: post.data.date,
-    updated: post.data.updated,
-    tags: post.data.tags,
-    author: "Yuki",
-    image: `/ogp/blog/${post.slug}.webp`,
-    head: extractHeadings(post.body),
-  })),
+  ...internalBlogPosts,
   ...externalPosts.map((post) => ({
     type: "external" as const,
     title: post.title,
@@ -120,22 +122,6 @@ const recentPosts = allPosts
     </div>
   </section>
 
-  <!-- Work Section -->
-  <section class={workSection}>
-    <h2 class={sectionTitle}>Selected Work</h2>
-    <div class={grid}>
-      {
-        recentWork.map((work) => (
-          <Card
-            title={work.data.title}
-            description={work.data.description}
-            href={`/work/${work.slug}`}
-          />
-        ))
-      }
-    </div>
-  </section>
-
   <!-- Blog Section -->
   <section class={blogSection}>
     <h2 class={sectionTitle}>Latest Posts</h2>
@@ -146,13 +132,28 @@ const recentPosts = allPosts
             title={post.title}
             href={post.href}
             date={post.date}
-            updated={post.updated}
             tags={post.tags}
             author={post.author}
             image={post.image}
             head={post.head}
             source={post.type === "external" ? post.source : undefined}
             external={post.type === "external"}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Work Section -->
+  <section class={workSection}>
+    <h2 class={sectionTitle}>Selected Work</h2>
+    <div class={grid}>
+      {
+        recentWork.map((work) => (
+          <Card
+            title={work.data.title}
+            description={work.data.description}
+            href={`/work/${work.slug}`}
           />
         ))
       }

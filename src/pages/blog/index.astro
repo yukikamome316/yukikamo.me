@@ -14,20 +14,23 @@ import {
 } from '../../styles/pages/list.css';
 
 const blogEntries = await getCollection('blog');
+
+const internalPosts = blogEntries.map((entry) => ({
+  type: 'internal' as const,
+  title: entry.data.title,
+  href: `/blog/${entry.slug}`,
+  date: entry.data.date,
+  updated: entry.data.updated,
+  tags: entry.data.tags,
+  author: 'Yuki',
+  image: `/ogp/blog/${entry.slug}.webp`,
+  head: extractHeadings(entry.body),
+}));
+
 const externalPosts = getExternalPosts();
 
 const allPosts = [
-  ...blogEntries.map((entry) => ({
-    type: 'internal' as const,
-    title: entry.data.title,
-    href: `/blog/${entry.slug}`,
-    date: entry.data.date,
-    updated: entry.data.updated,
-    tags: entry.data.tags,
-    author: 'Yuki',
-    image: `/ogp/blog/${entry.slug}.webp`,
-    head: extractHeadings(entry.body),
-  })),
+  ...internalPosts,
   ...externalPosts.map((post) => ({
     type: 'external' as const,
     title: post.title,
@@ -61,28 +64,23 @@ const years = Object.keys(groupedByYear)
     <h1 class={listTitle}>Blog</h1>
     <p class={listDescription}>ソフトウェアエンジニアリング、セキュリティ、日々のことについて書いています。</p>
 
-    {
-      years.map((year) => (
-        <div class={yearGroup}>
-          <h2 class={yearGroupTitle}>{year}</h2>
-          <div class={grid}>
-            {groupedByYear[year].map((post) => (
-              <Card
-                title={post.title}
-                href={post.href}
-                date={post.date}
-                updated={post.updated}
-                tags={post.tags}
-                author={post.author}
-                image={post.image}
-                head={post.head}
-                source={post.type === 'external' ? post.source : undefined}
-                external={post.type === 'external'}
-              />
-            ))}
-          </div>
-        </div>
-      ))
-    }
+    <div class={grid}>
+      {
+        sortedPosts.map((post) => (
+          <Card
+            title={post.title}
+            description={post.description}
+            href={post.href}
+            date={post.date}
+            tags={post.tags}
+            author={post.author}
+            image={post.image}
+            head={post.head}
+            source={post.type === 'external' ? post.source : undefined}
+            external={post.type === 'external'}
+          />
+        ))
+      }
+    </div>
   </section>
 </Layout>
