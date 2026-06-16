@@ -33,14 +33,37 @@ globalStyle("a:hover", {
 globalStyle("code", {
   fontFamily: vars.font.code,
   fontSize: "0.9em",
+  fontWeight: 500,
 });
 
 globalStyle("pre", {
   fontFamily: vars.font.code,
   fontSize: "0.9rem",
+  fontWeight: 500,
   overflowX: "auto",
   WebkitOverflowScrolling: "touch",
   scrollbarWidth: "auto",
+  position: "relative",
+  background: vars.color.surfaceHover,
+});
+
+// スクロールフェードオーバーレイ (右端がフェードアウトしていることを示す)
+globalStyle("pre::after", {
+  content: '""',
+  position: "absolute",
+  top: 0,
+  right: 0,
+  width: "2rem",
+  height: "100%",
+  background: `linear-gradient(to right, transparent, ${vars.color.surfaceHover})`,
+  pointerEvents: "none",
+  opacity: 0,
+  transition: "opacity 0.25s ease",
+  borderRadius: "0 8px 8px 0",
+});
+
+globalStyle("pre[data-scrollable]:not([data-scrolled-end])::after", {
+  opacity: 1,
 });
 
 globalStyle("pre::-webkit-scrollbar", {
