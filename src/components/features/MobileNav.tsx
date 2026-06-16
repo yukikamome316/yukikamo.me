@@ -87,7 +87,6 @@ export default function MobileNav({ links, currentPath }: Props) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={link.label}
-                  onClick={() => setOpen(false)}
                 >
                   <span
                     aria-hidden="true"

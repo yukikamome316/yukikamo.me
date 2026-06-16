@@ -6,6 +6,11 @@ const fadeIn = keyframes({
   to: { opacity: 1 },
 });
 
+const staggerIn = keyframes({
+  from: { opacity: 0, transform: "translateY(16px)" },
+  to: { opacity: 1, transform: "translateY(0)" },
+});
+
 export const mobileNav = style({
   display: "none",
   "@media": {
@@ -17,54 +22,43 @@ export const mobileNav = style({
 
 export const mobileNavButton = style({
   position: "relative",
-  width: "28px",
-  height: "20px",
+  width: "24px",
+  height: "18px",
   padding: 0,
   border: "none",
-  backgroundColor: "transparent",
+  background: "none",
   cursor: "pointer",
-  zIndex: 10002,
+  zIndex: 1002,
 });
 
 export const mobileNavButtonLine = style({
   position: "absolute",
   left: 0,
   display: "block",
-  height: "1.5px",
+  width: "100%",
+  height: "2px",
   backgroundColor: vars.color.text,
-  borderRadius: "2px",
-  transition: "width 0.2s ease, transform 0.3s ease, opacity 0.3s ease",
-  transformOrigin: "center",
+  borderRadius: "1px",
+  transition: "transform 0.3s ease, opacity 0.3s ease",
   selectors: {
     "&:nth-child(1)": {
       top: 0,
-      width: "100%",
     },
     "&:nth-child(2)": {
-      top: "9px",
-      width: "calc(100% - 6px)",
+      top: "8px",
     },
     "&:nth-child(3)": {
-      top: "18px",
-      width: "calc(100% - 12px)",
-    },
-    [`${mobileNavButton}:hover &:nth-child(2)`]: {
-      width: "100%",
-    },
-    [`${mobileNavButton}:hover &:nth-child(3)`]: {
-      width: "100%",
+      top: "16px",
     },
     '&[data-open="true"]:nth-child(1)': {
-      width: "100%",
-      top: "9px",
+      top: "8px",
       transform: "rotate(45deg)",
     },
     '&[data-open="true"]:nth-child(2)': {
       opacity: 0,
     },
     '&[data-open="true"]:nth-child(3)': {
-      width: "100%",
-      top: "9px",
+      top: "8px",
       transform: "rotate(-45deg)",
     },
   },
@@ -73,47 +67,44 @@ export const mobileNavButtonLine = style({
 export const mobileNavOverlay = style({
   position: "fixed",
   inset: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
-  zIndex: 10000,
+  backgroundColor: "rgba(0, 0, 0, 0.4)",
+  zIndex: 1000,
   animationName: fadeIn,
-  animationDuration: "0.3s",
+  animationDuration: "0.2s",
   animationTimingFunction: "ease",
 });
 
 export const mobileNavPanel = style({
   position: "fixed",
   inset: 0,
+  zIndex: 1001,
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
   alignItems: "center",
-  gap: "0.5rem",
+  justifyContent: "center",
   backgroundColor: vars.color.surface,
-  zIndex: 10001,
+  gap: "0.5rem",
+  padding: "6rem 2rem 5rem",
   animationName: fadeIn,
-  animationDuration: "0.25s",
+  animationDuration: "0.2s",
   animationTimingFunction: "ease",
-  padding: "5rem 2rem",
-});
-
-const linkSlideIn = keyframes({
-  from: { opacity: 0, transform: "translateY(12px)" },
-  to: { opacity: 1, transform: "translateY(0)" },
 });
 
 export const mobileNavLink = style({
-  fontSize: "1.75rem",
+  fontSize: "1.5rem",
   fontWeight: 600,
   color: vars.color.text,
   textDecoration: "none",
-  padding: "0.5rem 0",
-  transition: "color 0.2s",
-  animationName: linkSlideIn,
-  animationDuration: "0.4s",
+  padding: "0.5rem 1rem",
+  borderRadius: "8px",
+  transition: "color 0.2s, background-color 0.2s",
+  animationName: staggerIn,
+  animationDuration: "0.35s",
   animationTimingFunction: "ease-out",
   animationFillMode: "both",
   ":hover": {
     color: vars.color.primary,
+    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 8%, transparent)`,
   },
 });
 
@@ -126,18 +117,16 @@ export const mobileNavLinks = style({
   flexDirection: "column",
   alignItems: "center",
   gap: "0.25rem",
-  listStyle: "none",
   padding: 0,
   margin: 0,
 });
 
 export const mobileNavFooter = style({
-  position: "absolute",
-  bottom: "2.5rem",
   display: "flex",
   gap: "1.25rem",
-  animationName: linkSlideIn,
-  animationDuration: "0.4s",
+  marginTop: "3rem",
+  animationName: staggerIn,
+  animationDuration: "0.35s",
   animationTimingFunction: "ease-out",
   animationFillMode: "both",
   animationDelay: "0.3s",
