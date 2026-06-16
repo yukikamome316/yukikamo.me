@@ -41,10 +41,12 @@ const filteredEntries = allEntries
         filteredEntries.map((entry) => (
           <Card
             title={entry.data.title}
-            description={entry.data.description || ''}
             href={`/blog/${entry.slug}`}
             date={entry.data.date}
+            updated={entry.data.updated}
             tags={entry.data.tags}
+            author="Yuki"
+            image={`/ogp/blog/${entry.slug}.webp`}
           />
         ))
       }
