@@ -37,13 +37,13 @@ export const mobileNavButtonLine = style({
   transition: "width 0.2s ease, transform 0.3s ease, opacity 0.3s ease",
   transformOrigin: "center",
   selectors: {
-    '&:nth-child(1)': {
+    "&:nth-child(1)": {
       width: "100%",
     },
-    '&:nth-child(2)': {
+    "&:nth-child(2)": {
       width: "calc(100% - 6px)",
     },
-    '&:nth-child(3)': {
+    "&:nth-child(3)": {
       width: "calc(100% - 12px)",
     },
     [`${mobileNavButton}:hover &:nth-child(2)`]: {

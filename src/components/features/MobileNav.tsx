@@ -89,7 +89,10 @@ export default function MobileNav({ links, currentPath }: Props) {
                   aria-label={link.label}
                   onClick={() => setOpen(false)}
                 >
-                  <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: link.svg }} />
+                  <span
+                    aria-hidden="true"
+                    dangerouslySetInnerHTML={{ __html: link.svg }}
+                  />
                 </a>
               ))}
             </div>
