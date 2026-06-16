@@ -10,7 +10,7 @@ export const header = style({
   top: 0,
   zIndex: 10,
   backdropFilter: "blur(8px)",
-  backgroundColor: "rgba(253, 253, 253, 0.85)",
+  backgroundColor: `color-mix(in srgb, ${vars.color.background} 85%, transparent)`,
   borderBottom: `1px solid ${vars.color.border}`,
 });
 
