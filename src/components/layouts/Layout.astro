@@ -55,9 +55,18 @@ const ogImage = image.startsWith("http") ? image : siteUrl + image;
     <slot name="head" />
     <title>{title}</title>
     <script is:inline>
-      if (localStorage.getItem("theme") === "dark") {
-        document.documentElement.classList.add("dark");
-      }
+      (() => {
+        if (localStorage.getItem("theme") === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+        document.addEventListener("astro:after-swap", () => {
+          if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        });
+      })();
     </script>
     <ViewTransitions />
   </head>
