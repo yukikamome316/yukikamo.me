@@ -32,12 +32,12 @@ globalStyle("a:hover", {
 
 globalStyle("code", {
   fontFamily: vars.font.code,
-  fontSize: "0.875em",
+  fontSize: "0.9em",
 });
 
 globalStyle("pre", {
   fontFamily: vars.font.code,
-  fontSize: "0.875rem",
+  fontSize: "0.9rem",
   overflowX: "auto",
   WebkitOverflowScrolling: "touch",
 });
