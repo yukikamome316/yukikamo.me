@@ -3,16 +3,15 @@ import {
   card,
   cardImage,
   cardImageInner,
+  cardDateOverlay,
+  cardDateLabel,
+  cardDateIcon,
   cardContent,
   cardTitle,
   cardDescription,
   cardHead,
   cardHeadItem,
   cardMeta,
-  cardDates,
-  cardDateRow,
-  cardDateIcon,
-  cardDateLabel,
   cardAuthor,
   cardAuthorName,
   cardSource,
@@ -25,7 +24,6 @@ interface Props {
   description?: string;
   href: string;
   date?: Date;
-  updated?: Date;
   author?: string;
   tags?: string[];
   source?: string;
@@ -40,7 +38,6 @@ const {
   description,
   href,
   date,
-  updated,
   author,
   tags,
   source,
@@ -70,6 +67,15 @@ const formatDate = (d: Date) =>
     image && (
       <div class={cardImage}>
         <img src={image} alt={imageAlt ?? title} class={cardImageInner} loading="lazy" />
+        {
+          date && (
+            <div class={cardDateOverlay}>
+              <span class={cardDateIcon} aria-hidden="true">📅</span>
+              <span class={cardDateLabel}>公開</span>
+              <time datetime={date.toISOString()}>{formatDate(date)}</time>
+            </div>
+          )
+        }
       </div>
     )
   }
@@ -85,43 +91,27 @@ const formatDate = (d: Date) =>
       )
     }
     {description && !image && <p class={cardDescription}>{description}</p>}
-    <div class={cardMeta}>
-      {
-        date && (
-          <div class={cardDates}>
-            <div class={cardDateRow}>
-              <span class={cardDateIcon} aria-hidden="true">📅</span>
-              <span class={cardDateLabel}>公開</span>
-              <time datetime={date.toISOString()}>{formatDate(date)}</time>
-            </div>
-            {
-              updated && updated.getTime() !== date.getTime() && (
-                <div class={cardDateRow}>
-                  <span class={cardDateIcon} aria-hidden="true">🔄</span>
-                  <span class={cardDateLabel}>更新</span>
-                  <time datetime={updated.toISOString()}>{formatDate(updated)}</time>
-                </div>
-              )
-            }
-          </div>
-        )
-      }
-      {
-        author && (
-          <span class={cardAuthor}>
-            <span class={cardAuthorName}>@{author}</span>
-          </span>
-        )
-      }
-      {
-        source && (
-          <span class={cardSource}>
-            {source}
-            {external ? ' ↗' : ''}
-          </span>
-        )
-      }
-    </div>
+    {
+      (author || source) && (
+        <div class={cardMeta}>
+          {
+            author && (
+              <span class={cardAuthor}>
+                <span class={cardAuthorName}>@{author}</span>
+              </span>
+            )
+          }
+          {
+            source && (
+              <span class={cardSource}>
+                {source}
+                {external ? ' ↗' : ''}
+              </span>
+            )
+          }
+        </div>
+      )
+    }
     {
       tags && tags.length > 0 && (
         <div class={cardTagList}>
