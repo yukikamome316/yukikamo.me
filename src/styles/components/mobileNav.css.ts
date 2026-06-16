@@ -16,20 +16,19 @@ export const mobileNav = style({
 });
 
 export const mobileNavButton = style({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
+  position: "relative",
   width: "28px",
-  height: "16px",
+  height: "20px",
   padding: 0,
   border: "none",
   backgroundColor: "transparent",
   cursor: "pointer",
-  position: "relative",
   zIndex: 10002,
 });
 
 export const mobileNavButtonLine = style({
+  position: "absolute",
+  left: 0,
   display: "block",
   height: "1.5px",
   backgroundColor: vars.color.text,
@@ -38,12 +37,15 @@ export const mobileNavButtonLine = style({
   transformOrigin: "center",
   selectors: {
     "&:nth-child(1)": {
+      top: 0,
       width: "100%",
     },
     "&:nth-child(2)": {
+      top: "9px",
       width: "calc(100% - 6px)",
     },
     "&:nth-child(3)": {
+      top: "18px",
       width: "calc(100% - 12px)",
     },
     [`${mobileNavButton}:hover &:nth-child(2)`]: {
@@ -54,15 +56,16 @@ export const mobileNavButtonLine = style({
     },
     '&[data-open="true"]:nth-child(1)': {
       width: "100%",
-      transform: "translateY(7px) rotate(45deg)",
+      top: "9px",
+      transform: "rotate(45deg)",
     },
     '&[data-open="true"]:nth-child(2)': {
       opacity: 0,
-      transform: "scaleX(0)",
     },
     '&[data-open="true"]:nth-child(3)': {
       width: "100%",
-      transform: "translateY(-7px) rotate(-45deg)",
+      top: "9px",
+      transform: "rotate(-45deg)",
     },
   },
 });

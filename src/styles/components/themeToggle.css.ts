@@ -14,6 +14,8 @@ export const themeToggle = style({
   color: vars.color.muted,
   cursor: "pointer",
   transition: "color 0.2s, background-color 0.2s",
+  position: "relative",
+  zIndex: 10002,
   ":hover": {
     color: vars.color.text,
     backgroundColor: vars.color.surfaceHover,
