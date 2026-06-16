@@ -66,7 +66,10 @@ export const mobileNavButtonLine = style({
 
 export const mobileNavOverlay = style({
   position: "fixed",
-  inset: 0,
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
   backgroundColor: "rgba(0, 0, 0, 0.4)",
   zIndex: 1000,
   animationName: fadeIn,
@@ -76,7 +79,10 @@ export const mobileNavOverlay = style({
 
 export const mobileNavPanel = style({
   position: "fixed",
-  inset: 0,
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
   zIndex: 1001,
   display: "flex",
   flexDirection: "column",
