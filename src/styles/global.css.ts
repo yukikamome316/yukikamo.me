@@ -47,10 +47,12 @@ globalStyle("pre", {
   background: vars.color.surfaceHover,
 });
 
-// スクロールフェードオーバーレイ (JS で位置制御)
-globalStyle("pre .scroll-fade", {
+// スクロールフェードオーバーレイ (コンテンツ領域右端に固定)
+globalStyle("pre::after", {
+  content: '""',
   position: "absolute",
   top: 0,
+  right: "1.25rem",
   width: "2rem",
   height: "100%",
   background: `linear-gradient(to right, transparent, ${vars.color.surfaceHover})`,
@@ -59,7 +61,7 @@ globalStyle("pre .scroll-fade", {
   transition: "opacity 0.25s ease",
 });
 
-globalStyle("pre[data-scrollable]:not([data-scrolled-end]) .scroll-fade", {
+globalStyle("pre[data-scrollable]:not([data-scrolled-end])::after", {
   opacity: 1,
 });
 
