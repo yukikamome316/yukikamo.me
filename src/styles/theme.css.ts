@@ -18,6 +18,7 @@ const colorContract = createGlobalThemeContract({
   font: {
     body: "font-body",
     heading: "font-heading",
+    code: "font-code",
   },
   space: {
     xs: "space-xs",
