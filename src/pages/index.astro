@@ -19,7 +19,7 @@ import { grid } from "../styles/components/card.css.ts";
 import Card from "../components/ui/Card.astro";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
-import { extractHeadings } from "../lib/post-head";
+import { extractHeadings, extractExcerpt } from "../lib/post-head";
 import { getExternalPosts } from "../lib/external-posts";
 
 import imgSusukino from "../assets/hero/susukino.webp";
@@ -48,8 +48,8 @@ const internalBlogPosts = allBlog.map((post) => ({
   date: post.data.date,
   updated: post.data.updated,
   tags: post.data.tags,
-  author: "Yuki",
   image: `/ogp/blog/${post.slug}.webp`,
+  excerpt: extractExcerpt(post.body),
   head: extractHeadings(post.body),
 }));
 
@@ -65,8 +65,8 @@ const allPosts = [
     updated: undefined as Date | undefined,
     tags: post.tags,
     source: post.source,
-    author: post.source,
     image: post.image,
+    excerpt: undefined as string | undefined,
     head: post.head,
   })),
 ];
@@ -133,8 +133,8 @@ const recentPosts = allPosts
             href={post.href}
             date={post.date}
             tags={post.tags}
-            author={post.author}
             image={post.image}
+            excerpt={post.excerpt}
             head={post.head}
             source={post.type === "external" ? post.source : undefined}
             external={post.type === "external"}

@@ -18,3 +18,34 @@ export function extractHeadings(
   }
   return headings;
 }
+
+/**
+ * Markdown テキストから本文 (frontmatter と見出しを除いた最初の数行) を抽出する。
+ * カード表示用に短く切り出す。
+ */
+export function extractExcerpt(
+  markdown: string | undefined,
+  maxLen = 80
+): string {
+  if (!markdown) return "";
+  const lines = markdown.split("\n");
+  const bodyLines: string[] = [];
+  let inFence = false;
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+    if (line.startsWith("```")) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    if (!line) continue;
+    if (line.startsWith("#")) continue;
+    if (line.startsWith(">")) continue;
+    if (line.startsWith("- ") || line.startsWith("* ")) continue;
+    if (/^\d+\.\s/.test(line)) continue;
+    bodyLines.push(line);
+  }
+  const text = bodyLines.join(" ").replace(/\s+/g, " ").trim();
+  if (text.length <= maxLen) return text;
+  return text.slice(0, maxLen).trimEnd() + "…";
+}
