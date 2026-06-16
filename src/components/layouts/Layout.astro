@@ -64,6 +64,10 @@ const ogImage = image.startsWith("http") ? image : siteUrl + image;
     </div>
     <script is:inline>
       document.querySelectorAll("pre").forEach((el) => {
+        const fade = document.createElement("span");
+        fade.className = "scroll-fade";
+        el.append(fade);
+
         const check = () => {
           const tolerance = 2;
           const hasOverflow = el.scrollWidth - el.clientWidth > tolerance;
@@ -76,6 +80,10 @@ const ogImage = image.startsWith("http") ? image : siteUrl + image;
             } else {
               delete el.dataset.scrolledEnd;
             }
+            const padRight =
+              parseFloat(getComputedStyle(el).paddingRight) || 0;
+            fade.style.left =
+              el.scrollLeft + el.clientWidth - padRight - 32 + "px";
           } else {
             delete el.dataset.scrollable;
             delete el.dataset.scrolledEnd;
