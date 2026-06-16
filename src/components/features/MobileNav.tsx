@@ -92,6 +92,11 @@ export default function MobileNav({ links, currentPath }: Props) {
                   >
                     <span
                       aria-hidden="true"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
                       dangerouslySetInnerHTML={{ __html: link.svg }}
                     />
                   </a>
