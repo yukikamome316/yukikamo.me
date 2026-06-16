@@ -46,19 +46,23 @@ const allPosts = [
   ...allBlog.map((post) => ({
     type: "internal" as const,
     title: post.data.title,
-    description: post.data.description || "",
     href: `/blog/${post.slug}`,
     date: post.data.date,
+    updated: post.data.updated,
     tags: post.data.tags,
+    author: "Yuki",
+    image: `/ogp/blog/${post.slug}.webp`,
   })),
   ...externalPosts.map((post) => ({
     type: "external" as const,
     title: post.title,
-    description: post.description || "",
     href: post.url,
     date: post.date,
+    updated: undefined as Date | undefined,
     tags: post.tags,
     source: post.source,
+    author: post.source,
+    image: post.image,
   })),
 ];
 
@@ -137,10 +141,12 @@ const recentPosts = allPosts
         recentPosts.map((post) => (
           <Card
             title={post.title}
-            description={post.description}
             href={post.href}
             date={post.date}
+            updated={post.updated}
             tags={post.tags}
+            author={post.author}
+            image={post.image}
             source={post.type === "external" ? post.source : undefined}
             external={post.type === "external"}
           />
