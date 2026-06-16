@@ -8,6 +8,7 @@ const externalPostSchema = z.object({
   url: z.string().url(),
   date: z.coerce.date(),
   source: z.string(),
+  description: z.string().optional(),
   emoji: z.string().optional(),
   image: z.string().optional(),
   head: z.array(z.string()).optional(),
