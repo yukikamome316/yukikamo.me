@@ -3,6 +3,7 @@ import Layout from '../../../components/layouts/Layout.astro';
 import Card from '../../../components/ui/Card.astro';
 import { getCollection } from 'astro:content';
 import { grid } from '../../../styles/components/card.css';
+import { extractHeadings } from '../../../lib/post-head';
 import {
   listSection,
   listTitle,
@@ -47,6 +48,7 @@ const filteredEntries = allEntries
             tags={entry.data.tags}
             author="Yuki"
             image={`/ogp/blog/${entry.slug}.webp`}
+            head={extractHeadings(entry.body)}
           />
         ))
       }

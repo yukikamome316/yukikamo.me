@@ -53,6 +53,26 @@ export const cardDescription = style({
   marginBottom: vars.space.small,
 });
 
+export const cardHead = style({
+  listStyle: "none",
+  margin: 0,
+  padding: 0,
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.25rem",
+});
+
+export const cardHeadItem = style({
+  fontSize: "0.875rem",
+  color: vars.color.muted,
+  lineHeight: 1.5,
+  display: "-webkit-box",
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+});
+
 export const cardMeta = style({
   display: "flex",
   flexWrap: "wrap",

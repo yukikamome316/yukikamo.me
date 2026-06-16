@@ -19,6 +19,8 @@ import { grid } from "../styles/components/card.css.ts";
 import Card from "../components/ui/Card.astro";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
+import { extractHeadings } from "../lib/post-head";
+import { getExternalPosts } from "../lib/external-posts";
 
 import imgSusukino from "../assets/hero/susukino.webp";
 import imgMarunouchi from "../assets/hero/marunouchi.webp";
@@ -39,8 +41,36 @@ const recentWork = allWork
   .slice(0, 3);
 
 const allBlog = (await getCollection("blog")).filter(e => !e.data.draft);
-const recentBlog = allBlog
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+const externalPosts = getExternalPosts();
+
+const allPosts = [
+  ...allBlog.map((post) => ({
+    type: "internal" as const,
+    title: post.data.title,
+    href: `/articles/${post.slug}`,
+    date: post.data.date,
+    updated: post.data.updated,
+    tags: post.data.tags,
+    author: "Yuki",
+    image: `/ogp/articles/${post.slug}.webp`,
+    head: extractHeadings(post.body),
+  })),
+  ...externalPosts.map((post) => ({
+    type: "external" as const,
+    title: post.title,
+    href: post.url,
+    date: post.date,
+    updated: undefined as Date | undefined,
+    tags: post.tags,
+    source: post.source,
+    author: post.source,
+    image: undefined as string | undefined,
+    head: post.head,
+  })),
+];
+
+const recentPosts = allPosts
+  .sort((a, b) => b.date.valueOf() - a.date.valueOf())
   .slice(0, 3);
 ---
 
@@ -111,11 +141,18 @@ const recentBlog = allBlog
     <h2 class={sectionTitle}>Latest Posts</h2>
     <div class={grid}>
       {
-        recentBlog.map((post) => (
+        recentPosts.map((post) => (
           <Card
-            title={post.data.title}
-            description={post.data.description || ""}
-            href={`/articles/${post.slug}`}
+            title={post.title}
+            href={post.href}
+            date={post.date}
+            updated={post.updated}
+            tags={post.tags}
+            author={post.author}
+            image={post.image}
+            head={post.head}
+            source={post.type === "external" ? post.source : undefined}
+            external={post.type === "external"}
           />
         ))
       }
