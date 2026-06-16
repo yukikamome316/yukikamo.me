@@ -148,3 +148,12 @@ globalStyle(".rlc-image", {
   height: "100%",
   objectFit: "contain",
 });
+
+// ダークモード: Shiki コードブロックの配色切り替え
+globalStyle(".dark .astro-code", {
+  backgroundColor: "var(--shiki-dark-bg) !important",
+});
+
+globalStyle(".dark .astro-code span", {
+  color: "var(--shiki-dark) !important",
+});

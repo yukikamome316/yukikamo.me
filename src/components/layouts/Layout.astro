@@ -7,6 +7,7 @@ import "@fontsource/fira-code/700.css";
 import "katex/dist/katex.min.css";
 import Header from "./Header.astro";
 import Footer from "./Footer.astro";
+import { ViewTransitions } from "astro:transitions";
 
 import { mainContent } from "../../styles/components/layout.css.ts";
 
@@ -53,6 +54,21 @@ const ogImage = image.startsWith("http") ? image : siteUrl + image;
 
     <slot name="head" />
     <title>{title}</title>
+    <script is:inline>
+      (() => {
+        if (localStorage.getItem("theme") === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+        document.addEventListener("astro:after-swap", () => {
+          if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        });
+      })();
+    </script>
+    <ViewTransitions />
   </head>
   <body>
     <div style={{ width: "100%", position: "relative" }}>
