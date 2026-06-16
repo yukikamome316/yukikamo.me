@@ -9,7 +9,7 @@ const externalPostSchema = z.object({
   date: z.coerce.date(),
   source: z.string(),
   emoji: z.string().optional(),
-  image: z.string().optional(),
+  head: z.array(z.string()).optional(),
   tags: z.array(z.string()).optional(),
 });
 
