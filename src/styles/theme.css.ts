@@ -1,17 +1,60 @@
-import { createGlobalTheme } from "@vanilla-extract/css";
+import {
+  createGlobalTheme,
+  createGlobalThemeContract,
+} from "@vanilla-extract/css";
 
-export const vars = createGlobalTheme(":root", {
+const colorContract = createGlobalThemeContract({
   color: {
-    background: "#fdfdfd", // 白ベース
-    surface: "#ffffff", // カード等の表面
-    surfaceHover: "#f5f7fa",
-    text: "#2b2c32", // ダークグレー（ユーザー指定）
-    primary: "#0080aa",
-    primaryDark: "#0080aa",
-    secondary: "#fd5826", // アクセントのオレンジ（補色・ユーザー指定）
-    muted: "#5c6475", // 少し明るめのグレー（コントラスト改善済み）
-    border: "#e4e7ec", // 薄い境界線
+    background: "color-background",
+    surface: "color-surface",
+    surfaceHover: "color-surfaceHover",
+    text: "color-text",
+    primary: "color-primary",
+    primaryDark: "color-primaryDark",
+    secondary: "color-secondary",
+    muted: "color-muted",
+    border: "color-border",
   },
+  font: {
+    body: "font-body",
+    heading: "font-heading",
+    code: "font-code",
+  },
+  space: {
+    xs: "space-xs",
+    small: "space-small",
+    medium: "space-medium",
+    large: "space-large",
+    xlarge: "space-xlarge",
+    xxlarge: "space-xxlarge",
+  },
+});
+
+const lightColors = {
+  background: "#fdfdfd",
+  surface: "#ffffff",
+  surfaceHover: "#f5f7fa",
+  text: "#2b2c32",
+  primary: "#0080aa",
+  primaryDark: "#0080aa",
+  secondary: "#fd5826",
+  muted: "#5c6475",
+  border: "#e4e7ec",
+};
+
+const darkColors = {
+  background: "#1a1b1e",
+  surface: "#25262b",
+  surfaceHover: "#2c2d35",
+  text: "#e4e7ec",
+  primary: "#4dd7ff",
+  primaryDark: "#6fe3ff",
+  secondary: "#ff7a52",
+  muted: "#9ca3af",
+  border: "#3f3f46",
+};
+
+const sharedTokens = {
   font: {
     body: '"Noto Sans JP Variable", system-ui, sans-serif',
     heading: '"Noto Sans JP Variable", system-ui, sans-serif',
@@ -25,4 +68,16 @@ export const vars = createGlobalTheme(":root", {
     xlarge: "96px",
     xxlarge: "160px",
   },
+};
+
+createGlobalTheme(":root", colorContract, {
+  color: lightColors,
+  ...sharedTokens,
 });
+
+createGlobalTheme(".dark", colorContract, {
+  color: darkColors,
+  ...sharedTokens,
+});
+
+export const vars = colorContract;
