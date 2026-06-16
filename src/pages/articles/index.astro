@@ -3,6 +3,8 @@ import Layout from '../../components/layouts/Layout.astro';
 import Card from '../../components/ui/Card.astro';
 import { getCollection } from 'astro:content';
 import { grid } from '../../styles/components/card.css';
+import { extractHeadings } from '../../lib/post-head';
+import { getExternalPosts } from '../../lib/external-posts';
 import {
   listSection,
   listTitle,
@@ -12,12 +14,40 @@ import {
 } from '../../styles/pages/list.css';
 
 const blogEntries = (await getCollection('blog')).filter(e => !e.data.draft);
-const sortedEntries = blogEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const externalPosts = getExternalPosts();
 
-const groupedByYear = sortedEntries.reduce<Record<number, typeof sortedEntries>>((acc, entry) => {
-  const year = entry.data.date.getFullYear();
+const allPosts = [
+  ...blogEntries.map((entry) => ({
+    type: 'internal' as const,
+    title: entry.data.title,
+    href: `/articles/${entry.slug}`,
+    date: entry.data.date,
+    updated: entry.data.updated,
+    tags: entry.data.tags,
+    author: 'Yuki',
+    image: `/ogp/articles/${entry.slug}.webp`,
+    head: extractHeadings(entry.body),
+  })),
+  ...externalPosts.map((post) => ({
+    type: 'external' as const,
+    title: post.title,
+    href: post.url,
+    date: post.date,
+    updated: undefined as Date | undefined,
+    tags: post.tags,
+    source: post.source,
+    author: post.source,
+    image: undefined as string | undefined,
+    head: post.head,
+  })),
+];
+
+const sortedPosts = allPosts.sort((a, b) => b.date.valueOf() - a.date.valueOf());
+
+const groupedByYear = sortedPosts.reduce<Record<number, typeof sortedPosts>>((acc, post) => {
+  const year = post.date.getFullYear();
   if (!acc[year]) acc[year] = [];
-  acc[year].push(entry);
+  acc[year].push(post);
   return acc;
 }, {});
 
@@ -36,16 +66,18 @@ const years = Object.keys(groupedByYear)
         <div class={yearGroup}>
           <h2 class={yearGroupTitle}>{year}</h2>
           <div class={grid}>
-            {groupedByYear[year].map((entry) => (
+            {groupedByYear[year].map((post) => (
               <Card
-                title={entry.data.title}
-                description={entry.data.description || ''}
-                href={`/articles/${entry.slug}`}
-                date={entry.data.date}
-                updated={entry.data.updated}
-                tags={entry.data.tags}
-                author="Yuki"
-                image={`/ogp/articles/${entry.slug}.webp`}
+                title={post.title}
+                href={post.href}
+                date={post.date}
+                updated={post.updated}
+                tags={post.tags}
+                author={post.author}
+                image={post.image}
+                head={post.head}
+                source={post.type === 'external' ? post.source : undefined}
+                external={post.type === 'external'}
               />
             ))}
           </div>
