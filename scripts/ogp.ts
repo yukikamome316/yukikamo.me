@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import opentype from "opentype.js";
+import { load } from "js-yaml";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -15,14 +16,23 @@ const PROFILE_IMG = path.join(ROOT, "src", "assets", "profile.webp");
 const FONT_BOLD_URL =
   "https://fonts.gstatic.com/s/notosansjp/v56/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFPYk75s.ttf";
 const FONT_CACHE_DIR = path.join(ROOT, "node_modules", ".cache", "ogp-font");
+const EXTERNAL_POSTS_PATH = path.join(
+  ROOT,
+  "src",
+  "data",
+  "external-posts.yaml"
+);
 
 const COLOR = {
-  primary: "#26cafd",
-  primaryLight: "#7ed9f7",
+  primary: "#0080aa",
+  primaryLight: "#40b0d4",
   secondary: "#fd5826",
   text: "#2b2c32",
+  muted: "#5c6475",
   bgStart: "#f0fcff",
   bgEnd: "#fff5f5",
+  externalBgStart: "#fdf2f8",
+  externalBgEnd: "#fdfbf7",
 };
 
 function escapeXml(s: string): string {
@@ -216,9 +226,89 @@ ${titlePaths}
 </svg>`;
 }
 
+function generateExternalSvg(
+  title: string,
+  source: string,
+  emoji: string
+): string {
+  const escaped = escapeXml(title);
+  const lines = wrapText(escaped, 18);
+
+  const totalLines = lines.length;
+  const fontSize = totalLines > 1 ? 46 : 58;
+  const lineHeight = fontSize * 1.45;
+  const textYStart = 290 - ((totalLines - 1) * lineHeight) / 2;
+
+  const tspans = lines
+    .map((line, i) => {
+      const y = textYStart + i * lineHeight;
+      return `      <tspan x="80" y="${y}">${line}</tspan>`;
+    })
+    .join("\n");
+
+  return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="${COLOR.externalBgStart}" />
+      <stop offset="100%" stop-color="${COLOR.externalBgEnd}" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="${COLOR.secondary}" />
+      <stop offset="100%" stop-color="#ff9a6e" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="1200" height="6" fill="url(#accent)" />
+
+  <!-- Decorative circles -->
+  <circle cx="150" cy="80" r="220" fill="${COLOR.secondary}" opacity="0.07" />
+  <circle cx="1050" cy="550" r="180" fill="${COLOR.secondary}" opacity="0.05" />
+  <circle cx="600" cy="315" r="350" fill="${COLOR.secondary}" opacity="0.03" />
+
+  <!-- Decorative dots -->
+  <circle cx="180" cy="420" r="6" fill="${COLOR.secondary}" opacity="0.3" />
+  <circle cx="380" cy="140" r="4" fill="${COLOR.secondary}" opacity="0.25" />
+  <circle cx="920" cy="180" r="8" fill="${COLOR.secondary}" opacity="0.2" />
+  <circle cx="1020" cy="420" r="5" fill="${COLOR.secondary}" opacity="0.2" />
+  <circle cx="720" cy="500" r="4" fill="${COLOR.secondary}" opacity="0.25" />
+  <circle cx="480" cy="520" r="6" fill="${COLOR.secondary}" opacity="0.2" />
+  <circle cx="250" cy="220" r="3" fill="${COLOR.secondary}" opacity="0.35" />
+  <circle cx="850" cy="350" r="5" fill="${COLOR.secondary}" opacity="0.15" />
+
+  <!-- Decorative small sparkles -->
+  <path d="M75 180 Q80 170 85 180 Q80 190 75 180Z" fill="${COLOR.secondary}" opacity="0.3" />
+  <path d="M1120 280 Q1125 270 1130 280 Q1125 290 1120 280Z" fill="${COLOR.secondary}" opacity="0.25" />
+
+  <!-- Emoji icon (top right) -->
+  <text x="1100" y="160" font-family="sans-serif" font-size="120" text-anchor="middle">${escapeXml(emoji)}</text>
+
+  <!-- Title -->
+  <text font-family="'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'MS PGothic', sans-serif" font-size="${fontSize}" font-weight="700" fill="${COLOR.text}">
+${tspans}
+  </text>
+
+  <!-- Source name -->
+  <text x="80" y="570" font-family="'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif" font-size="20" font-weight="600" fill="${COLOR.secondary}" letter-spacing="2">
+    ${escapeXml(source)} | ${escapeXml(SITE_TITLE)}
+  </text>
+</svg>`;
+}
+
 interface PageItem {
   title: string;
   slug: string;
+}
+
+interface ExternalItem {
+  title: string;
+  url: string;
+  slug: string;
+  source: string;
+  emoji: string;
 }
 
 function parseFrontmatter(filePath: string): { title: string } {
@@ -253,6 +343,26 @@ async function generateOgp(
     await sharp(Buffer.from(svg)).webp({ quality: 90 }).toFile(outPath);
     console.log(`  ✓ public/ogp/${item.slug}.webp`);
   }
+}
+
+async function generateExternalOgp(items: ExternalItem[]): Promise<void> {
+  for (const item of items) {
+    const outPath = path.join(OUTPUT_DIR, "external", `${item.slug}.webp`);
+    const dir = path.dirname(outPath);
+    fs.mkdirSync(dir, { recursive: true });
+
+    const svg = generateExternalSvg(item.title, item.source, item.emoji);
+    await sharp(Buffer.from(svg)).webp({ quality: 90 }).toFile(outPath);
+    console.log(`  ✓ public/ogp/external/${item.slug}.webp`);
+  }
+}
+
+function urlToSlug(url: string): string {
+  // https://zenn.dev/minecode/articles/81f2485f646ae4 -> zenn-81f2485f646ae4
+  const u = new URL(url);
+  const hostname = u.hostname.replace(/\./g, "-");
+  const id = u.pathname.split("/").filter(Boolean).pop() ?? "external";
+  return `${hostname}-${id}`;
 }
 
 async function main(): Promise<void> {
@@ -297,7 +407,31 @@ async function main(): Promise<void> {
 
   await generateOgp(items, font);
 
-  console.log(`\n✅ Done! Generated ${1 + items.length} OGP images.`);
+  // Collect external posts
+  const externalItems: ExternalItem[] = [];
+  if (fs.existsSync(EXTERNAL_POSTS_PATH)) {
+    const raw = fs.readFileSync(EXTERNAL_POSTS_PATH, "utf-8");
+    const posts = load(raw) as Array<{
+      title: string;
+      url: string;
+      source: string;
+      emoji?: string;
+    }>;
+    for (const post of posts) {
+      externalItems.push({
+        title: post.title,
+        url: post.url,
+        slug: urlToSlug(post.url),
+        source: post.source,
+        emoji: post.emoji ?? "📝",
+      });
+    }
+    await generateExternalOgp(externalItems);
+  }
+
+  console.log(
+    `\n✅ Done! Generated ${1 + items.length + externalItems.length} OGP images.`
+  );
 }
 
 main();
