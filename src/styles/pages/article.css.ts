@@ -125,25 +125,12 @@ globalStyle(`${articleBody} th, ${articleBody} td`, {
 globalStyle(`${articleBody} thead th`, {
   fontWeight: 600,
   backgroundColor: vars.color.surfaceHover,
-  borderBottom: `2px solid ${vars.color.primaryDark}`,
-});
-
-globalStyle(`${articleBody} tbody tr:nth-child(even)`, {
-  backgroundColor:
-    "color-mix(in srgb, " +
-    vars.color.primaryDark +
-    " 4%, " +
-    vars.color.surface +
-    ")",
+  borderBottom: `1px solid ${vars.color.primary}`,
 });
 
 globalStyle(`${articleBody} tbody tr:hover`, {
   backgroundColor:
-    "color-mix(in srgb, " +
-    vars.color.primaryDark +
-    " 8%, " +
-    vars.color.surface +
-    ")",
+    "color-mix(in srgb, " + vars.color.primary + " 5%, transparent)",
 });
 
 globalStyle(`${articleBody} tbody tr:last-child td`, {
