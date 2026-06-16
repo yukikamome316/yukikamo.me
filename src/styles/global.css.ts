@@ -47,24 +47,6 @@ globalStyle("pre", {
   background: vars.color.surfaceHover,
 });
 
-// スクロールフェードオーバーレイ (コンテンツ領域右端に固定)
-globalStyle("pre::after", {
-  content: '""',
-  position: "absolute",
-  top: 0,
-  right: "1.25rem",
-  width: "2rem",
-  height: "100%",
-  background: `linear-gradient(to right, transparent, ${vars.color.surfaceHover})`,
-  pointerEvents: "none",
-  opacity: 0,
-  transition: "opacity 0.25s ease",
-});
-
-globalStyle("pre[data-scrollable]:not([data-scrolled-end])::after", {
-  opacity: 1,
-});
-
 globalStyle("pre::-webkit-scrollbar", {
   height: "8px",
 });
@@ -85,4 +67,83 @@ globalStyle("pre code", {
 
 globalStyle("*", {
   boxSizing: "border-box",
+});
+
+// remark-link-card
+globalStyle(".rlc-container", {
+  display: "flex",
+  gap: "1rem",
+  border: `1px solid ${vars.color.border}`,
+  borderRadius: "8px",
+  padding: "1rem",
+  marginBottom: "1.5rem",
+  textDecoration: "none",
+  color: vars.color.text,
+  transition: "border-color 0.2s, box-shadow 0.2s",
+});
+
+globalStyle(".rlc-container:hover", {
+  borderColor: vars.color.primary,
+  boxShadow: `0 2px 8px ${vars.color.border}`,
+});
+
+globalStyle(".rlc-info", {
+  flex: 1,
+  minWidth: 0,
+});
+
+globalStyle(".rlc-title", {
+  fontSize: "1rem",
+  fontWeight: 600,
+  marginBottom: "0.25rem",
+  color: vars.color.text,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+});
+
+globalStyle(".rlc-description", {
+  fontSize: "0.875rem",
+  color: vars.color.muted,
+  marginBottom: "0.5rem",
+  display: "-webkit-box",
+  WebkitLineClamp: 2,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+});
+
+globalStyle(".rlc-url-container", {
+  display: "flex",
+  alignItems: "center",
+  gap: "0.375rem",
+  fontSize: "0.8rem",
+  color: vars.color.muted,
+});
+
+globalStyle(".rlc-favicon", {
+  width: "16px",
+  height: "16px",
+  borderRadius: "2px",
+  flexShrink: 0,
+});
+
+globalStyle(".rlc-url", {
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+});
+
+globalStyle(".rlc-image-container", {
+  flexShrink: 0,
+  width: "120px",
+  height: "auto",
+  borderRadius: "4px",
+  overflow: "hidden",
+});
+
+globalStyle(".rlc-image", {
+  display: "block",
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
 });
