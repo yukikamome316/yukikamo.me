@@ -59,8 +59,8 @@ export const profileImage = style({
   borderRadius: "50%",
   objectFit: "cover",
   margin: 0,
-  border: `4px solid ${vars.color.primary}`,
-  boxShadow: `4px 4px 12px 0px rgba(38, 202, 253, 0.2)`,
+  border: `4px solid #75b0cc`,
+  boxShadow: `4px 4px 12px 0px rgba(117, 176, 204, 0.2)`,
   "@media": {
     "screen and (max-width: 1024px)": {
       width: "120px",

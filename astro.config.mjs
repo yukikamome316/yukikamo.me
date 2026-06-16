@@ -5,6 +5,10 @@ import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
 import sitemap from "@astrojs/sitemap";
 
+import remarkMath from "remark-math";
+import remarkLinkCard from "remark-link-card";
+import rehypeKatex from "rehype-katex";
+
 import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 
 // https://astro.build/config
@@ -14,6 +18,18 @@ export default defineConfig({
   adapter: cloudflare({
     imageService: "compile",
   }),
+  markdown: {
+    remarkPlugins: [remarkMath, remarkLinkCard],
+    rehypePlugins: [rehypeKatex],
+    shikiConfig: {
+      themes: {
+        light: "github-light",
+        dark: "github-dark",
+      },
+      defaultColor: "light",
+      wrap: false,
+    },
+  },
   vite: {
     plugins: [vanillaExtractPlugin()],
   },

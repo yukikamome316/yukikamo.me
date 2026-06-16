@@ -1,6 +1,10 @@
 ---
 import "../../styles/global.css.ts";
 import "@fontsource-variable/noto-sans-jp";
+import "@fontsource/fira-code/400.css";
+import "@fontsource/fira-code/500.css";
+import "@fontsource/fira-code/700.css";
+import "katex/dist/katex.min.css";
 import Header from "./Header.astro";
 import Footer from "./Footer.astro";
 
@@ -58,5 +62,22 @@ const ogImage = image.startsWith("http") ? image : siteUrl + image;
       </main>
       <Footer />
     </div>
+    <script is:inline>
+      document.querySelectorAll("h2[id], h3[id], h4[id]").forEach((h) => {
+        const btn = document.createElement("button");
+        btn.className = "copy-anchor";
+        btn.textContent = "#";
+        btn.title = "Copy permalink";
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const url = location.href.split("#")[0] + "#" + h.id;
+          navigator.clipboard.writeText(url).then(() => {
+            btn.textContent = "✓";
+            setTimeout(() => (btn.textContent = "#"), 1500);
+          });
+        });
+        h.prepend(btn);
+      });
+    </script>
   </body>
 </html>
