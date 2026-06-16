@@ -45,13 +45,11 @@ export default function MobileNav({ links, currentPath }: Props) {
     setMounted(true);
   }, []);
 
+  const toggle = () => setOpen((v) => !v);
+
   const menuContent = open ? (
     <>
-      <div
-        className={mobileNavOverlay}
-        onClick={() => setOpen(false)}
-        aria-hidden="true"
-      />
+      <div className={mobileNavOverlay} onClick={toggle} aria-hidden="true" />
       <nav className={mobileNavPanel}>
         <div className={mobileNavLinks}>
           {links.map((link, i) => {
@@ -63,7 +61,7 @@ export default function MobileNav({ links, currentPath }: Props) {
                 key={link.href}
                 href={link.href}
                 className={`${mobileNavLink} ${isActive ? mobileNavLinkActive : ""}`}
-                onClick={() => setOpen(false)}
+                onClick={toggle}
                 style={{ animationDelay: `${i * 0.08}s` }}
               >
                 {link.label}
@@ -92,25 +90,21 @@ export default function MobileNav({ links, currentPath }: Props) {
     </>
   ) : null;
 
-  const buttonContent = (
-    <button
-      type="button"
-      className={mobileNavButton}
-      onClick={() => setOpen(!open)}
-      aria-label={open ? "メニューを閉じる" : "メニューを開く"}
-      aria-expanded={open}
-    >
-      <span className={mobileNavButtonInner}>
-        <span className={mobileNavButtonLine} data-open={open} />
-        <span className={mobileNavButtonLine} data-open={open} />
-        <span className={mobileNavButtonLine} data-open={open} />
-      </span>
-    </button>
-  );
-
   return (
     <div className={mobileNav}>
-      {buttonContent}
+      <button
+        type="button"
+        className={mobileNavButton}
+        onClick={toggle}
+        aria-label={open ? "メニューを閉じる" : "メニューを開く"}
+        aria-expanded={open}
+      >
+        <span className={mobileNavButtonInner}>
+          <span className={mobileNavButtonLine} data-open={open} />
+          <span className={mobileNavButtonLine} data-open={open} />
+          <span className={mobileNavButtonLine} data-open={open} />
+        </span>
+      </button>
       {mounted && createPortal(menuContent, document.body)}
     </div>
   );

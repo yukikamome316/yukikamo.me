@@ -19,15 +19,8 @@ const SunIcon = () => (
 );
 
 const MoonIcon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.5"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path d="M12 3a9 9 0 1 0 9 9c-4.97 0-9-4.03-9-9z" />
+  <svg viewBox="0 0 24 24" width="18" height="18">
+    <path d="M12 3a9 9 0 1 0 9 9c-4.97 0-9-4.03-9-9z" fill="currentColor" />
   </svg>
 );
 
