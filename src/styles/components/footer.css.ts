@@ -10,28 +10,34 @@ export const footer = style({
 });
 
 export const footerInner = style({
-  maxWidth: "1200px",
-  margin: "0 auto",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  gap: vars.space.small,
+  gap: "1rem",
+  maxWidth: "1200px",
+  margin: "0 auto",
 });
 
-export const footerSocial = style({
+export const footerLinks = style({
   display: "flex",
-  gap: vars.space.medium,
+  gap: "0.75rem",
 });
 
-export const footerSocialLink = style({
+export const footerIconLink = style({
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "2.25rem",
+  height: "2.25rem",
+  borderRadius: "999px",
   color: vars.color.muted,
-  textDecoration: "none",
-  transition: "color 0.2s",
-  ":hover": {
-    color: vars.color.primaryDark,
+  border: `1px solid ${vars.color.border}`,
+  transition: "color 0.2s, border-color 0.2s, background-color 0.2s",
+  selectors: {
+    "&:hover": {
+      color: vars.color.primary,
+      borderColor: vars.color.primary,
+      backgroundColor: `color-mix(in srgb, ${vars.color.primary} 8%, transparent)`,
+    },
   },
-});
-
-export const footerCopyright = style({
-  margin: 0,
 });

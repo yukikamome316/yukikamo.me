@@ -33,6 +33,7 @@ export default function MobileNav({ links, currentPath }: Props) {
       >
         <span className={mobileNavButtonLine} data-open={open} />
         <span className={mobileNavButtonLine} data-open={open} />
+        <span className={mobileNavButtonLine} data-open={open} />
       </button>
 
       {open && (

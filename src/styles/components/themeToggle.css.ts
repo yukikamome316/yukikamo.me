@@ -8,18 +8,20 @@ export const themeToggle = style({
   width: "2.25rem",
   height: "2.25rem",
   padding: 0,
-  border: `1px solid ${vars.color.border}`,
+  border: "none",
   borderRadius: "999px",
-  backgroundColor: vars.color.surface,
+  backgroundColor: "transparent",
+  color: vars.color.muted,
   cursor: "pointer",
-  transition: "background-color 0.2s, border-color 0.2s",
+  transition: "color 0.2s, background-color 0.2s",
   ":hover": {
+    color: vars.color.text,
     backgroundColor: vars.color.surfaceHover,
-    borderColor: vars.color.primaryDark,
   },
 });
 
 export const themeToggleIcon = style({
-  fontSize: "1rem",
-  lineHeight: 1,
+  display: "inline-flex",
+  width: "1.125rem",
+  height: "1.125rem",
 });
