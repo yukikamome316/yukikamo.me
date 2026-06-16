@@ -6,6 +6,7 @@ export const card = style({
   display: "flex",
   flexDirection: "column",
   height: "100%",
+  minWidth: 0,
   backgroundColor: vars.color.surface,
   borderRadius: vars.space.medium,
   overflow: "hidden",
@@ -22,7 +23,7 @@ export const card = style({
 export const cardImage = style({
   position: "relative",
   width: "100%",
-  aspectRatio: "16 / 7",
+  aspectRatio: "1200 / 630",
   backgroundColor: vars.color.surfaceHover,
   overflow: "hidden",
 });
