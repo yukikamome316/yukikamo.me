@@ -48,7 +48,7 @@ const darkColors = {
   surfaceHover: "#2c2d35",
   text: "#e4e7ec",
   primary: "#75b0cc",
-  primaryDark: "#6fe3ff",
+  primaryDark: "#75b0cc",
   secondary: "#ff7a52",
   muted: "#9ca3af",
   border: "#3f3f46",
