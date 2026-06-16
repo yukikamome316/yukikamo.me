@@ -2,7 +2,7 @@ import { style, globalStyle } from "@vanilla-extract/css";
 import { vars } from "../theme.css";
 
 export const articleContainer = style({
-  maxWidth: "800px",
+  maxWidth: "720px",
   margin: "4rem auto 4rem",
 });
 
@@ -16,13 +16,13 @@ export const articleDate = style({
 });
 
 export const articleTitle = style({
-  fontSize: "3rem",
+  fontSize: "1.875rem",
   marginTop: "0.5rem",
   marginBottom: "1.5rem",
 });
 
 export const articleDescription = style({
-  fontSize: "1.125rem",
+  fontSize: "1rem",
   color: vars.color.muted,
   marginBottom: "2rem",
 });
@@ -64,14 +64,34 @@ export const metaLabel = style({
 
 export const articleBody = style({
   lineHeight: "1.8",
-  fontSize: "1.125rem",
+  fontSize: "1rem",
 });
 
 // Markdown コンテンツ用のグローバルスタイル
-globalStyle(`${articleBody} h1, ${articleBody} h2, ${articleBody} h3`, {
+globalStyle(`${articleBody} h1`, {
+  fontSize: "1.5rem",
   marginTop: "2.5rem",
-  marginBottom: "1rem",
+  marginBottom: "0.75rem",
   position: "relative",
+});
+
+globalStyle(`${articleBody} h2`, {
+  fontSize: "1.25rem",
+  marginTop: "2rem",
+  marginBottom: "0.5rem",
+  position: "relative",
+});
+
+globalStyle(`${articleBody} h3`, {
+  fontSize: "1.125rem",
+  marginTop: "1.5rem",
+  marginBottom: "0.5rem",
+  position: "relative",
+});
+
+globalStyle(`${articleBody} h1, ${articleBody} h2, ${articleBody} h3`, {
+  fontWeight: 700,
+  lineHeight: 1.4,
 });
 
 // パーマリンクコピー用アンカーアイコン
@@ -112,21 +132,21 @@ globalStyle(
 );
 
 globalStyle(`${articleBody} p`, {
-  marginBottom: "1.5rem",
+  marginBottom: "1.25rem",
 });
 
 globalStyle(`${articleBody} ul, ${articleBody} ol`, {
-  marginBottom: "1.5rem",
+  marginBottom: "1.25rem",
   paddingLeft: "1.5rem",
 });
 
 globalStyle(`${articleBody} li`, {
-  marginBottom: "0.5rem",
+  marginBottom: "0.375rem",
 });
 
 globalStyle(`${articleBody} code`, {
   background: vars.color.surfaceHover,
-  padding: "0.2rem 0.4rem",
+  padding: "0.15rem 0.35rem",
   borderRadius: "4px",
   fontSize: "0.9375em",
 });
@@ -207,4 +227,21 @@ globalStyle(`${articleBody} .admonition.warning`, {
     vars.color.surface +
     ")",
   borderLeftColor: vars.color.secondary,
+});
+
+globalStyle(`${articleBody} pre code`, {
+  background: "transparent",
+  padding: 0,
+  fontSize: "0.875em",
+});
+
+globalStyle(`${articleBody} pre`, {
+  background: vars.color.surfaceHover,
+  border: `1px solid ${vars.color.border}`,
+  borderRadius: "8px",
+  padding: "1rem",
+  overflowX: "auto",
+  marginBottom: "1.5rem",
+  fontSize: "0.875rem",
+  lineHeight: 1.6,
 });

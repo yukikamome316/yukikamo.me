@@ -7,10 +7,10 @@ export const listSection = style({
 });
 
 export const listTitle = style({
-  fontSize: "3rem",
-  fontWeight: 800,
-  letterSpacing: "-0.03em",
-  marginBottom: "2rem",
+  fontSize: "1.875rem",
+  fontWeight: 700,
+  letterSpacing: "-0.02em",
+  marginBottom: "1.5rem",
   color: vars.color.text,
 });
 
