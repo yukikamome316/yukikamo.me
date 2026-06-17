@@ -10,7 +10,6 @@ globalStyle("html, body", {
   lineHeight: 1.6,
   WebkitFontSmoothing: "antialiased",
   MozOsxFontSmoothing: "grayscale",
-  overflowX: "hidden",
   maxWidth: "100vw",
 });
 
