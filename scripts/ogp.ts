@@ -56,7 +56,7 @@ function wrapText(text: string, maxCharsPerLine: number): string[] {
     }
   }
   if (current) lines.push(current);
-  return lines.slice(0, 2);
+  return lines;
 }
 
 /** Convert text to SVG path data string using opentype.js */
@@ -412,7 +412,7 @@ async function main(): Promise<void> {
       const frontmatter = parseFrontmatter(path.join(blogDir, file));
       items.push({
         title: frontmatter.title,
-        slug: `blog/${file.replace(/\.mdx?$/, "")}`,
+        slug: `articles/${file.replace(/\.mdx?$/, "")}`,
       });
     }
   }
@@ -426,7 +426,7 @@ async function main(): Promise<void> {
       const frontmatter = parseFrontmatter(path.join(workDir, file));
       items.push({
         title: frontmatter.title,
-        slug: `work/${file.replace(/\.mdx?$/, "")}`,
+        slug: `works/${file.replace(/\.mdx?$/, "")}`,
       });
     }
   }

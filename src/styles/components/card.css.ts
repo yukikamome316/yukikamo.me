@@ -101,6 +101,7 @@ export const cardTagList = style({
   display: "flex",
   flexWrap: "wrap",
   gap: "0.25rem",
+  marginTop: "auto",
 });
 
 export const cardTag = style({

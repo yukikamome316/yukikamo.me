@@ -25,7 +25,7 @@ interface Props {
   image?: string;
   imageAlt?: string;
   head?: string[];
-  excerpt?: string;
+  excerpt?: string[];
 }
 
 const {
@@ -43,6 +43,7 @@ const {
 } = Astro.props;
 
 const displayHead = head?.slice(0, 2) ?? [];
+const displayExcerpt = excerpt ?? [];
 
 const formatDate = (d: Date) =>
   d.toLocaleDateString('ja-JP', {
@@ -75,12 +76,16 @@ const formatDate = (d: Date) =>
   <div class={cardContent}>
     <h3 class={cardTitle}>{title}</h3>
     {
-      excerpt && !displayHead.length && (
-        <p class={cardDescription}>{excerpt}</p>
+      displayExcerpt.length > 0 && (
+        <ul class={cardHead}>
+          {displayExcerpt.map((line) => (
+            <li class={cardHeadItem}>{line}</li>
+          ))}
+        </ul>
       )
     }
     {
-      displayHead.length > 0 && (
+      displayExcerpt.length === 0 && displayHead.length > 0 && (
         <ul class={cardHead}>
           {displayHead.map((line) => (
             <li class={cardHeadItem}>{line}</li>
@@ -88,7 +93,11 @@ const formatDate = (d: Date) =>
         </ul>
       )
     }
-    {description && !image && !excerpt && <p class={cardDescription}>{description}</p>}
+    {
+      description && !image && displayExcerpt.length === 0 && displayHead.length === 0 && (
+        <p class={cardDescription}>{description}</p>
+      )
+    }
     {
       source && (
         <span class={cardSource}>
