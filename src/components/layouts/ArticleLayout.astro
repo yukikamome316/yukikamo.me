@@ -93,7 +93,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   })();
 
   // Sidebar TOC scroll tracking — スクロール位置からアクティブな見出しを判定
-  (() => {
+  const initTocTracking = () => {
     const sidebarLinks = document.querySelectorAll("[data-heading]");
     if (sidebarLinks.length === 0) return;
     const sidebar = document.querySelector("[data-sidebar]");
@@ -148,5 +148,8 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
       }
     }, { passive: true });
     update();
-  })();
+  };
+
+  document.addEventListener("astro:after-swap", initTocTracking);
+  initTocTracking();
 </script>
