@@ -117,24 +117,24 @@ export const articleMetaItem = style({
   display: "flex",
   flexDirection: "column",
   gap: "0.125rem",
-  padding: "0.5rem 0.75rem",
+  padding: "0.6rem 1rem",
   backgroundColor: vars.color.surfaceHover,
-  borderRadius: "8px",
+  borderRadius: "10px",
   borderTop: `3px solid ${vars.color.primary}`,
 });
 
 export const articleMetaLabel = style({
-  fontSize: "0.65rem",
+  fontSize: "0.7rem",
   color: vars.color.muted,
   fontWeight: 500,
   letterSpacing: "0.03em",
   display: "inline-flex",
   alignItems: "center",
-  gap: "0.2rem",
+  gap: "0.25rem",
 });
 
 export const articleMetaValue = style({
-  fontSize: "0.9rem",
+  fontSize: "1rem",
   color: vars.color.text,
   fontWeight: 700,
 });
