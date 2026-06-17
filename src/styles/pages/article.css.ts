@@ -140,19 +140,37 @@ export const articleMetaValue = style({
 });
 
 export const articleMetaGrid = style({
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gap: "1rem",
-  padding: "1.5rem",
-  backgroundColor: vars.color.surfaceHover,
-  border: `1px solid ${vars.color.border}`,
-  borderRadius: "8px",
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "0.5rem",
 });
 
 export const metaLabel = style({
-  fontSize: "0.875rem",
+  fontSize: "0.65rem",
   color: vars.color.muted,
-  marginBottom: "0.25rem",
+  fontWeight: 500,
+  letterSpacing: "0.03em",
+  marginBottom: "0.125rem",
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "0.25rem",
+});
+
+export const metaCard = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: "0",
+  padding: "0.6rem 1rem",
+  backgroundColor: vars.color.surfaceHover,
+  borderRadius: "10px",
+  borderTop: `3px solid ${vars.color.primary}`,
+});
+
+export const metaCardValue = style({
+  fontSize: "1rem",
+  color: vars.color.text,
+  fontWeight: 700,
+  textDecoration: "none",
 });
 
 export const toc = style({

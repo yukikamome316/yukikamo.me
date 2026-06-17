@@ -10,6 +10,8 @@ import {
   articleTagBadge,
   articleMetaGrid,
   metaLabel,
+  metaCard,
+  metaCardValue,
 } from '../../styles/pages/article.css';
 
 export async function getStaticPaths() {
@@ -35,15 +37,21 @@ const { slug } = entry;
       
       <div class={articleMetaGrid}>
         {entry.data.role && (
-          <div>
-            <div class={metaLabel}>Role</div>
-            <div>{entry.data.role}</div>
+          <div class={metaCard}>
+            <div class={metaLabel}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Role
+            </div>
+            <div class={metaCardValue}>{entry.data.role}</div>
           </div>
         )}
         {entry.data.link && (
-          <div>
-            <div class={metaLabel}>Link</div>
-            <a href={entry.data.link} target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">
+          <div class={metaCard}>
+            <div class={metaLabel}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              Link
+            </div>
+            <a href={entry.data.link} target="_blank" rel="noopener noreferrer" class={metaCardValue} style="text-decoration: underline;">
               Visit Project ↗
             </a>
           </div>
