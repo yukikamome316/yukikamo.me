@@ -61,7 +61,7 @@ export const articleDate = style({
 });
 
 export const articleTitle = style({
-  fontSize: "3rem",
+  fontSize: "1.875rem",
   marginTop: "0.5rem",
   marginBottom: "1.5rem",
 });

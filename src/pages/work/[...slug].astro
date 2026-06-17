@@ -1,7 +1,25 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../components/layouts/Layout.astro';
-import { articleContainer, articleHeader, articleTitle, articleDescription, articleTagList, articleTagBadge, articleMetaGrid, metaLabel, articleBody } from '../../styles/pages/article.css';
+import {
+  articleWrapper,
+  articleContainer,
+  articleHeader,
+  articleTitle,
+  articleDescription,
+  articleTagList,
+  articleTagBadge,
+  articleMetaGrid,
+  metaLabel,
+  articleBody,
+  articleSidebar,
+  toc,
+  tocTitle,
+  tocList,
+  tocItem,
+  tocItemLevel2,
+  tocItemLevel3,
+} from '../../styles/pages/article.css';
 
 export async function getStaticPaths() {
   const workEntries = await getCollection('work');
@@ -12,46 +30,74 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
 const { slug } = entry;
+
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
 <Layout title={`${entry.data.title} | Work`} description={entry.data.description} image={`/ogp/work/${slug}.webp`}>
-  <article class={articleContainer}>
-    <header class={articleHeader}>
-      <h1 class={articleTitle}>{entry.data.title}</h1>
-      <p class={articleDescription}>
-        {entry.data.description}
-      </p>
-      
-      <div class={articleMetaGrid}>
-        {entry.data.role && (
-          <div>
-            <div class={metaLabel}>Role</div>
-            <div>{entry.data.role}</div>
-          </div>
-        )}
-        {entry.data.link && (
-          <div>
-            <div class={metaLabel}>Link</div>
-            <a href={entry.data.link} target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">
-              Visit Project ↗
-            </a>
-          </div>
-        )}
-      </div>
+  <div class={articleWrapper}>
+    <article class={articleContainer}>
+      <header class={articleHeader}>
+        <h1 class={articleTitle}>{entry.data.title}</h1>
+        <p class={articleDescription}>
+          {entry.data.description}
+        </p>
+        
+        <div class={articleMetaGrid}>
+          {entry.data.role && (
+            <div>
+              <div class={metaLabel}>Role</div>
+              <div>{entry.data.role}</div>
+            </div>
+          )}
+          {entry.data.link && (
+            <div>
+              <div class={metaLabel}>Link</div>
+              <a href={entry.data.link} target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">
+                Visit Project ↗
+              </a>
+            </div>
+          )}
+        </div>
 
-      <div class={articleTagList} style="margin-top: 1.5rem;">
-        {entry.data.tags?.map((tag: string) => (
-          <span class={articleTagBadge}>
-            {tag}
-          </span>
-        ))}
+        <div class={articleTagList} style="margin-top: 1.5rem;">
+          {entry.data.tags?.map((tag: string) => (
+            <span class={articleTagBadge}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      </header>
+      
+      <div class={articleBody}>
+        <Content />
       </div>
-    </header>
-    
-    <div class={articleBody}>
-      <Content />
-    </div>
-  </article>
+    </article>
+
+    {
+      tocHeadings.length > 0 && (
+        <aside class={articleSidebar}>
+          <nav class={toc} aria-label="目次">
+            <h2 class={tocTitle}>目次</h2>
+            <ol class={tocList}>
+              {tocHeadings.map((heading) => (
+                <li
+                  class={
+                    heading.depth === 3 ? tocItemLevel3 : tocItemLevel2
+                  }
+                  data-heading={heading.slug}
+                >
+                  <a class={tocItem} href={`#${heading.slug}`}>
+                    {heading.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </aside>
+      )
+    }
+  </div>
 </Layout>
