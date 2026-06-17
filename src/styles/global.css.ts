@@ -4,7 +4,6 @@ import { vars } from "./theme.css";
 globalStyle("html", {
   margin: 0,
   padding: 0,
-  overflowX: "hidden",
 });
 
 globalStyle("body", {

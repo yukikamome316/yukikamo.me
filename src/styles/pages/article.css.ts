@@ -233,19 +233,28 @@ export const tocMobile = style({
 });
 
 export const tocMobileToggle = style({
-  cursor: "pointer",
-  fontSize: "0.875rem",
-  fontWeight: 600,
-  color: vars.color.text,
-  padding: "0.75rem 1rem",
-  backgroundColor: vars.color.surfaceHover,
-  border: `1px solid ${vars.color.border}`,
-  borderRadius: "8px",
-  userSelect: "none",
-  "::marker": {
-    content: '""',
+  display: "none",
+  "@media": {
+    "(max-width: 1100px)": {
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "0.375rem",
+      padding: "0.5rem 1rem",
+      border: `1px solid ${vars.color.border}`,
+      borderRadius: "8px",
+      backgroundColor: vars.color.surface,
+      color: vars.color.muted,
+      fontSize: "0.85rem",
+      fontWeight: 500,
+      cursor: "pointer",
+      transition: "all 0.2s",
+      marginBottom: "0.75rem",
+      ":hover": {
+        color: vars.color.text,
+        borderColor: vars.color.primary,
+      },
+    },
   },
-  listStyle: "none",
 });
 
 export const articleBody = style({
