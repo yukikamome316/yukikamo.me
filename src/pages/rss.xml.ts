@@ -2,7 +2,7 @@ import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 
 export async function GET(context: { site: string }) {
-  const blog = (await getCollection("blog")).filter(e => !e.data.draft);
+  const blog = (await getCollection("blog")).filter((e) => !e.data.draft);
   const sorted = blog.sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
   );
