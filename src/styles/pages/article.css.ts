@@ -1,14 +1,30 @@
 import { style, globalStyle } from "@vanilla-extract/css";
 import { vars } from "../theme.css";
 
+export const articleWrapper = style({
+  display: "flex",
+  justifyContent: "center",
+  gap: "3rem",
+  alignItems: "flex-start",
+  padding: "0 1.5rem",
+  "@media": {
+    "(max-width: 1100px)": {
+      gap: "2rem",
+    },
+    "(max-width: 640px)": {
+      padding: "0 1rem",
+    },
+  },
+});
+
 export const articleContainer = style({
   maxWidth: "800px",
-  margin: "4rem auto 4rem",
+  width: "100%",
+  margin: "4rem 0 4rem",
   "@media": {
     "(max-width: 640px)": {
       marginTop: "2rem",
       marginBottom: "2rem",
-      padding: "0 1rem",
     },
   },
 });
@@ -18,15 +34,15 @@ export const articleLayout = style({});
 export const articleMain = style({});
 
 export const articleSidebar = style({
-  position: "fixed",
-  top: "6rem",
-  left: "calc(50% + 448px)",
   width: "260px",
-  maxHeight: "calc(100vh - 8rem)",
-  overflowY: "auto",
-  zIndex: 1,
+  flexShrink: 0,
+  flexGrow: 0,
+  position: "sticky",
+  top: "6rem",
+  alignSelf: "flex-start",
+  marginTop: "4rem",
   "@media": {
-    "(max-width: 1300px)": {
+    "(max-width: 1100px)": {
       display: "none",
     },
   },

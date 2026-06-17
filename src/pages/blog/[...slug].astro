@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../components/layouts/Layout.astro';
 import {
+  articleWrapper,
   articleContainer,
   articleLayout,
   articleMain,
@@ -65,7 +66,8 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
   type="article"
   image={`/ogp/blog/${slug}.webp`}
 >
-  <article class={articleContainer}>
+  <div class={articleWrapper}>
+    <article class={articleContainer}>
     <div class={articleLayout}>
       <div class={articleMain}>
         <header class={articleHeader}>
@@ -123,29 +125,30 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
           </div>
         </nav>
       </div>
-
-      {
-        tocHeadings.length > 0 && (
-          <aside class={articleSidebar}>
-            <nav class={toc} aria-label="目次">
-              <h2 class={tocTitle}>目次</h2>
-              <ol class={tocList}>
-                {tocHeadings.map((heading) => (
-                  <li
-                    class={
-                      heading.depth === 3 ? tocItemLevel3 : tocItemLevel2
-                    }
-                  >
-                    <a class={tocItem} href={`#${heading.slug}`}>
-                      {heading.text}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          </aside>
-        )
-      }
     </div>
   </article>
+
+  {
+    tocHeadings.length > 0 && (
+      <aside class={articleSidebar}>
+        <nav class={toc} aria-label="目次">
+          <h2 class={tocTitle}>目次</h2>
+          <ol class={tocList}>
+            {tocHeadings.map((heading) => (
+              <li
+                class={
+                  heading.depth === 3 ? tocItemLevel3 : tocItemLevel2
+                }
+              >
+                <a class={tocItem} href={`#${heading.slug}`}>
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+    )
+  }
+</div>
 </Layout>
