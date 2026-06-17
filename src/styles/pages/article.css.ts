@@ -7,12 +7,15 @@ export const articleWrapper = style({
   gap: "3rem",
   alignItems: "flex-start",
   padding: "0 1.5rem",
+  paddingLeft: "2.5rem",
   "@media": {
     "(max-width: 1100px)": {
       gap: "2rem",
+      paddingLeft: "1.5rem",
     },
     "(max-width: 640px)": {
       padding: "0 1rem",
+      paddingLeft: "1rem",
     },
   },
 });
