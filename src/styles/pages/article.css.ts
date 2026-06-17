@@ -179,6 +179,13 @@ export const tocItemLevel2 = style({
   fontWeight: 500,
 });
 
+globalStyle("[data-toc-active]", {
+  color: vars.color.primary,
+  backgroundColor: `color-mix(in srgb, ${vars.color.primary} 10%, transparent)`,
+  fontWeight: 600,
+  borderRadius: "6px",
+});
+
 export const tocItemLevel3 = style({
   paddingLeft: "1.5rem",
   fontSize: "0.825rem",

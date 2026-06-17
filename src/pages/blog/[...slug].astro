@@ -134,21 +134,56 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
         <nav class={toc} aria-label="目次">
           <h2 class={tocTitle}>目次</h2>
           <ol class={tocList}>
-            {tocHeadings.map((heading) => (
-              <li
-                class={
-                  heading.depth === 3 ? tocItemLevel3 : tocItemLevel2
-                }
-              >
-                <a class={tocItem} href={`#${heading.slug}`}>
-                  {heading.text}
-                </a>
-              </li>
-            ))}
+    {tocHeadings.map((heading) => (
+                  <li
+                    class={
+                      heading.depth === 3 ? tocItemLevel3 : tocItemLevel2
+                    }
+                    data-heading={heading.slug}
+                  >
+                    <a class={tocItem} href={`#${heading.slug}`}>
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
           </ol>
         </nav>
       </aside>
     )
   }
 </div>
+<script is:inline>
+  (() => {
+    const tocLinks = document.querySelectorAll("[data-heading]");
+    const headings = [];
+    tocLinks.forEach((li) => {
+      const slug = li.dataset.heading;
+      const el = document.getElementById(slug);
+      if (el) headings.push({ el, slug, li });
+    });
+    if (headings.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const found = headings.find((h) => h.el === entry.target);
+          if (!found) return;
+          found.li.dataset.visible = entry.isIntersecting ? "" : undefined;
+        });
+        let active = null;
+        for (const h of headings) {
+          if (h.li.dataset.visible !== undefined) {
+            active = h;
+            break;
+          }
+        }
+        tocLinks.forEach((li) => {
+          li.dataset.tocActive = active && li === active.li ? "" : undefined;
+        });
+      },
+      { rootMargin: "-80px 0px -60% 0px" }
+    );
+    headings.forEach((h) => observer.observe(h.el));
+  })();
+</script>
 </Layout>
