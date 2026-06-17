@@ -34,7 +34,7 @@ export const articleLayout = style({});
 export const articleMain = style({});
 
 export const articleSidebar = style({
-  width: "260px",
+  width: "280px",
   flexShrink: 0,
   position: "sticky",
   top: "6rem",

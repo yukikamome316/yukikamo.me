@@ -168,7 +168,11 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
         entries.forEach((entry) => {
           const found = headings.find((h) => h.el === entry.target);
           if (!found) return;
-          found.li.dataset.visible = entry.isIntersecting ? "" : undefined;
+          if (entry.isIntersecting) {
+            found.li.dataset.visible = "";
+          } else {
+            delete found.li.dataset.visible;
+          }
         });
         let active = null;
         for (const h of headings) {
@@ -178,7 +182,11 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
           }
         }
         tocLinks.forEach((li) => {
-          li.dataset.tocActive = active && li === active.li ? "" : undefined;
+          if (active && li === active.li) {
+            li.dataset.tocActive = "";
+          } else {
+            delete li.dataset.tocActive;
+          }
         });
       },
       { rootMargin: "-80px 0px -60% 0px" }
