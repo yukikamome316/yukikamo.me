@@ -11,7 +11,7 @@ import {
 } from '../../../styles/pages/list.css';
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog');
+  const blogEntries = (await getCollection('blog')).filter(e => !e.data.draft);
   const tagSet = new Set<string>();
   blogEntries.forEach((entry) => {
     entry.data.tags?.forEach((tag) => tagSet.add(tag));
@@ -21,14 +21,14 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.params;
-const allEntries = await getCollection('blog');
+const allEntries = (await getCollection('blog')).filter(e => !e.data.draft);
 const filteredEntries = allEntries
   .filter((entry) => entry.data.tags?.includes(tag))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <Layout
-  title={`タグ: ${tag} | Blog`}
+  title={`タグ: ${tag} | Articles`}
   description={`タグ「${tag}」の記事一覧です。`}
 >
   <section class={listSection}>
@@ -42,12 +42,12 @@ const filteredEntries = allEntries
         filteredEntries.map((entry) => (
           <Card
             title={entry.data.title}
-            href={`/blog/${entry.slug}`}
+            href={`/articles/${entry.slug}`}
             date={entry.data.date}
             updated={entry.data.updated}
             tags={entry.data.tags}
             author="Yuki"
-            image={`/ogp/blog/${entry.slug}.webp`}
+            image={`/ogp/articles/${entry.slug}.webp`}
             head={extractHeadings(entry.body)}
           />
         ))
