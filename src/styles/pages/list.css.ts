@@ -4,6 +4,12 @@ import { vars } from "../theme.css";
 export const listSection = style({
   marginTop: "4rem",
   marginBottom: "4rem",
+  "@media": {
+    "(max-width: 640px)": {
+      marginTop: "2rem",
+      marginBottom: "2rem",
+    },
+  },
 });
 
 export const listTitle = style({
@@ -19,4 +25,9 @@ export const listDescription = style({
   marginBottom: "4rem",
   fontSize: "1.1rem",
   lineHeight: 1.7,
+  "@media": {
+    "(max-width: 640px)": {
+      marginBottom: "2rem",
+    },
+  },
 });
