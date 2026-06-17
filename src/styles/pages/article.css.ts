@@ -21,6 +21,7 @@ export const articleContainer = style({
   maxWidth: "800px",
   width: "100%",
   margin: "4rem 0 4rem",
+  paddingLeft: "2ch",
   "@media": {
     "(max-width: 640px)": {
       marginTop: "2rem",
