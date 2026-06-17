@@ -78,7 +78,7 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
       </div>
       <h1 class={articleTitle}>{entry.data.title}</h1>
       <div class={articleTagList}>
-        {entry.data.tags?.map((tag: string) => <span class={articleTag}>#{tag}</span>)}
+        {entry.data.tags?.map((tag: string) => <a href={`/articles/tag/${tag}`} class={articleTag}>#{tag}</a>)}
       </div>
     </header>
 
