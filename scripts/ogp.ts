@@ -130,9 +130,7 @@ async function loadBoldFont(): Promise<opentype.Font> {
 /**
  * Create a circular-masked profile icon as a PNG buffer.
  */
-async function createCircularProfileIcon(
-  size: number
-): Promise<Buffer> {
+async function createCircularProfileIcon(size: number): Promise<Buffer> {
   const circleSvg = `<svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
   <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" />
 </svg>`;
@@ -255,10 +253,7 @@ ${titlePaths}
 </svg>`;
 }
 
-function generateExternalSvg(
-  title: string,
-  source: string
-): string {
+function generateExternalSvg(title: string, source: string): string {
   const escaped = escapeXml(title);
   const lines = wrapText(escaped, 18);
 
