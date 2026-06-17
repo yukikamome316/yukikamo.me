@@ -4,6 +4,12 @@ import { vars } from "../theme.css";
 export const articleContainer = style({
   maxWidth: "720px",
   margin: "4rem auto 4rem",
+  "@media": {
+    "(max-width: 640px)": {
+      marginTop: "2rem",
+      marginBottom: "2rem",
+    },
+  },
 });
 
 export const articleHeader = style({
