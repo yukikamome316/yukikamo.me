@@ -13,10 +13,10 @@ export const listSection = style({
 });
 
 export const listTitle = style({
-  fontSize: "3rem",
-  fontWeight: 800,
-  letterSpacing: "-0.03em",
-  marginBottom: "2rem",
+  fontSize: "1.875rem",
+  fontWeight: 700,
+  letterSpacing: "-0.02em",
+  marginBottom: "1.5rem",
   color: vars.color.text,
 });
 
@@ -30,4 +30,17 @@ export const listDescription = style({
       marginBottom: "2rem",
     },
   },
+});
+
+export const yearGroup = style({
+  marginBottom: "4rem",
+});
+
+export const yearGroupTitle = style({
+  fontSize: "1.5rem",
+  fontWeight: 700,
+  color: vars.color.muted,
+  marginBottom: "1.5rem",
+  paddingBottom: "0.5rem",
+  borderBottom: `1px solid ${vars.color.border}`,
 });

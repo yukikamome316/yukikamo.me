@@ -79,7 +79,7 @@ export const heroTitleWrapper = style({
 });
 
 export const heroTitle = style({
-  fontSize: "clamp(3.5rem, 8vw, 5.5rem)",
+  fontSize: "clamp(2.5rem, 6vw, 3.5rem)",
   fontWeight: 800,
   letterSpacing: "-0.03em",
   margin: 0,
@@ -98,14 +98,14 @@ export const heroSubtitle = style({
 
 export const heroDescription = style({
   marginTop: "1.5rem",
-  fontSize: "1.125rem",
+  fontSize: "1rem",
   color: vars.color.muted,
   lineHeight: 1.7,
   maxWidth: "600px",
   fontWeight: 400,
   "@media": {
     "screen and (max-width: 768px)": {
-      fontSize: "1rem",
+      fontSize: "0.925rem",
       lineHeight: 1.8,
     },
   },
