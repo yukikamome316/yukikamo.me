@@ -51,20 +51,6 @@ export const articleSidebar = style({
   },
 });
 
-globalStyle(`${articleSidebar}::-webkit-scrollbar`, {
-  width: "6px",
-});
-
-globalStyle(`${articleSidebar}::-webkit-scrollbar-track`, {
-  background: vars.color.surfaceHover,
-  borderRadius: "3px",
-});
-
-globalStyle(`${articleSidebar}::-webkit-scrollbar-thumb`, {
-  background: vars.color.border,
-  borderRadius: "3px",
-});
-
 export const articleHeader = style({
   marginBottom: "3rem",
 });
