@@ -4,6 +4,12 @@ import { vars } from "../theme.css";
 export const pageSection = style({
   marginTop: "4rem",
   marginBottom: "4rem",
+  "@media": {
+    "(max-width: 640px)": {
+      marginTop: "2rem",
+      marginBottom: "2rem",
+    },
+  },
 });
 
 export const pageTitle = style({
