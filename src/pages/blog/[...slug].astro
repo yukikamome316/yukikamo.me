@@ -6,7 +6,6 @@ import {
   articleContainer,
   articleLayout,
   articleMain,
-  sidebarWrapper,
   articleSidebar,
   articleHeader,
   articleMeta,
@@ -131,8 +130,7 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
 
   {
     tocHeadings.length > 0 && (
-      <div class={sidebarWrapper}>
-        <aside class={articleSidebar}>
+      <aside class={articleSidebar}>
         <nav class={toc} aria-label="目次">
           <h2 class={tocTitle}>目次</h2>
           <ol class={tocList}>
@@ -149,8 +147,7 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
             ))}
           </ol>
         </nav>
-        </aside>
-      </div>
+      </aside>
     )
   }
 </div>

@@ -33,23 +33,19 @@ export const articleLayout = style({});
 
 export const articleMain = style({});
 
-export const sidebarWrapper = style({
+export const articleSidebar = style({
   width: "260px",
   flexShrink: 0,
-  alignSelf: "flex-start",
-  "@media": {
-    "(max-width: 1100px)": {
-      display: "none",
-    },
-  },
-});
-
-export const articleSidebar = style({
   position: "sticky",
   top: "6rem",
   marginTop: "4rem",
   maxHeight: "calc(100vh - 8rem)",
   overflowY: "auto",
+  "@media": {
+    "(max-width: 1100px)": {
+      display: "none",
+    },
+  },
 });
 
 export const articleHeader = style({
