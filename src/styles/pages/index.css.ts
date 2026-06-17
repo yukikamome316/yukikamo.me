@@ -50,6 +50,9 @@ export const heroVisualContainer = style({
       justifyContent: "center",
       alignItems: "center",
     },
+    "screen and (max-width: 480px)": {
+      overflow: "hidden",
+    },
   },
 });
 
