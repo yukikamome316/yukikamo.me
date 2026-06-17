@@ -3,7 +3,7 @@ import { vars } from "../theme.css";
 
 export const articleContainer = style({
   maxWidth: "800px",
-  margin: "4rem auto 6rem",
+  margin: "4rem auto 4rem",
 });
 
 export const articleHeader = style({
@@ -16,9 +16,9 @@ export const articleDate = style({
 });
 
 export const articleTitle = style({
-  fontSize: "2.5rem",
+  fontSize: "3rem",
   marginTop: "0.5rem",
-  marginBottom: "1rem",
+  marginBottom: "1.5rem",
 });
 
 export const articleDescription = style({
