@@ -7,7 +7,7 @@ export const articleWrapper = style({
   gap: "3rem",
   alignItems: "flex-start",
   padding: "0 1.5rem",
-  paddingLeft: "3.5rem",
+  paddingLeft: "5.5rem",
   "@media": {
     "(max-width: 1100px)": {
       gap: "2rem",
