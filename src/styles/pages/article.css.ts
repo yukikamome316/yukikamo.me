@@ -91,21 +91,6 @@ export const articleTag = style({
   },
 });
 
-export const articleTagBadge = style({
-  fontSize: "0.85rem",
-  fontWeight: 500,
-  padding: "0.3rem 0.85rem",
-  backgroundColor: `color-mix(in srgb, ${vars.color.primary} 8%, transparent)`,
-  color: vars.color.primaryDark,
-  border: `1px solid ${vars.color.border}`,
-  borderRadius: "999px",
-  transition: "all 0.2s ease",
-  ":hover": {
-    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 15%, transparent)`,
-    borderColor: vars.color.primary,
-  },
-});
-
 export const articleMeta = style({
   display: "flex",
   flexWrap: "wrap",
