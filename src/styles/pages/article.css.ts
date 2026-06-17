@@ -2,7 +2,7 @@ import { style, globalStyle } from "@vanilla-extract/css";
 import { vars } from "../theme.css";
 
 export const articleContainer = style({
-  maxWidth: "720px",
+  maxWidth: "800px",
   margin: "4rem auto 4rem",
   "@media": {
     "(max-width: 640px)": {
@@ -20,13 +20,13 @@ export const articleMain = style({});
 export const articleSidebar = style({
   position: "fixed",
   top: "6rem",
-  left: "calc(50% + 408px)",
-  width: "220px",
+  left: "calc(50% + 448px)",
+  width: "260px",
   maxHeight: "calc(100vh - 8rem)",
   overflowY: "auto",
   zIndex: 1,
   "@media": {
-    "(max-width: 1200px)": {
+    "(max-width: 1300px)": {
       display: "none",
     },
   },
@@ -117,20 +117,20 @@ export const metaLabel = style({
 });
 
 export const toc = style({
-  padding: "1.25rem",
+  padding: "1.5rem",
   backgroundColor: vars.color.surface,
   border: `1px solid ${vars.color.border}`,
-  borderRadius: "10px",
+  borderRadius: "12px",
 });
 
 export const tocTitle = style({
   fontSize: "0.75rem",
   fontWeight: 700,
-  letterSpacing: "0.05em",
+  letterSpacing: "0.06em",
   textTransform: "uppercase",
   color: vars.color.muted,
   marginBottom: "0.75rem",
-  paddingBottom: "0.5rem",
+  paddingBottom: "0.75rem",
   borderBottom: `1px solid ${vars.color.border}`,
 });
 
@@ -140,21 +140,21 @@ export const tocList = style({
   margin: 0,
   display: "flex",
   flexDirection: "column",
-  gap: "0.25rem",
+  gap: "0.125rem",
 });
 
 export const tocItem = style({
   display: "block",
-  padding: "0.375rem 0.625rem",
+  padding: "0.4rem 0.625rem",
   borderRadius: "6px",
   color: vars.color.muted,
   textDecoration: "none",
-  fontSize: "0.85rem",
+  fontSize: "0.875rem",
   fontWeight: 400,
   lineHeight: 1.5,
   transition: "all 0.2s ease",
   ":hover": {
-    color: vars.color.primary,
+    color: vars.color.text,
     backgroundColor: `color-mix(in srgb, ${vars.color.primary} 8%, transparent)`,
   },
 });
@@ -165,7 +165,7 @@ export const tocItemLevel2 = style({
 
 export const tocItemLevel3 = style({
   paddingLeft: "1.5rem",
-  fontSize: "0.8rem",
+  fontSize: "0.825rem",
 });
 
 export const articleNav = style({
