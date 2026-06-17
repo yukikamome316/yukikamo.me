@@ -2,7 +2,7 @@ import { style, globalStyle } from "@vanilla-extract/css";
 import { vars } from "../theme.css";
 
 export const articleContainer = style({
-  maxWidth: "960px",
+  maxWidth: "720px",
   margin: "4rem auto 4rem",
   padding: "0 1.5rem",
   "@media": {
@@ -14,32 +14,20 @@ export const articleContainer = style({
   },
 });
 
-export const articleLayout = style({
-  display: "flex",
-  gap: "3rem",
-  alignItems: "flex-start",
-  "@media": {
-    "(max-width: 1023px)": {
-      flexDirection: "column",
-      gap: "2rem",
-    },
-  },
-});
+export const articleLayout = style({});
 
-export const articleMain = style({
-  flex: 1,
-  minWidth: 0,
-  maxWidth: "720px",
-});
+export const articleMain = style({});
 
 export const articleSidebar = style({
-  width: "220px",
-  flexShrink: 0,
-  position: "sticky",
+  position: "fixed",
   top: "6rem",
-  alignSelf: "flex-start",
+  left: "calc(50% + 380px)",
+  width: "220px",
+  maxHeight: "calc(100vh - 8rem)",
+  overflowY: "auto",
+  zIndex: 1,
   "@media": {
-    "(max-width: 1023px)": {
+    "(max-width: 1200px)": {
       display: "none",
     },
   },
