@@ -57,7 +57,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
   {
     tocHeadings.length > 0 && (
-      <aside class={articleSidebar}>
+      <aside class={articleSidebar} data-sidebar>
         <nav class={toc} aria-label="目次">
           <h2 class={tocTitle}>目次</h2>
           <ol class={tocList}>
@@ -96,21 +96,15 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   (() => {
     const sidebarLinks = document.querySelectorAll("[data-heading]");
     if (sidebarLinks.length === 0) return;
+    const sidebar = document.querySelector("[data-sidebar]");
 
     const headings = [];
-    let sidebar = null;
-
     sidebarLinks.forEach((li) => {
       const slug = li.dataset.heading;
       const el = document.getElementById(slug);
       const link = li.querySelector("a");
       if (el && link) {
         headings.push({ el, slug, li, link });
-        if (!sidebar) {
-          let parent = li.parentElement;
-          while (parent && getComputedStyle(parent).overflowY !== "auto") parent = parent.parentElement;
-          sidebar = parent;
-        }
       }
     });
     if (headings.length === 0) return;
