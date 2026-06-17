@@ -4,7 +4,6 @@ import { vars } from "../theme.css";
 export const articleContainer = style({
   maxWidth: "720px",
   margin: "4rem auto 4rem",
-  padding: "0 1.5rem",
   "@media": {
     "(max-width: 640px)": {
       marginTop: "2rem",
