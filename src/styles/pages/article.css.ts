@@ -2,12 +2,45 @@ import { style, globalStyle } from "@vanilla-extract/css";
 import { vars } from "../theme.css";
 
 export const articleContainer = style({
-  maxWidth: "720px",
+  maxWidth: "960px",
   margin: "4rem auto 4rem",
+  padding: "0 1.5rem",
   "@media": {
     "(max-width: 640px)": {
       marginTop: "2rem",
       marginBottom: "2rem",
+      padding: "0 1rem",
+    },
+  },
+});
+
+export const articleLayout = style({
+  display: "flex",
+  gap: "3rem",
+  alignItems: "flex-start",
+  "@media": {
+    "(max-width: 1023px)": {
+      flexDirection: "column",
+      gap: "2rem",
+    },
+  },
+});
+
+export const articleMain = style({
+  flex: 1,
+  minWidth: 0,
+  maxWidth: "720px",
+});
+
+export const articleSidebar = style({
+  width: "220px",
+  flexShrink: 0,
+  position: "sticky",
+  top: "6rem",
+  alignSelf: "flex-start",
+  "@media": {
+    "(max-width: 1023px)": {
+      display: "none",
     },
   },
 });
@@ -97,7 +130,6 @@ export const metaLabel = style({
 });
 
 export const toc = style({
-  marginBottom: "3rem",
   padding: "1.5rem",
   backgroundColor: vars.color.surfaceHover,
   border: `1px solid ${vars.color.border}`,

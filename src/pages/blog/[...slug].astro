@@ -3,6 +3,9 @@ import { getCollection } from 'astro:content';
 import Layout from '../../components/layouts/Layout.astro';
 import {
   articleContainer,
+  articleLayout,
+  articleMain,
+  articleSidebar,
   articleHeader,
   articleMeta,
   articleMetaItem,
@@ -63,80 +66,86 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
   image={`/ogp/blog/${slug}.webp`}
 >
   <article class={articleContainer}>
-    <header class={articleHeader}>
-      <div class={articleMeta}>
-        <div class={articleMetaItem}>
-          <span class={articleMetaLabel}>公開日</span>
-          <time class={articleMetaValue} datetime={entry.data.date.toISOString()}>
-            {formatDate(entry.data.date)}
-          </time>
-        </div>
-        {
-          entry.data.updated && (
+    <div class={articleLayout}>
+      <div class={articleMain}>
+        <header class={articleHeader}>
+          <div class={articleMeta}>
             <div class={articleMetaItem}>
-              <span class={articleMetaLabel}>更新日</span>
-              <time class={articleMetaValue} datetime={entry.data.updated.toISOString()}>
-                {formatDate(entry.data.updated)}
+              <span class={articleMetaLabel}>公開日</span>
+              <time class={articleMetaValue} datetime={entry.data.date.toISOString()}>
+                {formatDate(entry.data.date)}
               </time>
             </div>
-          )
-        }
-        <div class={articleMetaItem}>
-          <span class={articleMetaLabel}>読了時間</span>
-          <span class={articleMetaValue}>約{readingTime}分</span>
+            {
+              entry.data.updated && (
+                <div class={articleMetaItem}>
+                  <span class={articleMetaLabel}>更新日</span>
+                  <time class={articleMetaValue} datetime={entry.data.updated.toISOString()}>
+                    {formatDate(entry.data.updated)}
+                  </time>
+                </div>
+              )
+            }
+            <div class={articleMetaItem}>
+              <span class={articleMetaLabel}>読了時間</span>
+              <span class={articleMetaValue}>約{readingTime}分（{entry.body?.length ?? 0}文字）</span>
+            </div>
+          </div>
+          <h1 class={articleTitle}>{entry.data.title}</h1>
+          <div class={articleTagList}>
+            {entry.data.tags?.map((tag: string) => <span class={articleTag}>#{tag}</span>)}
+          </div>
+        </header>
+
+        <div class={articleBody}>
+          <Content />
         </div>
-      </div>
-      <h1 class={articleTitle}>{entry.data.title}</h1>
-      <div class={articleTagList}>
-        {entry.data.tags?.map((tag: string) => <span class={articleTag}>#{tag}</span>)}
-      </div>
-    </header>
 
-    {
-      tocHeadings.length > 0 && (
-        <nav class={toc} aria-label="目次">
-          <h2 class={tocTitle}>目次</h2>
-          <ol class={tocList}>
-            {tocHeadings.map((heading) => (
-              <li
-                class={
-                  heading.depth === 3 ? tocItemLevel3 : tocItemLevel2
-                }
-              >
-                <a class={tocItem} href={`#${heading.slug}`}>
-                  {heading.text}
-                </a>
-              </li>
-            ))}
-          </ol>
+        <nav class={articleNav} aria-label="前後の記事">
+          <h2 class={articleNavTitle}>続きを読む</h2>
+          <div class={articleNavGrid}>
+            {prevEntry ? (
+              <a href={`/blog/${prevEntry.slug}`} class={articleNavCard}>
+                <span class={articleNavCardLabel}>前の記事</span>
+                <span class={articleNavCardTitle}>{prevEntry.data.title}</span>
+              </a>
+            ) : (
+              <span class={articleNavCardEmpty} />
+            )}
+            {nextEntry ? (
+              <a href={`/blog/${nextEntry.slug}`} class={articleNavCard}>
+                <span class={articleNavCardLabel}>次の記事</span>
+                <span class={articleNavCardTitle}>{nextEntry.data.title}</span>
+              </a>
+            ) : (
+              <span class={articleNavCardEmpty} />
+            )}
+          </div>
         </nav>
-      )
-    }
-
-    <div class={articleBody}>
-      <Content />
-    </div>
-
-    <nav class={articleNav} aria-label="前後の記事">
-      <h2 class={articleNavTitle}>続きを読む</h2>
-      <div class={articleNavGrid}>
-        {prevEntry ? (
-          <a href={`/blog/${prevEntry.slug}`} class={articleNavCard}>
-            <span class={articleNavCardLabel}>前の記事</span>
-            <span class={articleNavCardTitle}>{prevEntry.data.title}</span>
-          </a>
-        ) : (
-          <span class={articleNavCardEmpty} />
-        )}
-        {nextEntry ? (
-          <a href={`/blog/${nextEntry.slug}`} class={articleNavCard}>
-            <span class={articleNavCardLabel}>次の記事</span>
-            <span class={articleNavCardTitle}>{nextEntry.data.title}</span>
-          </a>
-        ) : (
-          <span class={articleNavCardEmpty} />
-        )}
       </div>
-    </nav>
+
+      {
+        tocHeadings.length > 0 && (
+          <aside class={articleSidebar}>
+            <nav class={toc} aria-label="目次">
+              <h2 class={tocTitle}>目次</h2>
+              <ol class={tocList}>
+                {tocHeadings.map((heading) => (
+                  <li
+                    class={
+                      heading.depth === 3 ? tocItemLevel3 : tocItemLevel2
+                    }
+                  >
+                    <a class={tocItem} href={`#${heading.slug}`}>
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </aside>
+        )
+      }
+    </div>
   </article>
 </Layout>
