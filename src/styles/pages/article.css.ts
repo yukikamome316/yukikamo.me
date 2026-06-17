@@ -191,56 +191,6 @@ export const tocItemLevel3 = style({
   fontSize: "0.825rem",
 });
 
-export const articleNav = style({
-  marginTop: "4rem",
-  paddingTop: "2rem",
-  borderTop: `1px solid ${vars.color.border}`,
-});
-
-export const articleNavTitle = style({
-  fontSize: "1.25rem",
-  fontWeight: 700,
-  marginBottom: "1rem",
-  color: vars.color.text,
-});
-
-export const articleNavGrid = style({
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gap: "1rem",
-});
-
-export const articleNavCard = style({
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5rem",
-  padding: "1rem 1.25rem",
-  backgroundColor: vars.color.surfaceHover,
-  border: `1px solid ${vars.color.border}`,
-  borderRadius: "8px",
-  textDecoration: "none",
-  transition: "border-color 0.2s, background-color 0.2s",
-  ":hover": {
-    borderColor: vars.color.primaryDark,
-    backgroundColor: vars.color.surface,
-  },
-});
-
-export const articleNavCardLabel = style({
-  fontSize: "0.75rem",
-  color: vars.color.muted,
-});
-
-export const articleNavCardTitle = style({
-  fontSize: "1rem",
-  fontWeight: 600,
-  color: vars.color.text,
-});
-
-export const articleNavCardEmpty = style({
-  display: "block",
-});
-
 export const articleBody = style({
   lineHeight: "1.8",
   fontSize: "1.125rem",
