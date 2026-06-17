@@ -12,6 +12,11 @@ export const header = style({
   backdropFilter: "blur(8px)",
   backgroundColor: `color-mix(in srgb, ${vars.color.background} 85%, transparent)`,
   borderBottom: `1px solid ${vars.color.border}`,
+  "@media": {
+    "(max-width: 640px)": {
+      padding: `${vars.space.medium} ${vars.space.medium}`,
+    },
+  },
 });
 
 export const logo = style({
