@@ -64,7 +64,7 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
         }
         <div class={articleMetaItem}>
           <span class={articleMetaLabel}>読了時間</span>
-          <span class={articleMetaValue}>約{readingTime}分（{entry.body?.length ?? 0}文字）</span>
+          <span class={articleMetaValue}>約{readingTime}分 ({entry.body?.length ?? 0}文字)</span>
         </div>
       </div>
       <h1 class={articleTitle}>{entry.data.title}</h1>

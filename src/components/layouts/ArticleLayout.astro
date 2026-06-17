@@ -10,6 +10,7 @@ import {
   tocItem,
   tocItemLevel2,
   tocItemLevel3,
+  tocMobile,
 } from "../../styles/pages/article.css";
 
 interface Heading {
@@ -29,6 +30,25 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 <div class={articleWrapper}>
   <article class={articleContainer}>
     <slot name="header" />
+    {
+      tocHeadings.length > 0 && (
+        <nav class={tocMobile} aria-label="目次">
+          <h2 class={tocTitle}>目次</h2>
+          <ol class={tocList}>
+            {tocHeadings.map((heading) => (
+              <li
+                class={heading.depth === 3 ? tocItemLevel3 : tocItemLevel2}
+                data-heading={heading.slug}
+              >
+                <a class={tocItem} href={`#${heading.slug}`}>
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
     <div class={articleBody}>
       <slot />
     </div>

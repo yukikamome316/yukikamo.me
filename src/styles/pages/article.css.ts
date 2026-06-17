@@ -27,7 +27,7 @@ export const articleContainer = style({
     "(max-width: 640px)": {
       marginTop: "2rem",
       marginBottom: "2rem",
-      padding: "0 1.25rem",
+      padding: "0 0.5rem",
     },
   },
 });
@@ -206,6 +206,16 @@ globalStyle("[data-toc-active]", {
 export const tocItemLevel3 = style({
   paddingLeft: "1.5rem",
   fontSize: "0.8rem",
+});
+
+export const tocMobile = style({
+  display: "none",
+  marginBottom: "2rem",
+  "@media": {
+    "(max-width: 1100px)": {
+      display: "block",
+    },
+  },
 });
 
 export const articleBody = style({
