@@ -257,8 +257,7 @@ ${titlePaths}
 
 function generateExternalSvg(
   title: string,
-  source: string,
-  emoji: string
+  source: string
 ): string {
   const escaped = escapeXml(title);
   const lines = wrapText(escaped, 18);
@@ -308,13 +307,6 @@ function generateExternalSvg(
   <circle cx="250" cy="220" r="3" fill="${COLOR.secondary}" opacity="0.35" />
   <circle cx="850" cy="350" r="5" fill="${COLOR.secondary}" opacity="0.15" />
 
-  <!-- Decorative small sparkles -->
-  <path d="M75 180 Q80 170 85 180 Q80 190 75 180Z" fill="${COLOR.secondary}" opacity="0.3" />
-  <path d="M1120 280 Q1125 270 1130 280 Q1125 290 1120 280Z" fill="${COLOR.secondary}" opacity="0.25" />
-
-  <!-- Emoji icon (top right) -->
-  <text x="1100" y="160" font-family="sans-serif" font-size="120" text-anchor="middle">${escapeXml(emoji)}</text>
-
   <!-- Title -->
   <text font-family="'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'MS PGothic', sans-serif" font-size="${fontSize}" font-weight="700" fill="${COLOR.text}">
 ${tspans}
@@ -337,7 +329,6 @@ interface ExternalItem {
   url: string;
   slug: string;
   source: string;
-  emoji: string;
 }
 
 function parseFrontmatter(filePath: string): { title: string } {
@@ -386,7 +377,7 @@ async function generateExternalOgp(items: ExternalItem[]): Promise<void> {
     const dir = path.dirname(outPath);
     fs.mkdirSync(dir, { recursive: true });
 
-    const svg = generateExternalSvg(item.title, item.source, item.emoji);
+    const svg = generateExternalSvg(item.title, item.source);
     await sharp(Buffer.from(svg)).webp({ quality: 90 }).toFile(outPath);
     console.log(`  ✓ public/ogp/external/${item.slug}.webp`);
   }
@@ -450,7 +441,6 @@ async function main(): Promise<void> {
       title: string;
       url: string;
       source: string;
-      emoji?: string;
     }>;
     for (const post of posts) {
       externalItems.push({
@@ -458,7 +448,6 @@ async function main(): Promise<void> {
         url: post.url,
         slug: urlToSlug(post.url),
         source: post.source,
-        emoji: post.emoji ?? "📝",
       });
     }
     await generateExternalOgp(externalItems);
