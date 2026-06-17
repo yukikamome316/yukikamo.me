@@ -26,7 +26,6 @@ export const container = style({
       transform: "scale(0.55)",
       transformOrigin: "center center",
       height: "275px",
-      overflow: "hidden",
     },
   },
 });
