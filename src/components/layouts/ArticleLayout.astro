@@ -103,8 +103,9 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     sidebarLinks.forEach((li) => {
       const slug = li.dataset.heading;
       const el = document.getElementById(slug);
-      if (el) {
-        headings.push({ el, slug, li });
+      const link = li.querySelector("a");
+      if (el && link) {
+        headings.push({ el, slug, li, link });
         if (!sidebar) {
           let parent = li.parentElement;
           while (parent && getComputedStyle(parent).overflowY !== "auto") parent = parent.parentElement;
@@ -133,8 +134,10 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
           }
         }
         sidebarLinks.forEach((li) => {
+          const link = li.querySelector("a");
+          if (!link) return;
           if (active && li === active.li) {
-            li.dataset.tocActive = "";
+            link.dataset.tocActive = "";
             if (li === sidebarLinks[0] && sidebar) {
               sidebar.scrollTop = 0;
             } else if (li === sidebarLinks[sidebarLinks.length - 1] && sidebar) {
@@ -143,11 +146,11 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
               li.scrollIntoView({ block: "nearest", behavior: "smooth" });
             }
           } else {
-            delete li.dataset.tocActive;
+            delete link.dataset.tocActive;
           }
         });
       },
-      { rootMargin: "-64px 0px -65% 0px" }
+      { rootMargin: "-80px 0px -40% 0px" }
     );
     headings.forEach((h) => observer.observe(h.el));
   })();
