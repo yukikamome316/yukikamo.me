@@ -1,9 +1,15 @@
 import { globalStyle } from "@vanilla-extract/css";
 import { vars } from "./theme.css";
 
-globalStyle("html, body", {
+globalStyle("html", {
   margin: 0,
   padding: 0,
+});
+
+globalStyle("body", {
+  margin: 0,
+  padding: 0,
+  overflowX: "hidden",
   backgroundColor: vars.color.background,
   color: vars.color.text,
   fontFamily: vars.font.body,
