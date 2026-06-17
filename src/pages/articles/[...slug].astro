@@ -14,7 +14,7 @@ import {
 } from '../../styles/pages/article.css';
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog');
+  const blogEntries = (await getCollection('blog')).filter(e => !e.data.draft);
   const sortedEntries = blogEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   return sortedEntries.map((entry) => ({
@@ -38,10 +38,10 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
 ---
 
 <Layout
-  title={`${entry.data.title} | Blog`}
+  title={`${entry.data.title} | Articles`}
   description={entry.data.description}
   type="article"
-  image={`/ogp/blog/${slug}.webp`}
+  image={`/ogp/articles/${slug}.webp`}
 >
   <ArticleLayout headings={headings}>
     <header slot="header" class={articleHeader}>

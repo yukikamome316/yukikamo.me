@@ -51,7 +51,7 @@ try {
     viewport: { width: 1440, height: 900 },
   });
 
-  await page.goto(serverUrl + "/blog/first-post/", {
+  await page.goto(serverUrl + "/articles/first-post/", {
     waitUntil: "networkidle",
   });
   await page.waitForTimeout(1000);

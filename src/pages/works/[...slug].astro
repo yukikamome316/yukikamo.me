@@ -15,7 +15,7 @@ import {
 } from '../../styles/pages/article.css';
 
 export async function getStaticPaths() {
-  const workEntries = await getCollection('work');
+  const workEntries = (await getCollection('work')).filter(e => !e.data.draft);
   return workEntries.map(entry => ({
     params: { slug: entry.slug },
     props: { entry },
@@ -27,7 +27,7 @@ const { Content, headings } = await entry.render();
 const { slug } = entry;
 ---
 
-<Layout title={`${entry.data.title} | Work`} description={entry.data.description} image={`/ogp/work/${slug}.webp`}>
+<Layout title={`${entry.data.title} | Works`} description={entry.data.description} image={`/ogp/works/${slug}.webp`}>
   <ArticleLayout headings={headings}>
     <header slot="header" class={articleHeader}>
       <h1 class={articleTitle}>{entry.data.title}</h1>

@@ -3,6 +3,7 @@ title: "Project Alpha"
 date: 2023-10-15
 description: "A comprehensive dashboard for internal usage."
 tags: ["React", "TypeScript", "Vite"]
+draft: true
 link: "https://example.com"
 role: "Frontend Lead"
 ---

@@ -5,11 +5,11 @@ import { getCollection } from 'astro:content';
 import { grid } from '../../styles/components/card.css';
 import { listSection, listTitle, listDescription } from '../../styles/pages/list.css';
 
-const workEntries = await getCollection('work');
+const workEntries = (await getCollection('work')).filter(e => !e.data.draft);
 const sortedEntries = workEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<Layout title="Work | Yuki" description="これまでに制作したり、関わったプロジェクトの一覧です。">
+<Layout title="Works | Yuki" description="これまでに制作したり、関わったプロジェクトの一覧です。">
   <section class={listSection}>
     <h1 class={listTitle}>Selected Work</h1>
     <p class={listDescription}>これまでに制作したり、関わったプロジェクトの一覧です。</p>
@@ -19,7 +19,7 @@ const sortedEntries = workEntries.sort((a, b) => b.data.date.valueOf() - a.data.
         <Card 
           title={entry.data.title} 
           description={entry.data.description} 
-          href={`/work/${entry.slug}`} 
+          href={`/works/${entry.slug}`} 
         />
       ))}
     </div>
