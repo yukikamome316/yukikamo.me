@@ -209,7 +209,7 @@ export const tocItemLevel2 = style({
   fontWeight: 500,
 });
 
-globalStyle("[data-toc-active]", {
+globalStyle("[data-toc-active][data-toc-active]", {
   color: vars.color.primary,
   backgroundColor: `color-mix(in srgb, ${vars.color.primary} 10%, transparent)`,
   fontWeight: 600,
