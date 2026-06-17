@@ -1,20 +1,111 @@
 ---
-import { card, cardContent, cardTitle, cardDescription } from '../../styles/components/card.css';
+import {
+  card,
+  cardImage,
+  cardImageInner,
+  cardDateOverlay,
+  cardContent,
+  cardTitle,
+  cardDescription,
+  cardHead,
+  cardHeadItem,
+  cardSource,
+  cardTagList,
+  cardTag,
+} from '../../styles/components/card.css';
 
 interface Props {
   title: string;
-  description: string;
+  description?: string;
   href: string;
+  date?: Date;
+  tags?: string[];
+  source?: string;
+  external?: boolean;
+  image?: string;
+  imageAlt?: string;
+  head?: string[];
+  excerpt?: string;
 }
 
-const { title, description, href } = Astro.props;
+const {
+  title,
+  description,
+  href,
+  date,
+  tags,
+  source,
+  external,
+  image,
+  imageAlt,
+  head,
+  excerpt,
+} = Astro.props;
+
+const displayHead = head?.slice(0, 2) ?? [];
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 ---
 
-<a href={href} style="text-decoration: none; color: inherit; display: block;">
-  <div class={card}>
-    <div class={cardContent}>
-      <h3 class={cardTitle}>{title}</h3>
-      <p class={cardDescription}>{description}</p>
-    </div>
+<a
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  class={card}
+>
+  {
+    image && (
+      <div class={cardImage}>
+        <img src={image} alt={imageAlt ?? title} class={cardImageInner} loading="lazy" />
+        {
+          date && (
+            <div class={cardDateOverlay}>
+              <time datetime={date.toISOString()}>{formatDate(date)}</time>
+            </div>
+          )
+        }
+      </div>
+    )
+  }
+  <div class={cardContent}>
+    <h3 class={cardTitle}>{title}</h3>
+    {
+      excerpt && !displayHead.length && (
+        <p class={cardDescription}>{excerpt}</p>
+      )
+    }
+    {
+      displayHead.length > 0 && (
+        <ul class={cardHead}>
+          {displayHead.map((line) => (
+            <li class={cardHeadItem}>{line}</li>
+          ))}
+        </ul>
+      )
+    }
+    {description && !image && !excerpt && <p class={cardDescription}>{description}</p>}
+    {
+      source && (
+        <span class={cardSource}>
+          {source}
+          {external ? ' ↗' : ''}
+        </span>
+      )
+    }
+    {
+      tags && tags.length > 0 && (
+        <div class={cardTagList}>
+          {tags.map((tag) => (
+            <span class={cardTag}>{tag}</span>
+          ))}
+        </div>
+      )
+    }
   </div>
 </a>
+
