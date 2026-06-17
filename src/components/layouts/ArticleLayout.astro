@@ -11,6 +11,7 @@ import {
   tocItemLevel2,
   tocItemLevel3,
   tocMobile,
+  tocMobileToggle,
 } from "../../styles/pages/article.css";
 
 interface Heading {
@@ -32,13 +33,12 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     <slot name="header" />
     {
       tocHeadings.length > 0 && (
-        <nav class={tocMobile} aria-label="目次">
-          <h2 class={tocTitle}>目次</h2>
+        <details class={tocMobile}>
+          <summary class={tocMobileToggle}>目次</summary>
           <ol class={tocList}>
             {tocHeadings.map((heading) => (
               <li
                 class={heading.depth === 3 ? tocItemLevel3 : tocItemLevel2}
-                data-heading={heading.slug}
               >
                 <a class={tocItem} href={`#${heading.slug}`}>
                   {heading.text}
@@ -46,7 +46,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
               </li>
             ))}
           </ol>
-        </nav>
+        </details>
       )
     }
     <div class={articleBody}>
@@ -79,32 +79,32 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 <script is:inline>
   (() => {
-    const tocLinks = document.querySelectorAll("[data-heading]");
-    if (tocLinks.length === 0) return;
+    const sidebarLinks = document.querySelectorAll("[data-heading]");
+    if (sidebarLinks.length === 0) return;
 
     const headings = [];
-    tocLinks.forEach((li) => {
+    let sidebar = null;
+
+    sidebarLinks.forEach((li) => {
       const slug = li.dataset.heading;
       const el = document.getElementById(slug);
-      if (el) headings.push({ el, slug, li });
+      if (el) {
+        headings.push({ el, slug, li });
+        if (!sidebar) {
+          let parent = li.parentElement;
+          while (parent && getComputedStyle(parent).overflowY !== "auto") parent = parent.parentElement;
+          sidebar = parent;
+        }
+      }
     });
     if (headings.length === 0) return;
-
-    let sidebar = null;
-    let el = tocLinks[0].parentElement;
-    while (el && getComputedStyle(el).overflowY !== "auto") el = el.parentElement;
-    sidebar = el;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const found = headings.find((h) => h.el === entry.target);
           if (!found) return;
-          if (entry.isIntersecting) {
-            found.li.dataset.visible = "";
-          } else {
-            delete found.li.dataset.visible;
-          }
+          found.li.dataset.visible = entry.isIntersecting ? "" : undefined;
         });
         let active = null;
         for (const h of headings) {
@@ -113,12 +113,12 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
             break;
           }
         }
-        tocLinks.forEach((li) => {
+        sidebarLinks.forEach((li) => {
           if (active && li === active.li) {
             li.dataset.tocActive = "";
-            if (li === tocLinks[0] && sidebar) {
+            if (li === sidebarLinks[0] && sidebar) {
               sidebar.scrollTop = 0;
-            } else if (li === tocLinks[tocLinks.length - 1] && sidebar) {
+            } else if (li === sidebarLinks[sidebarLinks.length - 1] && sidebar) {
               sidebar.scrollTop = sidebar.scrollHeight;
             } else {
               li.scrollIntoView({ block: "nearest", behavior: "smooth" });

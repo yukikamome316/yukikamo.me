@@ -51,6 +51,20 @@ export const articleSidebar = style({
   },
 });
 
+globalStyle(`${articleSidebar}::-webkit-scrollbar`, {
+  width: "6px",
+});
+
+globalStyle(`${articleSidebar}::-webkit-scrollbar-track`, {
+  background: vars.color.surfaceHover,
+  borderRadius: "3px",
+});
+
+globalStyle(`${articleSidebar}::-webkit-scrollbar-thumb`, {
+  background: vars.color.border,
+  borderRadius: "3px",
+});
+
 export const articleHeader = style({
   marginBottom: "3rem",
 });
@@ -216,6 +230,22 @@ export const tocMobile = style({
       display: "block",
     },
   },
+});
+
+export const tocMobileToggle = style({
+  cursor: "pointer",
+  fontSize: "0.875rem",
+  fontWeight: 600,
+  color: vars.color.text,
+  padding: "0.75rem 1rem",
+  backgroundColor: vars.color.surfaceHover,
+  border: `1px solid ${vars.color.border}`,
+  borderRadius: "8px",
+  userSelect: "none",
+  "::marker": {
+    content: '""',
+  },
+  listStyle: "none",
 });
 
 export const articleBody = style({
