@@ -109,41 +109,34 @@ export const articleTagBadge = style({
 export const articleMeta = style({
   display: "flex",
   flexWrap: "wrap",
-  gap: "0.75rem",
+  gap: "0.5rem",
   marginBottom: "1.5rem",
-  padding: "0.75rem 1rem",
-  backgroundColor: vars.color.surface,
-  border: `1px solid ${vars.color.border}`,
-  borderRadius: "10px",
 });
 
 export const articleMetaItem = style({
-  display: "inline-flex",
-  alignItems: "center",
-  gap: "0.375rem",
-  padding: "0.375rem 0.75rem",
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.125rem",
+  padding: "0.5rem 0.75rem",
   backgroundColor: vars.color.surfaceHover,
-  borderRadius: "6px",
+  borderRadius: "8px",
+  borderTop: `3px solid ${vars.color.primary}`,
 });
 
 export const articleMetaLabel = style({
-  fontSize: "0.75rem",
+  fontSize: "0.65rem",
   color: vars.color.muted,
+  fontWeight: 500,
+  letterSpacing: "0.03em",
   display: "inline-flex",
   alignItems: "center",
-  gap: "0.25rem",
-  ":before": {
-    content: '"•"',
-    color: vars.color.primary,
-    fontSize: "0.5rem",
-  },
+  gap: "0.2rem",
 });
 
 export const articleMetaValue = style({
-  fontSize: "0.875rem",
+  fontSize: "0.9rem",
   color: vars.color.text,
-  fontWeight: 600,
-  whiteSpace: "nowrap",
+  fontWeight: 700,
 });
 
 export const articleMetaGrid = style({
