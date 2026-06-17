@@ -20,7 +20,7 @@ export const articleMain = style({});
 export const articleSidebar = style({
   position: "fixed",
   top: "6rem",
-  left: "calc(50% + 380px)",
+  left: "calc(50% + 408px)",
   width: "220px",
   maxHeight: "calc(100vh - 8rem)",
   overflowY: "auto",
@@ -117,17 +117,21 @@ export const metaLabel = style({
 });
 
 export const toc = style({
-  padding: "1.5rem",
-  backgroundColor: vars.color.surfaceHover,
+  padding: "1.25rem",
+  backgroundColor: vars.color.surface,
   border: `1px solid ${vars.color.border}`,
-  borderRadius: "8px",
+  borderRadius: "10px",
 });
 
 export const tocTitle = style({
-  fontSize: "1.125rem",
+  fontSize: "0.75rem",
   fontWeight: 700,
-  marginBottom: "1rem",
-  color: vars.color.text,
+  letterSpacing: "0.05em",
+  textTransform: "uppercase",
+  color: vars.color.muted,
+  marginBottom: "0.75rem",
+  paddingBottom: "0.5rem",
+  borderBottom: `1px solid ${vars.color.border}`,
 });
 
 export const tocList = style({
@@ -136,15 +140,22 @@ export const tocList = style({
   margin: 0,
   display: "flex",
   flexDirection: "column",
-  gap: "0.5rem",
+  gap: "0.25rem",
 });
 
 export const tocItem = style({
+  display: "block",
+  padding: "0.375rem 0.625rem",
+  borderRadius: "6px",
   color: vars.color.muted,
   textDecoration: "none",
-  transition: "color 0.2s",
+  fontSize: "0.85rem",
+  fontWeight: 400,
+  lineHeight: 1.5,
+  transition: "all 0.2s ease",
   ":hover": {
-    color: vars.color.primaryDark,
+    color: vars.color.primary,
+    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 8%, transparent)`,
   },
 });
 
@@ -153,8 +164,8 @@ export const tocItemLevel2 = style({
 });
 
 export const tocItemLevel3 = style({
-  paddingLeft: "1rem",
-  fontSize: "0.95rem",
+  paddingLeft: "1.5rem",
+  fontSize: "0.8rem",
 });
 
 export const articleNav = style({
