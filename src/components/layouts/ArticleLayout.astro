@@ -92,7 +92,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     }
   })();
 
-  // Sidebar TOC scroll observer
+  // Sidebar TOC scroll tracking — スクロール位置からアクティブな見出しを判定
   (() => {
     const sidebarLinks = document.querySelectorAll("[data-heading]");
     if (sidebarLinks.length === 0) return;
@@ -103,56 +103,50 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
       const slug = li.dataset.heading;
       const el = document.getElementById(slug);
       const link = li.querySelector("a");
-      if (el && link) {
-        headings.push({ el, slug, li, link });
-      }
+      if (el && link) headings.push({ el, slug, li, link });
     });
     if (headings.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const found = headings.find((h) => h.el === entry.target);
-          if (!found) return;
-          if (entry.isIntersecting) {
-            found.li.dataset.visible = "";
-          } else {
-            delete found.li.dataset.visible;
-          }
-        });
-        let active = null;
-        for (const h of headings) {
-          if (h.li.dataset.visible !== undefined) {
-            active = h;
-            break;
-          }
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      let active = null;
+      for (const h of headings) {
+        const rect = h.el.getBoundingClientRect();
+        if (rect.top >= 64 && rect.top < window.innerHeight - 100) {
+          active = h;
+          break;
         }
-        // 最後の見出しを過ぎたら最終項目をアクティブに
-        if (!active && headings.length > 0) {
-          const last = headings[headings.length - 1];
-          if (last.el.getBoundingClientRect().top < window.innerHeight - 100) {
-            active = last;
-          }
+      }
+      if (!active && headings.length > 0) {
+        const last = headings[headings.length - 1];
+        if (last.el.getBoundingClientRect().top < window.innerHeight - 100) {
+          active = last;
         }
-        sidebarLinks.forEach((li) => {
-          const link = li.querySelector("a");
-          if (!link) return;
-          if (active && li === active.li) {
-            link.dataset.tocActive = "";
-            if (li === sidebarLinks[0] && sidebar) {
-              sidebar.scrollTop = 0;
-            } else if (li === sidebarLinks[sidebarLinks.length - 1] && sidebar) {
-              sidebar.scrollTop = sidebar.scrollHeight;
-            } else {
-              li.scrollIntoView({ block: "nearest", behavior: "smooth" });
-            }
+      }
+      sidebarLinks.forEach((li) => {
+        const link = li.querySelector("a");
+        if (!link) return;
+        if (active && li === active.li) {
+          link.dataset.tocActive = "";
+          if (li === sidebarLinks[0] && sidebar) {
+            sidebar.scrollTop = 0;
+          } else if (li === sidebarLinks[sidebarLinks.length - 1] && sidebar) {
+            sidebar.scrollTop = sidebar.scrollHeight;
           } else {
-            delete link.dataset.tocActive;
+            li.scrollIntoView({ block: "nearest", behavior: "smooth" });
           }
-        });
-      },
-      { rootMargin: "-80px 0px -40% 0px" }
-    );
-    headings.forEach((h) => observer.observe(h.el));
+        } else {
+          delete link.dataset.tocActive;
+        }
+      });
+    };
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => update());
+        ticking = true;
+      }
+    }, { passive: true });
+    update();
   })();
 </script>
