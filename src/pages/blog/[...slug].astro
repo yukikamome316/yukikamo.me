@@ -1,12 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../components/layouts/Layout.astro';
+import ArticleLayout from '../../components/layouts/ArticleLayout.astro';
 import {
-  articleWrapper,
-  articleContainer,
-  articleLayout,
-  articleMain,
-  articleSidebar,
   articleHeader,
   articleMeta,
   articleMetaItem,
@@ -15,13 +11,6 @@ import {
   articleTitle,
   articleTagList,
   articleTag,
-  articleBody,
-  toc,
-  tocTitle,
-  tocList,
-  tocItem,
-  tocItemLevel2,
-  tocItemLevel3,
 } from '../../styles/pages/article.css';
 
 export async function getStaticPaths() {
@@ -45,7 +34,6 @@ const formatDate = (date: Date) =>
     day: 'numeric',
   });
 
-const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
 ---
 
@@ -55,122 +43,36 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
   type="article"
   image={`/ogp/blog/${slug}.webp`}
 >
-  <div class={articleWrapper}>
-    <article class={articleContainer}>
-    <div class={articleLayout}>
-      <div class={articleMain}>
-        <header class={articleHeader}>
-          <div class={articleMeta}>
+  <ArticleLayout headings={headings}>
+    <header slot="header" class={articleHeader}>
+      <div class={articleMeta}>
+        <div class={articleMetaItem}>
+          <span class={articleMetaLabel}>公開日</span>
+          <time class={articleMetaValue} datetime={entry.data.date.toISOString()}>
+            {formatDate(entry.data.date)}
+          </time>
+        </div>
+        {
+          entry.data.updated && (
             <div class={articleMetaItem}>
-              <span class={articleMetaLabel}>公開日</span>
-              <time class={articleMetaValue} datetime={entry.data.date.toISOString()}>
-                {formatDate(entry.data.date)}
+              <span class={articleMetaLabel}>更新日</span>
+              <time class={articleMetaValue} datetime={entry.data.updated.toISOString()}>
+                {formatDate(entry.data.updated)}
               </time>
             </div>
-            {
-              entry.data.updated && (
-                <div class={articleMetaItem}>
-                  <span class={articleMetaLabel}>更新日</span>
-                  <time class={articleMetaValue} datetime={entry.data.updated.toISOString()}>
-                    {formatDate(entry.data.updated)}
-                  </time>
-                </div>
-              )
-            }
-            <div class={articleMetaItem}>
-              <span class={articleMetaLabel}>読了時間</span>
-              <span class={articleMetaValue}>約{readingTime}分（{entry.body?.length ?? 0}文字）</span>
-            </div>
-          </div>
-          <h1 class={articleTitle}>{entry.data.title}</h1>
-          <div class={articleTagList}>
-            {entry.data.tags?.map((tag: string) => <span class={articleTag}>#{tag}</span>)}
-          </div>
-        </header>
-
-        <div class={articleBody}>
-          <Content />
+          )
+        }
+        <div class={articleMetaItem}>
+          <span class={articleMetaLabel}>読了時間</span>
+          <span class={articleMetaValue}>約{readingTime}分（{entry.body?.length ?? 0}文字）</span>
         </div>
       </div>
-    </div>
-  </article>
+      <h1 class={articleTitle}>{entry.data.title}</h1>
+      <div class={articleTagList}>
+        {entry.data.tags?.map((tag: string) => <span class={articleTag}>#{tag}</span>)}
+      </div>
+    </header>
 
-  {
-    tocHeadings.length > 0 && (
-      <aside class={articleSidebar}>
-        <nav class={toc} aria-label="目次">
-          <h2 class={tocTitle}>目次</h2>
-          <ol class={tocList}>
-    {tocHeadings.map((heading) => (
-                  <li
-                    class={
-                      heading.depth === 3 ? tocItemLevel3 : tocItemLevel2
-                    }
-                    data-heading={heading.slug}
-                  >
-                    <a class={tocItem} href={`#${heading.slug}`}>
-                      {heading.text}
-                    </a>
-                  </li>
-                ))}
-          </ol>
-        </nav>
-      </aside>
-    )
-  }
-</div>
-<script is:inline>
-  (() => {
-    const tocLinks = document.querySelectorAll("[data-heading]");
-    const headings = [];
-    tocLinks.forEach((li) => {
-      const slug = li.dataset.heading;
-      const el = document.getElementById(slug);
-      if (el) headings.push({ el, slug, li });
-    });
-    if (headings.length === 0) return;
-
-    let sidebar = null;
-    let el = tocLinks[0].parentElement;
-    while (el && getComputedStyle(el).overflowY !== "auto") el = el.parentElement;
-    sidebar = el;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const found = headings.find((h) => h.el === entry.target);
-          if (!found) return;
-          if (entry.isIntersecting) {
-            found.li.dataset.visible = "";
-          } else {
-            delete found.li.dataset.visible;
-          }
-        });
-        let active = null;
-        for (const h of headings) {
-          if (h.li.dataset.visible !== undefined) {
-            active = h;
-            break;
-          }
-        }
-        tocLinks.forEach((li) => {
-          if (active && li === active.li) {
-            li.dataset.tocActive = "";
-            if (li === tocLinks[0] && sidebar) {
-              sidebar.scrollTop = 0;
-            } else if (li === tocLinks[tocLinks.length - 1] && sidebar) {
-              sidebar.scrollTop = sidebar.scrollHeight;
-            } else {
-              li.scrollIntoView({ block: "nearest", behavior: "smooth" });
-            }
-          } else {
-            delete li.dataset.tocActive;
-          }
-        });
-      },
-      { rootMargin: "-80px 0px -60% 0px" }
-    );
-    headings.forEach((h) => observer.observe(h.el));
-  })();
-</script>
+    <Content />
+  </ArticleLayout>
 </Layout>
