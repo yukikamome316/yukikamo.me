@@ -253,21 +253,35 @@ ${titlePaths}
 </svg>`;
 }
 
-function generateExternalSvg(title: string, source: string): string {
-  const escaped = escapeXml(title);
-  const lines = wrapText(escaped, 18);
+function generateExternalSvg(
+  title: string,
+  source: string,
+  font: opentype.Font
+): string {
+  const maxWidth = 1040;
+  const { lines: titleLines, fontSize: titleFontSize } = measureAndWrap(
+    font,
+    title,
+    maxWidth,
+    18,
+    title.length > 18 ? 46 : 58
+  );
 
-  const totalLines = lines.length;
-  const fontSize = totalLines > 1 ? 46 : 58;
-  const lineHeight = fontSize * 1.45;
+  const lineHeight = titleFontSize * 1.45;
+  const totalLines = titleLines.length;
   const textYStart = 290 - ((totalLines - 1) * lineHeight) / 2;
 
-  const tspans = lines
+  const titlePaths = titleLines
     .map((line, i) => {
       const y = textYStart + i * lineHeight;
-      return `      <tspan x="80" y="${y}">${line}</tspan>`;
+      const d = textToSvgPath(font, line, titleFontSize, 80, y);
+      return `    <path d="${d}" fill="${COLOR.text}" />`;
     })
     .join("\n");
+
+  const label = `${escapeXml(source)} | ${escapeXml(SITE_TITLE)}`;
+  const labelFontSize = 20;
+  const labelPath = textToSvgPath(font, label, labelFontSize, 80, 570);
 
   return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -303,14 +317,10 @@ function generateExternalSvg(title: string, source: string): string {
   <circle cx="850" cy="350" r="5" fill="${COLOR.secondary}" opacity="0.15" />
 
   <!-- Title -->
-  <text font-family="'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'MS PGothic', sans-serif" font-size="${fontSize}" font-weight="700" fill="${COLOR.text}">
-${tspans}
-  </text>
+${titlePaths}
 
   <!-- Source name -->
-  <text x="80" y="570" font-family="'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif" font-size="20" font-weight="600" fill="${COLOR.secondary}" letter-spacing="2">
-    ${escapeXml(source)} | ${escapeXml(SITE_TITLE)}
-  </text>
+  <path d="${labelPath}" fill="${COLOR.secondary}" />
 </svg>`;
 }
 
@@ -366,13 +376,16 @@ async function generateOgp(
   }
 }
 
-async function generateExternalOgp(items: ExternalItem[]): Promise<void> {
+async function generateExternalOgp(
+  items: ExternalItem[],
+  font: opentype.Font
+): Promise<void> {
   for (const item of items) {
     const outPath = path.join(OUTPUT_DIR, "external", `${item.slug}.webp`);
     const dir = path.dirname(outPath);
     fs.mkdirSync(dir, { recursive: true });
 
-    const svg = generateExternalSvg(item.title, item.source);
+    const svg = generateExternalSvg(item.title, item.source, font);
     await sharp(Buffer.from(svg)).webp({ quality: 90 }).toFile(outPath);
     console.log(`  ✓ public/ogp/external/${item.slug}.webp`);
   }
@@ -445,7 +458,7 @@ async function main(): Promise<void> {
         source: post.source,
       });
     }
-    await generateExternalOgp(externalItems);
+    await generateExternalOgp(externalItems, font);
   }
 
   console.log(
