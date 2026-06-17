@@ -73,7 +73,7 @@ const ogImage = image.startsWith("http") ? image : siteUrl + image;
   <body>
     <div style={{ width: "100%", position: "relative" }}>
       <Header />
-      <main class={mainContent}>
+      <main class={mainContent} transition:name="main">
         <slot />
       </main>
       <Footer />
