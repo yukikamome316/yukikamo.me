@@ -184,7 +184,8 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
         tocLinks.forEach((li) => {
           if (active && li === active.li) {
             li.dataset.tocActive = "";
-            li.scrollIntoView({ block: "nearest", behavior: "smooth" });
+            const block = li === tocLinks[0] ? "start" : li === tocLinks[tocLinks.length - 1] ? "end" : "nearest";
+            li.scrollIntoView({ block, behavior: "smooth" });
           } else {
             delete li.dataset.tocActive;
           }
