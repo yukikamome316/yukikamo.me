@@ -133,6 +133,13 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
             break;
           }
         }
+        // 最後の見出しを過ぎたら最終項目をアクティブに
+        if (!active && headings.length > 0) {
+          const last = headings[headings.length - 1];
+          if (last.el.getBoundingClientRect().top < window.innerHeight - 100) {
+            active = last;
+          }
+        }
         sidebarLinks.forEach((li) => {
           const link = li.querySelector("a");
           if (!link) return;
