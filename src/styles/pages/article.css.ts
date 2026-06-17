@@ -136,21 +136,32 @@ export const metaLabel = style({
 });
 
 export const toc = style({
-  padding: "1.5rem",
+  padding: "1.25rem",
   backgroundColor: vars.color.surface,
   border: `1px solid ${vars.color.border}`,
   borderRadius: "12px",
+  position: "relative",
+  overflow: "hidden",
 });
 
 export const tocTitle = style({
-  fontSize: "0.75rem",
+  fontSize: "0.7rem",
   fontWeight: 700,
-  letterSpacing: "0.06em",
+  letterSpacing: "0.08em",
   textTransform: "uppercase",
   color: vars.color.muted,
   marginBottom: "0.75rem",
   paddingBottom: "0.75rem",
   borderBottom: `1px solid ${vars.color.border}`,
+  display: "flex",
+  alignItems: "center",
+  gap: "0.5rem",
+  ":before": {
+    content: '"—"',
+    color: vars.color.primary,
+    fontWeight: 400,
+    fontSize: "0.8rem",
+  },
 });
 
 export const tocList = style({
@@ -164,17 +175,19 @@ export const tocList = style({
 
 export const tocItem = style({
   display: "block",
-  padding: "0.4rem 0.625rem",
+  padding: "0.375rem 0.75rem",
   borderRadius: "6px",
   color: vars.color.muted,
   textDecoration: "none",
-  fontSize: "0.875rem",
+  fontSize: "0.85rem",
   fontWeight: 400,
   lineHeight: 1.5,
+  borderLeft: `2px solid transparent`,
   transition: "all 0.2s ease",
   ":hover": {
     color: vars.color.text,
-    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 8%, transparent)`,
+    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 6%, transparent)`,
+    borderLeftColor: `color-mix(in srgb, ${vars.color.primary} 30%, transparent)`,
   },
 });
 
@@ -187,11 +200,12 @@ globalStyle("[data-toc-active]", {
   backgroundColor: `color-mix(in srgb, ${vars.color.primary} 10%, transparent)`,
   fontWeight: 600,
   borderRadius: "6px",
+  borderLeft: `2px solid ${vars.color.primary}`,
 });
 
 export const tocItemLevel3 = style({
   paddingLeft: "1.5rem",
-  fontSize: "0.825rem",
+  fontSize: "0.8rem",
 });
 
 export const articleBody = style({
