@@ -4,7 +4,7 @@ import { vars } from "../theme.css";
 export const articleWrapper = style({
   display: "flex",
   justifyContent: "center",
-  gap: "3rem",
+  gap: "6rem",
   alignItems: "flex-start",
   padding: "0 1.5rem",
   paddingLeft: "5.5rem",
