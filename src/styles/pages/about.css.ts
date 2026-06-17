@@ -2,8 +2,8 @@ import { style } from "@vanilla-extract/css";
 import { vars } from "../theme.css";
 
 export const pageSection = style({
-  marginTop: vars.space.xlarge,
-  marginBottom: vars.space.xlarge,
+  marginTop: "4rem",
+  marginBottom: "4rem",
 });
 
 export const pageTitle = style({
