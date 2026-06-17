@@ -11,7 +11,6 @@ import {
   tocItemLevel2,
   tocItemLevel3,
   tocMobile,
-  tocMobileToggle,
 } from "../../styles/pages/article.css";
 
 interface Heading {
@@ -34,10 +33,9 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     {
       tocHeadings.length > 0 && (
         <div class={tocMobile}>
-          <button class={tocMobileToggle} data-toc-toggle aria-label="目次を開く">目次を表示</button>
-          <nav class={toc} data-toc-mobile-body>
-            <h2 class={tocTitle}>目次</h2>
-            <ol class={tocList}>
+          <nav class={toc} data-toc-mobile>
+            <h2 class={tocTitle} data-toc-toggle>目次</h2>
+            <ol class={tocList} data-toc-body>
               {tocHeadings.map((heading) => (
                 <li
                   class={heading.depth === 3 ? tocItemLevel3 : tocItemLevel2}
@@ -81,16 +79,15 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 </div>
 
 <script is:inline>
-  // Mobile TOC toggle
+  // Mobile TOC toggle — タイトル行をタップで開閉, デフォルトは開
   (() => {
-    const btn = document.querySelector("[data-toc-toggle]");
-    const body = document.querySelector("[data-toc-mobile-body]");
-    if (btn && body) {
-      body.style.display = "none";
-      btn.addEventListener("click", () => {
-        const open = body.style.display !== "none";
-        body.style.display = open ? "none" : "block";
-        btn.textContent = open ? "目次を表示" : "目次を隠す";
+    const toggle = document.querySelector("[data-toc-toggle]");
+    const body = document.querySelector("[data-toc-body]");
+    if (toggle && body) {
+      toggle.style.cursor = "pointer";
+      toggle.addEventListener("click", () => {
+        const isHidden = body.style.display === "none";
+        body.style.display = isHidden ? "" : "none";
       });
     }
   })();
@@ -122,7 +119,11 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
         entries.forEach((entry) => {
           const found = headings.find((h) => h.el === entry.target);
           if (!found) return;
-          found.li.dataset.visible = entry.isIntersecting ? "" : undefined;
+          if (entry.isIntersecting) {
+            found.li.dataset.visible = "";
+          } else {
+            delete found.li.dataset.visible;
+          }
         });
         let active = null;
         for (const h of headings) {
