@@ -192,7 +192,7 @@ const readingTime = Math.max(1, Math.ceil((entry.body?.length ?? 0) / 600));
             if (li === tocLinks[0] && sidebar) {
               sidebar.scrollTop = 0;
             } else if (li === tocLinks[tocLinks.length - 1] && sidebar) {
-              sidebar.scrollTop = li.offsetTop + li.offsetHeight - sidebar.clientHeight;
+              sidebar.scrollTop = sidebar.scrollHeight;
             } else {
               li.scrollIntoView({ block: "nearest", behavior: "smooth" });
             }

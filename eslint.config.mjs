@@ -33,6 +33,7 @@ export default tseslint.config(
       ".astro/",
       "node_modules/",
       ".wrangler/",
+      "e2e/",
       "eslint.config.mjs",
     ],
   }
