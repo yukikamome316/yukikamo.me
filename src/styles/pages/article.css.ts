@@ -74,49 +74,76 @@ export const articleDescription = style({
 
 export const articleTagList = style({
   display: "flex",
-  gap: "0.5rem",
+  gap: "0.375rem",
   flexWrap: "wrap",
 });
 
 export const articleTag = style({
-  fontSize: "0.875rem",
+  fontSize: "0.8rem",
+  fontWeight: 500,
   color: vars.color.primaryDark,
+  padding: "0.2rem 0.6rem",
+  backgroundColor: `color-mix(in srgb, ${vars.color.primary} 6%, transparent)`,
+  borderRadius: "6px",
+  transition: "background-color 0.2s",
+  ":hover": {
+    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 14%, transparent)`,
+  },
 });
 
 export const articleTagBadge = style({
-  fontSize: "0.875rem",
-  padding: "0.25rem 0.75rem",
-  backgroundColor: vars.color.surfaceHover,
+  fontSize: "0.85rem",
+  fontWeight: 500,
+  padding: "0.3rem 0.85rem",
+  backgroundColor: `color-mix(in srgb, ${vars.color.primary} 8%, transparent)`,
+  color: vars.color.primaryDark,
   border: `1px solid ${vars.color.border}`,
   borderRadius: "999px",
+  transition: "all 0.2s ease",
+  ":hover": {
+    backgroundColor: `color-mix(in srgb, ${vars.color.primary} 15%, transparent)`,
+    borderColor: vars.color.primary,
+  },
 });
 
 export const articleMeta = style({
   display: "flex",
   flexWrap: "wrap",
-  gap: "1.5rem",
+  gap: "0.75rem",
   marginBottom: "1.5rem",
-  padding: "1rem 1.25rem",
-  backgroundColor: vars.color.surfaceHover,
+  padding: "0.75rem 1rem",
+  backgroundColor: vars.color.surface,
   border: `1px solid ${vars.color.border}`,
-  borderRadius: "8px",
+  borderRadius: "10px",
 });
 
 export const articleMetaItem = style({
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.25rem",
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "0.375rem",
+  padding: "0.375rem 0.75rem",
+  backgroundColor: vars.color.surfaceHover,
+  borderRadius: "6px",
 });
 
 export const articleMetaLabel = style({
   fontSize: "0.75rem",
   color: vars.color.muted,
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "0.25rem",
+  ":before": {
+    content: '"•"',
+    color: vars.color.primary,
+    fontSize: "0.5rem",
+  },
 });
 
 export const articleMetaValue = style({
   fontSize: "0.875rem",
   color: vars.color.text,
-  fontWeight: 500,
+  fontWeight: 600,
+  whiteSpace: "nowrap",
 });
 
 export const articleMetaGrid = style({
