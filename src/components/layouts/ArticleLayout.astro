@@ -1,0 +1,155 @@
+---
+import {
+  articleWrapper,
+  articleContainer,
+  articleBody,
+  articleSidebar,
+  toc,
+  tocTitle,
+  tocList,
+  tocItem,
+  tocItemLevel2,
+  tocItemLevel3,
+  tocMobile,
+} from "../../styles/pages/article.css";
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<div class={articleWrapper}>
+  <article class={articleContainer}>
+    <slot name="header" />
+    {
+      tocHeadings.length > 0 && (
+        <div class={tocMobile}>
+          <nav class={toc} data-toc-mobile>
+            <h2 class={tocTitle} data-toc-toggle>目次</h2>
+            <ol class={tocList} data-toc-body>
+              {tocHeadings.map((heading) => (
+                <li
+                  class={heading.depth === 3 ? tocItemLevel3 : tocItemLevel2}
+                >
+                  <a class={tocItem} href={`#${heading.slug}`}>
+                    {heading.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </div>
+      )
+    }
+    <div class={articleBody}>
+      <slot />
+    </div>
+  </article>
+
+  {
+    tocHeadings.length > 0 && (
+      <aside class={articleSidebar} data-sidebar>
+        <nav class={toc} aria-label="目次">
+          <h2 class={tocTitle}>目次</h2>
+          <ol class={tocList}>
+            {tocHeadings.map((heading) => (
+              <li
+                class={heading.depth === 3 ? tocItemLevel3 : tocItemLevel2}
+                data-heading={heading.slug}
+              >
+                <a class={tocItem} href={`#${heading.slug}`}>
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+    )
+  }
+</div>
+
+<script is:inline>
+  // Mobile TOC toggle — タイトル行をタップで開閉, デフォルトは開
+  (() => {
+    const toggle = document.querySelector("[data-toc-toggle]");
+    const body = document.querySelector("[data-toc-body]");
+    if (toggle && body) {
+      toggle.style.cursor = "pointer";
+      toggle.addEventListener("click", () => {
+        const isHidden = body.style.display === "none";
+        body.style.display = isHidden ? "" : "none";
+      });
+    }
+  })();
+
+  // Sidebar TOC scroll tracking — スクロール位置からアクティブな見出しを判定
+  const initTocTracking = () => {
+    const sidebarLinks = document.querySelectorAll("[data-heading]");
+    if (sidebarLinks.length === 0) return;
+    const sidebar = document.querySelector("[data-sidebar]");
+
+    const headings = [];
+    sidebarLinks.forEach((li) => {
+      const slug = li.dataset.heading;
+      const el = document.getElementById(slug);
+      const link = li.querySelector("a");
+      if (el && link) headings.push({ el, slug, li, link });
+    });
+    if (headings.length === 0) return;
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      let active = null;
+      for (const h of headings) {
+        const rect = h.el.getBoundingClientRect();
+        if (rect.top >= 64 && rect.top < window.innerHeight - 100) {
+          active = h;
+          break;
+        }
+      }
+      if (!active && headings.length > 0) {
+        const last = headings[headings.length - 1];
+        if (last.el.getBoundingClientRect().top < window.innerHeight - 100) {
+          active = last;
+        }
+      }
+      sidebarLinks.forEach((li) => {
+        const link = li.querySelector("a");
+        if (!link) return;
+        if (active && li === active.li) {
+          link.dataset.tocActive = "";
+          if (li === sidebarLinks[0] && sidebar) {
+            sidebar.scrollTop = 0;
+          } else if (li === sidebarLinks[sidebarLinks.length - 1] && sidebar) {
+            sidebar.scrollTop = sidebar.scrollHeight;
+          } else {
+            li.scrollIntoView({ block: "nearest", behavior: "smooth" });
+          }
+        } else {
+          delete link.dataset.tocActive;
+        }
+      });
+    };
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => update());
+        ticking = true;
+      }
+    }, { passive: true });
+    update();
+  };
+
+  document.addEventListener("astro:after-swap", initTocTracking);
+  initTocTracking();
+</script>

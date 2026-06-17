@@ -2,7 +2,7 @@ import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 
 export async function GET(context: { site: string }) {
-  const blog = await getCollection("blog");
+  const blog = (await getCollection("blog")).filter((e) => !e.data.draft);
   const sorted = blog.sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
   );
@@ -16,9 +16,9 @@ export async function GET(context: { site: string }) {
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description ?? "",
-      link: `/blog/${post.slug}/`,
+      link: `/articles/${post.slug}/`,
       enclosure: {
-        url: `${context.site}ogp/blog/${post.slug}.webp`,
+        url: `${context.site}ogp/articles/${post.slug}.webp`,
         type: "image/webp",
         length: 1,
       },
