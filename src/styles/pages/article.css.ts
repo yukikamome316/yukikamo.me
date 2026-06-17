@@ -14,8 +14,7 @@ export const articleWrapper = style({
       paddingLeft: "1.5rem",
     },
     "(max-width: 640px)": {
-      padding: "0 1rem",
-      paddingLeft: "1rem",
+      padding: "0",
     },
   },
 });
@@ -28,6 +27,7 @@ export const articleContainer = style({
     "(max-width: 640px)": {
       marginTop: "2rem",
       marginBottom: "2rem",
+      padding: "0 1.25rem",
     },
   },
 });
