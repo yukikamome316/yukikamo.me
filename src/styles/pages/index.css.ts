@@ -123,7 +123,7 @@ export const workSection = style({
   marginTop: "2rem",
 });
 
-export const blogSection = style({
+export const articlesSection = style({
   marginTop: "4rem",
   marginBottom: "4rem",
 });

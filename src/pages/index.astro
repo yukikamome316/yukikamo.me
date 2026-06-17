@@ -13,7 +13,7 @@ import {
   heroDescription,
   sectionTitle,
   workSection,
-  blogSection,
+  articlesSection,
 } from "../styles/pages/index.css.ts";
 import { grid } from "../styles/components/card.css.ts";
 import Card from "../components/ui/Card.astro";
@@ -33,12 +33,12 @@ const heroCards = [
   { title: "The Northern Japan Alps", src: imgAlps.src },
 ];
 
-const allWork = await getCollection("work");
+const allWork = (await getCollection("work")).filter(e => !e.data.draft);
 const recentWork = allWork
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
-const allBlog = await getCollection("blog");
+const allBlog = (await getCollection("blog")).filter(e => !e.data.draft);
 const recentBlog = allBlog
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
@@ -99,7 +99,7 @@ const recentBlog = allBlog
           <Card
             title={work.data.title}
             description={work.data.description}
-            href={`/work/${work.slug}`}
+            href={`/works/${work.slug}`}
           />
         ))
       }
@@ -107,7 +107,7 @@ const recentBlog = allBlog
   </section>
 
   <!-- Blog Section -->
-  <section class={blogSection}>
+  <section class={articlesSection}>
     <h2 class={sectionTitle}>Latest Posts</h2>
     <div class={grid}>
       {
@@ -115,7 +115,7 @@ const recentBlog = allBlog
           <Card
             title={post.data.title}
             description={post.data.description || ""}
-            href={`/blog/${post.slug}`}
+            href={`/articles/${post.slug}`}
           />
         ))
       }

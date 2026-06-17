@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 import { grid } from '../../styles/components/card.css';
 import { listSection, listTitle, listDescription } from '../../styles/pages/list.css';
 
-const blogEntries = await getCollection('blog');
+const blogEntries = (await getCollection('blog')).filter(e => !e.data.draft);
 const sortedEntries = blogEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
@@ -19,7 +19,7 @@ const sortedEntries = blogEntries.sort((a, b) => b.data.date.valueOf() - a.data.
         <Card 
           title={entry.data.title} 
           description={entry.data.description || ''} 
-          href={`/blog/${entry.slug}`} 
+          href={`/articles/${entry.slug}`} 
         />
       ))}
     </div>
