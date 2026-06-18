@@ -93,7 +93,9 @@ function textToSvgPath(
   for (const char of text) {
     const glyph = font.charToGlyph(char);
     const path = glyph.getPath(cx, y, fontSize);
-    paths.push(path.toPathData(2));
+    // opentype.js v2 has a bug where repeated getPath calls can produce
+    // NaN coordinates in the SVG output. Replace NaN with 0 as fallback.
+    paths.push(path.toPathData(2).replace(/NaN/g, "0"));
     cx += (glyph.advanceWidth ?? font.unitsPerEm * 0.6) * scale;
   }
   return paths.join(" ");
