@@ -87,8 +87,16 @@ function textToSvgPath(
   x: number,
   y: number
 ): string {
-  const path = font.getPath(text, x, y, fontSize);
-  return path.toPathData(2);
+  const scale = fontSize / font.unitsPerEm;
+  let cx = x;
+  const paths: string[] = [];
+  for (const char of text) {
+    const glyph = font.charToGlyph(char);
+    const path = glyph.getPath(cx, y, fontSize);
+    paths.push(path.toPathData(2));
+    cx += glyph.advanceWidth * scale;
+  }
+  return paths.join(" ");
 }
 
 /** Measure text width and wrap to fit maxWidth, keeping font size fixed */
