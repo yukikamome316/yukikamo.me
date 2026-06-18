@@ -372,10 +372,7 @@ async function generateOgp(
 ): Promise<void> {
   console.log("Generating default OGP...");
   const defaultSvg = generateSvg("ゆきの置き手紙", "default", font);
-  await renderSvgWithProfile(
-    defaultSvg,
-    path.join(OUTPUT_DIR, "default.webp")
-  );
+  await renderSvgWithProfile(defaultSvg, path.join(OUTPUT_DIR, "default.webp"));
   console.log("  ✓ public/ogp/default.webp");
 
   for (const item of items) {
