@@ -302,7 +302,13 @@ function generateExternalSvg(
   const badgeY = 50;
 
   // Render badge text at correct position
-  const badgeTextPath = textToSvgPath(font, badgeText, badgeFontSize, badgeX + badgePadding, badgeY + badgeH * 0.72);
+  const badgeTextPath = textToSvgPath(
+    font,
+    badgeText,
+    badgeFontSize,
+    badgeX + badgePadding,
+    badgeY + badgeH * 0.72
+  );
 
   return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -394,8 +400,11 @@ async function generateOgp(
     const dir = path.dirname(outPath);
     fs.mkdirSync(dir, { recursive: true });
 
-    const pageType = item.slug.startsWith("articles") ? "blog" : 
-                     item.slug.startsWith("works") ? "work" : "default";
+    const pageType = item.slug.startsWith("articles")
+      ? "blog"
+      : item.slug.startsWith("works")
+        ? "work"
+        : "default";
     const svg = generateSvg(item.title, pageType, font);
     await renderWithProfile(svg, outPath);
     console.log(`  ✓ public/ogp/${item.slug}.webp`);
