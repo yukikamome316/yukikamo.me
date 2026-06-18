@@ -93,13 +93,8 @@ export const cardHeadItem = style({
 
 export const cardSource = style({
   fontSize: "0.65rem",
-  fontWeight: 700,
-  padding: "0.1rem 0.35rem",
-  borderRadius: "4px",
-  backgroundColor: vars.color.secondary,
-  color: "#ffffff",
-  lineHeight: 1.2,
-  marginLeft: "0.125rem",
+  fontWeight: 500,
+  color: "rgba(255,255,255,0.8)",
 });
 
 export const cardTagList = style({

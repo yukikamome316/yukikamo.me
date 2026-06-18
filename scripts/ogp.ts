@@ -49,18 +49,23 @@ function wrapText(text: string, maxCharsPerLine: number): string[] {
   let current = "";
   for (const char of text) {
     const next = current + char;
-    // Test if adding this char would exceed the limit
     if (next.length > maxCharsPerLine && current.length > 0) {
-      // If we're in the middle of an alphanumeric word, try to find a space before
-      if (/[a-zA-Z0-9_]/.test(char)) {
-        // Find last space in current
-        const lastSpace = current.lastIndexOf(" ");
-        if (lastSpace > 0) {
-          // Put everything before the space in one line, and the rest as current
-          const beforeSpace = current.slice(0, lastSpace);
-          const afterSpace = current.slice(lastSpace + 1);
-          lines.push(beforeSpace);
-          current = afterSpace + char;
+      // Check if we're in the middle of an alphanumeric word
+      if (/[a-zA-Z0-9]/.test(char)) {
+        // Find where the alphanumeric run starts in current
+        let alnumStart = current.length;
+        while (alnumStart > 0 && /[a-zA-Z0-9]/.test(current[alnumStart - 1])) {
+          alnumStart--;
+        }
+        if (alnumStart > 0) {
+          // Find a space before the word for a clean break
+          const spaceBefore = current.lastIndexOf(" ", alnumStart - 1);
+          const breakAt = spaceBefore > 0 ? spaceBefore : alnumStart;
+          lines.push(current.slice(0, breakAt));
+          current =
+            (spaceBefore > 0
+              ? current.slice(spaceBefore + 1)
+              : current.slice(breakAt)) + char;
           continue;
         }
       }
@@ -176,6 +181,15 @@ async function compositeProfileIcon(
     .toBuffer();
 }
 
+async function renderSvgWithProfile(
+  svgContent: string,
+  outPath: string
+): Promise<void> {
+  const pngBuf = await sharp(Buffer.from(svgContent)).png().toBuffer();
+  const result = await compositeProfileIcon(pngBuf, 50, 78, 508);
+  await sharp(result).toFile(outPath);
+}
+
 function generateSvg(
   title: string,
   pageType: "default" | "blog" | "work",
@@ -281,34 +295,12 @@ function generateExternalSvg(
     })
     .join("\n");
 
+  // Site name with platform label
   const labelFontSize = 18;
-  const labelPath = textToSvgPath(
-    font,
-    escapeXml(SITE_TITLE),
-    labelFontSize,
-    80,
-    570
-  );
-
-  // Platform badge: e.g. "Zenn" in an orange pill
-  const badgeText = source;
-  const badgeFontSize = 22;
-  // We need the badge width for positioning; approximate with char count
-  const badgeCharWidth = badgeFontSize * 0.6;
-  const badgePadding = 14;
-  const badgeW = badgeText.length * badgeCharWidth + badgePadding * 2;
-  const badgeH = 38;
-  const badgeX = 1200 - badgeW - 50; // 50px from right edge
-  const badgeY = 50;
-
-  // Render badge text at correct position
-  const badgeTextPath = textToSvgPath(
-    font,
-    badgeText,
-    badgeFontSize,
-    badgeX + badgePadding,
-    badgeY + badgeH * 0.72
-  );
+  const labelStr = source
+    ? `${escapeXml(source)} | ${escapeXml(SITE_TITLE)}`
+    : escapeXml(SITE_TITLE);
+  const labelPath = textToSvgPath(font, labelStr, labelFontSize, 80, 570);
 
   return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -342,10 +334,6 @@ function generateExternalSvg(
   <circle cx="480" cy="520" r="6" fill="${COLOR.secondary}" opacity="0.2" />
   <circle cx="250" cy="220" r="3" fill="${COLOR.secondary}" opacity="0.35" />
   <circle cx="850" cy="350" r="5" fill="${COLOR.secondary}" opacity="0.15" />
-
-  <!-- Platform badge -->
-  <rect x="${badgeX}" y="${badgeY}" width="${badgeW}" height="${badgeH}" rx="8" fill="${COLOR.secondary}" />
-  <path d="${badgeTextPath}" fill="#ffffff" />
 
   <!-- Title -->
 ${titlePaths}
@@ -382,17 +370,12 @@ async function generateOgp(
   items: PageItem[],
   font: opentype.Font
 ): Promise<void> {
-  const renderWithProfile = async (svgContent: string, outPath: string) => {
-    // Render base SVG (no <image> tag — sharp can't handle data URIs)
-    const pngBuf = await sharp(Buffer.from(svgContent)).png().toBuffer();
-    // Composite circular profile icon at bottom-left
-    const result = await compositeProfileIcon(pngBuf, 50, 78, 508);
-    await sharp(result).toFile(outPath);
-  };
-
   console.log("Generating default OGP...");
   const defaultSvg = generateSvg("ゆきの置き手紙", "default", font);
-  await renderWithProfile(defaultSvg, path.join(OUTPUT_DIR, "default.webp"));
+  await renderSvgWithProfile(
+    defaultSvg,
+    path.join(OUTPUT_DIR, "default.webp")
+  );
   console.log("  ✓ public/ogp/default.webp");
 
   for (const item of items) {
@@ -406,7 +389,7 @@ async function generateOgp(
         ? "work"
         : "default";
     const svg = generateSvg(item.title, pageType, font);
-    await renderWithProfile(svg, outPath);
+    await renderSvgWithProfile(svg, outPath);
     console.log(`  ✓ public/ogp/${item.slug}.webp`);
   }
 }
@@ -421,7 +404,7 @@ async function generateExternalOgp(
     fs.mkdirSync(dir, { recursive: true });
 
     const svg = generateExternalSvg(item.title, item.source, font);
-    await sharp(Buffer.from(svg)).webp({ quality: 90 }).toFile(outPath);
+    await renderSvgWithProfile(svg, outPath);
     console.log(`  ✓ public/ogp/external/${item.slug}.webp`);
   }
 }
