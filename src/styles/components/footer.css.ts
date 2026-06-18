@@ -11,11 +11,18 @@ export const footer = style({
 
 export const footerInner = style({
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "row",
   alignItems: "center",
+  justifyContent: "space-between",
   gap: "1rem",
   maxWidth: "1200px",
   margin: "0 auto",
+  "@media": {
+    "(max-width: 640px)": {
+      flexDirection: "column",
+      gap: "0.75rem",
+    },
+  },
 });
 
 export const footerLinks = style({

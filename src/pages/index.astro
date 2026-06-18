@@ -19,6 +19,8 @@ import { grid } from "../styles/components/card.css.ts";
 import Card from "../components/ui/Card.astro";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
+import { extractExcerpt, extractHeadings } from "../lib/post-head";
+import { getExternalPosts } from "../lib/external-posts";
 
 import imgSusukino from "../assets/hero/susukino.webp";
 import imgMarunouchi from "../assets/hero/marunouchi.webp";
@@ -39,9 +41,53 @@ const recentWork = allWork
   .slice(0, 3);
 
 const allBlog = (await getCollection("blog")).filter(e => !e.data.draft);
-const recentBlog = allBlog
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+const internalBlogPosts = allBlog.map((post) => ({
+  type: "internal" as const,
+  title: post.data.title,
+  href: `/articles/${post.slug}`,
+  date: post.data.date,
+  updated: post.data.updated,
+  tags: post.data.tags,
+  image: `/ogp/articles/${post.slug}.webp`,
+  excerpt: extractExcerpt(post.body),
+  head: extractHeadings(post.body),
+}));
+
+const externalPosts = getExternalPosts();
+
+const allPosts = [
+  ...internalBlogPosts,
+  ...externalPosts.map((post) => ({
+    type: "external" as const,
+    title: post.title,
+    href: post.url,
+    date: post.date,
+    updated: undefined as Date | undefined,
+    tags: post.tags,
+    source: post.source,
+    image: post.image,
+    excerpt: undefined as string[] | undefined,
+    head: post.head,
+  })),
+];
+
+const recentPosts = allPosts
+  .sort((a, b) => b.date.valueOf() - a.date.valueOf())
   .slice(0, 3);
+
+const siteUrl = "https://yukikamo.me";
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Yuki - Portfolio & Blog",
+  url: siteUrl,
+  author: {
+    "@type": "Person",
+    name: "Yuki",
+    url: siteUrl,
+    sameAs: ["https://github.com/yukikamome316"],
+  },
+};
 ---
 
 <Layout title="ゆきの置き手紙" description="ゆきの置き手紙 - ゆきの個人サイト。IT と旅行が好きなセキュリティエンジニア。">
@@ -60,6 +106,7 @@ const recentBlog = allBlog
       type="image/webp"
       fetchpriority="high"
     />
+    <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
   </Fragment>
 
   <!-- Hero Section -->
@@ -90,6 +137,28 @@ const recentBlog = allBlog
     </div>
   </section>
 
+  <!-- Blog Section -->
+  <section class={articlesSection}>
+    <h2 class={sectionTitle}>Latest Posts</h2>
+    <div class={grid}>
+      {
+        recentPosts.map((post) => (
+          <Card
+            title={post.title}
+            href={post.href}
+            date={post.date}
+            tags={post.tags}
+            image={post.image}
+            excerpt={post.excerpt}
+            head={post.head}
+            source={post.type === "external" ? post.source : undefined}
+            external={post.type === "external"}
+          />
+        ))
+      }
+    </div>
+  </section>
+
   <!-- Work Section -->
   <section class={workSection}>
     <h2 class={sectionTitle}>Selected Work</h2>
@@ -100,22 +169,6 @@ const recentBlog = allBlog
             title={work.data.title}
             description={work.data.description}
             href={`/works/${work.slug}`}
-          />
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- Blog Section -->
-  <section class={articlesSection}>
-    <h2 class={sectionTitle}>Latest Posts</h2>
-    <div class={grid}>
-      {
-        recentBlog.map((post) => (
-          <Card
-            title={post.data.title}
-            description={post.data.description || ""}
-            href={`/articles/${post.slug}`}
           />
         ))
       }
