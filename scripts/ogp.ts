@@ -94,7 +94,7 @@ function textToSvgPath(
     const glyph = font.charToGlyph(char);
     const path = glyph.getPath(cx, y, fontSize);
     paths.push(path.toPathData(2));
-    cx += glyph.advanceWidth * scale;
+    cx += (glyph.advanceWidth ?? font.unitsPerEm * 0.6) * scale;
   }
   return paths.join(" ");
 }
