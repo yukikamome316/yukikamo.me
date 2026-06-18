@@ -79,7 +79,11 @@ function wrapText(text: string, maxCharsPerLine: number): string[] {
   return lines;
 }
 
-/** Convert text to SVG path data string using opentype.js */
+/** Convert text to SVG path data string using opentype.js.
+ *  opentype.js v2 has a bug where certain floating-point x coordinates
+ *  (with many decimal places) produce NaN in the output path.
+ *  Workaround: round x to 1 decimal place before each getPath call.
+ */
 function textToSvgPath(
   font: opentype.Font,
   text: string,
@@ -88,14 +92,14 @@ function textToSvgPath(
   y: number
 ): string {
   const scale = fontSize / font.unitsPerEm;
-  let cx = x;
   const paths: string[] = [];
+  let cx = x;
   for (const char of text) {
     const glyph = font.charToGlyph(char);
-    const path = glyph.getPath(cx, y, fontSize);
-    // opentype.js v2 has a bug where repeated getPath calls can produce
-    // NaN coordinates in the SVG output. Replace NaN with 0 as fallback.
-    paths.push(path.toPathData(2).replace(/NaN/g, "0"));
+    // Round cx to avoid floating-point precision issues in opentype.js
+    const rx = Math.round(cx * 10) / 10;
+    const path = font.getPath(char, rx, y, fontSize);
+    paths.push(path.toPathData(2));
     cx += (glyph.advanceWidth ?? font.unitsPerEm * 0.6) * scale;
   }
   return paths.join(" ");
