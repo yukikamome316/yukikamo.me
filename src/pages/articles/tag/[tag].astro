@@ -1,0 +1,57 @@
+---
+import Layout from '../../../components/layouts/Layout.astro';
+import Card from '../../../components/ui/Card.astro';
+import { getCollection } from 'astro:content';
+import { grid } from '../../../styles/components/card.css';
+import { extractHeadings } from '../../../lib/post-head';
+import {
+  listSection,
+  listTitle,
+  listDescription,
+} from '../../../styles/pages/list.css';
+
+export async function getStaticPaths() {
+  const blogEntries = (await getCollection('blog')).filter(e => !e.data.draft);
+  const tagSet = new Set<string>();
+  blogEntries.forEach((entry) => {
+    entry.data.tags?.forEach((tag) => tagSet.add(tag));
+  });
+
+  return Array.from(tagSet).map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const allEntries = (await getCollection('blog')).filter(e => !e.data.draft);
+const filteredEntries = allEntries
+  .filter((entry) => entry.data.tags?.includes(tag))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Layout
+  title={`タグ: ${tag} | Articles`}
+  description={`タグ「${tag}」の記事一覧です。`}
+>
+  <section class={listSection}>
+    <h1 class={listTitle}>#{tag}</h1>
+    <p class={listDescription}>
+      タグ「{tag}」の記事が{filteredEntries.length}件あります。
+    </p>
+
+    <div class={grid}>
+      {
+        filteredEntries.map((entry) => (
+          <Card
+            title={entry.data.title}
+            href={`/articles/${entry.slug}`}
+            date={entry.data.date}
+            updated={entry.data.updated}
+            tags={entry.data.tags}
+            author="Yuki"
+            image={`/ogp/articles/${entry.slug}.webp`}
+            head={extractHeadings(entry.body)}
+          />
+        ))
+      }
+    </div>
+  </section>
+</Layout>

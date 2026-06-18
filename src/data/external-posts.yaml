@@ -1,0 +1,9 @@
+- title: "学校の課題をNotionとGoogleカレンダーで管理したら絶対に忘れなくなった"
+  url: "https://zenn.dev/minecode/articles/81f2485f646ae4"
+  date: 2024-11-15
+  source: "Zenn"
+  emoji: "🗓️"
+  head:
+    - "実現したこと"
+    - "なぜ作ったか"
+  tags: ["Notion", "GoogleCalendar", "Productivity"]
