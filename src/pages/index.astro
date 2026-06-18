@@ -42,6 +42,20 @@ const allBlog = (await getCollection("blog")).filter(e => !e.data.draft);
 const recentBlog = allBlog
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
+
+const siteUrl = "https://yukikamo.me";
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Yuki - Portfolio & Blog",
+  url: siteUrl,
+  author: {
+    "@type": "Person",
+    name: "Yuki",
+    url: siteUrl,
+    sameAs: ["https://github.com/yukikamome316"],
+  },
+};
 ---
 
 <Layout title="ゆきの置き手紙" description="ゆきの置き手紙 - ゆきの個人サイト。IT と旅行が好きなセキュリティエンジニア。">
@@ -60,6 +74,7 @@ const recentBlog = allBlog
       type="image/webp"
       fetchpriority="high"
     />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
   </Fragment>
 
   <!-- Hero Section -->
