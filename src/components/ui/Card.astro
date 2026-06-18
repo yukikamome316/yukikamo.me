@@ -77,16 +77,21 @@ const formatDate = (d: Date) =>
   <div class={cardContent}>
     <h3 class={cardTitle}>{title}</h3>
     {
-      displayExcerpt.length > 0 && (
+      description && (
+        <p class={cardDescription}>{description}</p>
+      )
+    }
+    {
+      !description && displayExcerpt.length > 0 && (
         <ul class={cardHead}>
           {displayExcerpt.map((line) => (
-            <li class={cardDescription}>{line}</li>
+            <li class={cardHeadItem}>{line}</li>
           ))}
         </ul>
       )
     }
     {
-      displayExcerpt.length === 0 && displayHead.length > 0 && (
+      !description && displayExcerpt.length === 0 && displayHead.length > 0 && (
         <ul class={cardHead}>
           {displayHead.map((line) => (
             <li class={cardHeadItem}>{line}</li>
@@ -95,12 +100,7 @@ const formatDate = (d: Date) =>
       )
     }
     {
-      description && !image && displayExcerpt.length === 0 && displayHead.length === 0 && (
-        <p class={cardDescription}>{description}</p>
-      )
-    }
-    {
-      source && !date && (
+      source && (
         <span class={cardSource}>
           {source}
         </span>
