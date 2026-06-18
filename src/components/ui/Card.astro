@@ -67,6 +67,7 @@ const formatDate = (d: Date) =>
           date && (
             <div class={cardDateOverlay}>
               <time datetime={date.toISOString()}>{formatDate(date)}</time>
+              {source && <span class={cardSource}>{source}</span>}
             </div>
           )
         }
@@ -99,10 +100,9 @@ const formatDate = (d: Date) =>
       )
     }
     {
-      source && (
+      source && !date && (
         <span class={cardSource}>
           {source}
-          {external ? ' ↗' : ''}
         </span>
       )
     }

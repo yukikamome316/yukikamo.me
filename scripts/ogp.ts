@@ -48,7 +48,22 @@ function wrapText(text: string, maxCharsPerLine: number): string[] {
   const lines: string[] = [];
   let current = "";
   for (const char of text) {
-    if (current.length >= maxCharsPerLine) {
+    const next = current + char;
+    // Test if adding this char would exceed the limit
+    if (next.length > maxCharsPerLine && current.length > 0) {
+      // If we're in the middle of an alphanumeric word, try to find a space before
+      if (/[a-zA-Z0-9_]/.test(char)) {
+        // Find last space in current
+        const lastSpace = current.lastIndexOf(" ");
+        if (lastSpace > 0) {
+          // Put everything before the space in one line, and the rest as current
+          const beforeSpace = current.slice(0, lastSpace);
+          const afterSpace = current.slice(lastSpace + 1);
+          lines.push(beforeSpace);
+          current = afterSpace + char;
+          continue;
+        }
+      }
       lines.push(current);
       current = char;
     } else {
@@ -71,7 +86,7 @@ function textToSvgPath(
   return path.toPathData(2);
 }
 
-/** Measure text width and reduce font size if overflowing */
+/** Measure text width and wrap to fit maxWidth, keeping font size fixed */
 function measureAndWrap(
   font: opentype.Font,
   text: string,
@@ -79,26 +94,20 @@ function measureAndWrap(
   maxCharsPerLine: number,
   maxFontSize: number
 ): { lines: string[]; fontSize: number } {
-  let fontSize = maxFontSize;
-  const lines = wrapText(text, maxCharsPerLine);
+  const fontSize = maxFontSize;
 
-  const allFit = lines.every((line) => {
-    const w = font.getAdvanceWidth(line, fontSize);
-    return w <= maxWidth;
-  });
-
-  if (!allFit) {
-    for (let fs = maxFontSize - 2; fs >= 24; fs -= 2) {
-      const fits = lines.every((line) => {
-        const w = font.getAdvanceWidth(line, fs);
-        return w <= maxWidth;
-      });
-      if (fits) {
-        fontSize = fs;
-        break;
-      }
-    }
+  // Wrap at initial limit, then check if all fit; if not, reduce chars per line
+  let charsPerLine = maxCharsPerLine;
+  let lines: string[];
+  for (; charsPerLine >= 10; charsPerLine -= 2) {
+    lines = wrapText(text, charsPerLine);
+    const allFit = lines.every((line) => {
+      const w = font.getAdvanceWidth(line, fontSize);
+      return w <= maxWidth;
+    });
+    if (allFit) break;
   }
+  lines = wrapText(text, Math.max(charsPerLine, 10));
 
   return { lines, fontSize };
 }
@@ -174,12 +183,13 @@ function generateSvg(
 ): string {
   const maxWidth = 1040;
 
+  const maxCharsPerLine = 24;
   const { lines: titleLines, fontSize: titleFontSize } = measureAndWrap(
     font,
     title,
     maxWidth,
-    18,
-    title.length > 18 ? 46 : 58
+    maxCharsPerLine,
+    title.length > maxCharsPerLine ? 46 : 58
   );
 
   const lineHeight = titleFontSize * 1.45;
@@ -194,18 +204,13 @@ function generateSvg(
     })
     .join("\n");
 
-  const label =
-    pageType === "default"
-      ? SITE_TITLE
-      : `${pageType === "blog" ? "Articles" : "Work"} | ${SITE_TITLE}`;
-
-  const labelFontSize = 20;
+  const labelFontSize = 18;
   const labelPath = textToSvgPath(
     font,
-    escapeXml(label),
+    escapeXml(SITE_TITLE),
     labelFontSize,
-    145,
-    543
+    80,
+    570
   );
 
   return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
@@ -224,7 +229,7 @@ function generateSvg(
   <rect width="1200" height="630" fill="url(#bg)" />
 
   <!-- Top accent bar -->
-  <rect x="0" y="0" width="1200" height="6" fill="url(#accent)" />
+  <rect x="0" y="0" width="1200" height="10" fill="url(#accent)" />
 
   <!-- Decorative circles -->
   <circle cx="150" cy="80" r="220" fill="${COLOR.primary}" opacity="0.07" />
@@ -241,15 +246,11 @@ function generateSvg(
   <circle cx="250" cy="220" r="3" fill="${COLOR.primary}" opacity="0.35" />
   <circle cx="850" cy="350" r="5" fill="${COLOR.secondary}" opacity="0.15" />
 
-  <!-- Decorative small sparkles -->
-  <path d="M75 180 Q80 170 85 180 Q80 190 75 180Z" fill="${COLOR.secondary}" opacity="0.3" />
-  <path d="M1120 280 Q1125 270 1130 280 Q1125 290 1120 280Z" fill="${COLOR.primary}" opacity="0.25" />
-
   <!-- Title (rendered as SVG paths for font fidelity) -->
 ${titlePaths}
 
   <!-- Site name (rendered as SVG path) -->
-  <path d="${labelPath}" fill="${COLOR.primary}" opacity="0.9" />
+  <path d="${labelPath}" fill="${COLOR.text}" />
 </svg>`;
 }
 
@@ -259,12 +260,13 @@ function generateExternalSvg(
   font: opentype.Font
 ): string {
   const maxWidth = 1040;
+  const maxCharsPerLine = 24;
   const { lines: titleLines, fontSize: titleFontSize } = measureAndWrap(
     font,
     title,
     maxWidth,
-    18,
-    title.length > 18 ? 46 : 58
+    maxCharsPerLine,
+    title.length > maxCharsPerLine ? 46 : 58
   );
 
   const lineHeight = titleFontSize * 1.45;
@@ -279,9 +281,28 @@ function generateExternalSvg(
     })
     .join("\n");
 
-  const label = `${escapeXml(source)} | ${escapeXml(SITE_TITLE)}`;
-  const labelFontSize = 20;
-  const labelPath = textToSvgPath(font, label, labelFontSize, 80, 570);
+  const labelFontSize = 18;
+  const labelPath = textToSvgPath(
+    font,
+    escapeXml(SITE_TITLE),
+    labelFontSize,
+    80,
+    570
+  );
+
+  // Platform badge: e.g. "Zenn" in an orange pill
+  const badgeText = source;
+  const badgeFontSize = 22;
+  // We need the badge width for positioning; approximate with char count
+  const badgeCharWidth = badgeFontSize * 0.6;
+  const badgePadding = 14;
+  const badgeW = badgeText.length * badgeCharWidth + badgePadding * 2;
+  const badgeH = 38;
+  const badgeX = 1200 - badgeW - 50; // 50px from right edge
+  const badgeY = 50;
+
+  // Render badge text at correct position
+  const badgeTextPath = textToSvgPath(font, badgeText, badgeFontSize, badgeX + badgePadding, badgeY + badgeH * 0.72);
 
   return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -299,7 +320,7 @@ function generateExternalSvg(
   <rect width="1200" height="630" fill="url(#bg)" />
 
   <!-- Top accent bar -->
-  <rect x="0" y="0" width="1200" height="6" fill="url(#accent)" />
+  <rect x="0" y="0" width="1200" height="10" fill="url(#accent)" />
 
   <!-- Decorative circles -->
   <circle cx="150" cy="80" r="220" fill="${COLOR.secondary}" opacity="0.07" />
@@ -316,11 +337,15 @@ function generateExternalSvg(
   <circle cx="250" cy="220" r="3" fill="${COLOR.secondary}" opacity="0.35" />
   <circle cx="850" cy="350" r="5" fill="${COLOR.secondary}" opacity="0.15" />
 
+  <!-- Platform badge -->
+  <rect x="${badgeX}" y="${badgeY}" width="${badgeW}" height="${badgeH}" rx="8" fill="${COLOR.secondary}" />
+  <path d="${badgeTextPath}" fill="#ffffff" />
+
   <!-- Title -->
 ${titlePaths}
 
-  <!-- Source name -->
-  <path d="${labelPath}" fill="${COLOR.secondary}" />
+  <!-- Site name -->
+  <path d="${labelPath}" fill="${COLOR.text}" />
 </svg>`;
 }
 
@@ -369,7 +394,8 @@ async function generateOgp(
     const dir = path.dirname(outPath);
     fs.mkdirSync(dir, { recursive: true });
 
-    const pageType = item.slug.startsWith("blog") ? "blog" : "work";
+    const pageType = item.slug.startsWith("articles") ? "blog" : 
+                     item.slug.startsWith("works") ? "work" : "default";
     const svg = generateSvg(item.title, pageType, font);
     await renderWithProfile(svg, outPath);
     console.log(`  ✓ public/ogp/${item.slug}.webp`);

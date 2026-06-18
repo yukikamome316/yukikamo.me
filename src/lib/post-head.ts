@@ -45,6 +45,7 @@ export function extractExcerpt(
     if (line.startsWith(">")) continue;
     if (line.startsWith("- ") || line.startsWith("* ")) continue;
     if (/^\d+\.\s/.test(line)) continue;
+    if (/^---+\s*$/.test(line)) continue;
     const trimmed =
       line.length <= maxLenPerLine
         ? line

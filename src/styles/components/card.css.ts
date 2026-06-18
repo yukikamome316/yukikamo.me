@@ -41,9 +41,9 @@ export const cardDateOverlay = style({
   bottom: "0.5rem",
   display: "inline-flex",
   alignItems: "center",
-  gap: "0.25rem",
-  padding: "0.25rem 0.625rem",
-  fontSize: "0.75rem",
+  gap: "0.375rem",
+  padding: "0.2rem 0.5rem",
+  fontSize: "0.7rem",
   color: "#ffffff",
   backgroundColor: "rgba(0, 0, 0, 0.45)",
   backdropFilter: "blur(4px)",
@@ -92,9 +92,14 @@ export const cardHeadItem = style({
 });
 
 export const cardSource = style({
-  fontSize: "0.75rem",
-  fontWeight: 600,
-  color: vars.color.primaryDark,
+  fontSize: "0.65rem",
+  fontWeight: 700,
+  padding: "0.1rem 0.35rem",
+  borderRadius: "4px",
+  backgroundColor: vars.color.secondary,
+  color: "#ffffff",
+  lineHeight: 1.2,
+  marginLeft: "0.125rem",
 });
 
 export const cardTagList = style({
