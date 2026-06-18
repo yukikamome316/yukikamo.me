@@ -36,7 +36,7 @@ const allPosts = [
     tags: post.tags,
     source: post.source,
     image: post.image,
-    excerpt: undefined as string[] | undefined,
+    excerpt: post.description ? [post.description] : undefined,
     head: post.head,
   })),
 ];
