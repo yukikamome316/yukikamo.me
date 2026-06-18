@@ -223,7 +223,7 @@ function generateSvg(
     font,
     escapeXml(SITE_TITLE),
     labelFontSize,
-    80,
+    145,
     570
   );
 
@@ -300,7 +300,7 @@ function generateExternalSvg(
   const labelStr = source
     ? `${escapeXml(source)} | ${escapeXml(SITE_TITLE)}`
     : escapeXml(SITE_TITLE);
-  const labelPath = textToSvgPath(font, labelStr, labelFontSize, 80, 570);
+  const labelPath = textToSvgPath(font, labelStr, labelFontSize, 145, 570);
 
   return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
