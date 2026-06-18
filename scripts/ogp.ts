@@ -186,7 +186,7 @@ async function renderSvgWithProfile(
   outPath: string
 ): Promise<void> {
   const pngBuf = await sharp(Buffer.from(svgContent)).png().toBuffer();
-  const result = await compositeProfileIcon(pngBuf, 50, 78, 508);
+  const result = await compositeProfileIcon(pngBuf, 50, 78, 538);
   await sharp(result).toFile(outPath);
 }
 
