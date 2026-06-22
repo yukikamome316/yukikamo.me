@@ -1,0 +1,7 @@
+---
+title: "Temporary"
+date: 2024-03-01
+description: "このブログで使える Markdown、Shiki コードハイライト、コンポーネントスタイルの装飾一覧です。タイトルは frontmatter の title フィールドで指定し、Markdown 本文では h1 を書かず h2 から始めること。"
+tags: ["Markdown", "Shiki", "Astro", "LaTeX"]
+---
+
