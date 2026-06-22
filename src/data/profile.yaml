@@ -11,11 +11,11 @@ profile:
 credentials:
   - title: 情報処理安全確保支援士試験
     issuer: IPA 独立行政法人 情報処理推進機構
-    issuedDate: "2025-12"
+    issuedDate: null
 
   - title: 応用情報技術者試験
     issuer: IPA 独立行政法人 情報処理推進機構
-    issuedDate: "2024-07"
+    issuedDate: null
 
   - title: 普通自動車第一種運転免許 (AT 限定)
     issuer: 警察庁
